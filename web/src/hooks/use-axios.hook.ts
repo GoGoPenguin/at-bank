@@ -27,12 +27,17 @@ const useAxios = () => {
             handleAlert(error.response.data.error, "error");
             break;
           case 401:
-            instance.post("/api/refresh-token").catch((err) => {
-              if (err.response.status !== 200) {
-                navigate("/sign-in", { replace: true });
-              }
-            });
-            break;
+            if (error.config.url !== "/api/refresh-token") {
+              instance
+                .post("/api/refresh-token")
+                .then(() => {
+                  instance(error.config);
+                })
+                .catch(() => {
+                  navigate("/sign-in", { replace: true });
+                });
+            }
+            return false;
           case 403:
             return false;
           case 404:
