@@ -67,7 +67,7 @@ const stepFields = [
 export default function SignUpDept() {
   const { signUp, checkAccountExists } = useApi();
   const { handleAlert } = useContext(alertContext);
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const steps = [
