@@ -109,12 +109,23 @@ function AthleticTrainerHome() {
               maxWidth: "800px",
             }}
           >
-            <Pagination
-              page={page}
-              onChange={(_, value) => setPage(value)}
-              count={resp?.pagination.totalPages ?? 0}
-              color="primary"
-            />
+            <Box display={{ xs: "none", md: "flex" }}>
+              <Pagination
+                page={page}
+                onChange={(_, value) => setPage(value)}
+                count={resp?.pagination.totalPages ?? 0}
+                color="primary"
+              />
+            </Box>
+            <Box display={{ xs: "flex", md: "none" }}>
+              <Pagination
+                page={page}
+                onChange={(_, value) => setPage(value)}
+                count={resp?.pagination.totalPages ?? 0}
+                color="primary"
+                size="small"
+              />
+            </Box>
           </Box>
         </Container>
       </Box>
