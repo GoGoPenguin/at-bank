@@ -45,7 +45,7 @@
   "profileMenu": {
     "profile": "Profile",
     "changePassword": "Change Password",
-    "logout": "Logout"
+    "signOut": "Sign Out"
   },
   "signIn": {
     "title": "Sign In",

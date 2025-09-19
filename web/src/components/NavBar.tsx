@@ -10,8 +10,13 @@ import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
+import { useMutation } from "@tanstack/react-query";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
+import useApi from "../hooks/use-api.hook";
+import { useAuthStore } from "../store/use-auth.store";
 import Profile from "./Profile";
 import ColorModeIconDropdown from "./theme/ColorModeSelectDropdown";
 
@@ -32,9 +37,24 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 export default function NavBar() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
+  };
+  const { signOut } = useApi();
+  const { clearUser } = useAuthStore();
+  const mutation = useMutation({
+    mutationFn: signOut,
+    onSuccess: () => {
+      clearUser();
+      navigate("/sign-in", { replace: true });
+    },
+  });
+
+  const handleSignOut = () => {
+    mutation.mutate();
   };
 
   return (
@@ -125,7 +145,7 @@ export default function NavBar() {
                   </IconButton>
                 </Box>
 
-                <MenuItem>Features</MenuItem>
+                {/* <MenuItem>Features</MenuItem>
                 <MenuItem>Testimonials</MenuItem>
                 <MenuItem>Highlights</MenuItem>
                 <MenuItem>Pricing</MenuItem>
@@ -136,10 +156,13 @@ export default function NavBar() {
                   <Button color="primary" variant="contained" fullWidth>
                     Sign up
                   </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
+                </MenuItem> */}
+                <MenuItem>{t("profileMenu.profile")}</MenuItem>
+                <MenuItem>{t("profileMenu.changePassword")}</MenuItem>
+                <Divider sx={{ my: 3 }} />
+                <MenuItem onClick={handleSignOut}>
+                  <Button color="primary" variant="contained" fullWidth>
+                    {t("profileMenu.signOut")}
                   </Button>
                 </MenuItem>
               </Box>

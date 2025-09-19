@@ -23,13 +23,14 @@ import LetterAvatar from "./LetterAvatar";
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { clearUser, user } = useAuthStore();
   const { signOut } = useApi();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const mutation = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
+      clearUser();
       navigate("/sign-in", { replace: true });
     },
   });
@@ -40,7 +41,7 @@ export default function Profile() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleLogout = () => {
+  const handleSignOut = () => {
     mutation.mutate();
   };
 
@@ -90,12 +91,12 @@ export default function Profile() {
           </ListItemText>
         </MenuItem>
         <Divider></Divider>
-        <MenuItem onClick={handleLogout}>
+        <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText disableTypography>
-            {t("profileMenu.logout")}
+            {t("profileMenu.signOut")}
           </ListItemText>
         </MenuItem>
       </Menu>
