@@ -33,7 +33,6 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function NavBar() {
   const [open, setOpen] = React.useState(false);
-
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };

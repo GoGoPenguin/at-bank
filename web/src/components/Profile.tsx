@@ -7,11 +7,12 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/use-api.hook";
+import { useAuthStore } from "../store/use-auth.store";
 import {
   USER_TYPE_ATHLETIC_TRAINER,
   type AthleticTrainer,
@@ -22,11 +23,8 @@ import LetterAvatar from "./LetterAvatar";
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { getMe, signOut } = useApi();
-  const { data } = useQuery({
-    queryKey: ["getMe"],
-    queryFn: getMe,
-  });
+  const { user } = useAuthStore();
+  const { signOut } = useApi();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const mutation = useMutation({
@@ -51,11 +49,11 @@ export default function Profile() {
       <ButtonBase onClick={handleClick}>
         <LetterAvatar
           name={
-            data === undefined
+            user === undefined
               ? ""
-              : data.type === USER_TYPE_ATHLETIC_TRAINER
-              ? (data as AthleticTrainer).chineseName
-              : (data as Department).departmentName
+              : user.type === USER_TYPE_ATHLETIC_TRAINER
+              ? (user as AthleticTrainer).chineseName
+              : (user as Department).departmentName
           }
           sx={{ width: 30, height: 30, fontSize: "0.875rem" }}
         />
