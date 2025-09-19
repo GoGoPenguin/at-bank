@@ -132,10 +132,7 @@ const formSchema = z
       .string()
       .trim()
       .min(1, "error.required")
-      .regex(
-        /^(?:7000021\d{7}|7000010\d{1})$/,
-        "error.invalidPostOfficeAccount"
-      ),
+      .regex(/^(?:\d{14}|\d{8})$/, "error.invalidPostOfficeAccount"),
 
     // Step 3
     emtLicense: z.any(),
