@@ -2,6 +2,7 @@ import type { Pagination } from "./pagination.type";
 
 export type JobType = "Tournament" | "Individual" | "Department";
 export type JobStatus = "Active" | "Paused" | "Closed";
+export type ApplicationStatus = "Pending" | "Accepted" | "Rejected";
 
 export const JOB_TYPE_TOURNAMENT: JobType = "Tournament";
 export const JOB_TYPE_INDIVIDUAL: JobType = "Individual";
@@ -10,6 +11,10 @@ export const JOB_TYPE_DEPARTMENT: JobType = "Department";
 export const JOB_STATUS_ACTIVE: JobStatus = "Active";
 export const JOB_STATUS_PAUSED: JobStatus = "Paused";
 export const JOB_STATUS_CLOSED: JobStatus = "Closed";
+
+export const APPLICATION_STATUS_PENDING: ApplicationStatus = "Pending";
+export const APPLICATION_STATUS_ACCEPTED: ApplicationStatus = "Accepted";
+export const APPLICATION_STATUS_REJECTED: ApplicationStatus = "Rejected";
 
 export const JOB_STATUSES: JobStatus[] = [
   JOB_STATUS_ACTIVE,
@@ -20,6 +25,11 @@ export const JOB_TYPES: JobType[] = [
   JOB_TYPE_TOURNAMENT,
   JOB_TYPE_INDIVIDUAL,
   JOB_TYPE_DEPARTMENT,
+] as const;
+export const APPLICATION_STATUSES: ApplicationStatus[] = [
+  APPLICATION_STATUS_PENDING,
+  APPLICATION_STATUS_ACCEPTED,
+  APPLICATION_STATUS_REJECTED,
 ] as const;
 
 export interface Job {
@@ -33,6 +43,7 @@ export interface Job {
   location: string;
   notes: string;
   saved: boolean;
+  applicationStatus?: ApplicationStatus;
   createdAt: Date;
   updatedAt: Date;
 }

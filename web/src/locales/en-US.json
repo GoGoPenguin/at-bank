@@ -36,6 +36,9 @@
     },
     "success": {
       "signUpSuccessful": "Sign up successful"
+    },
+    "info": {
+      "appliedSuccessfully": "Application submitted, please wait for a response."
     }
   },
   "pagination": {
@@ -147,7 +150,10 @@
     "vacancies": "Vacancies",
     "hours": "Hours",
     "location": "Location",
-    "date": "Date"
+    "date": "Date",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
   },
   "time": {
     "year_one": "{{count}} year",

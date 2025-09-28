@@ -13,6 +13,7 @@ const createJob = (): Job => ({
   location: faker.helpers.arrayElement(cities),
   notes: faker.lorem.paragraph(),
   saved: false,
+  applicationStatus: undefined,
   createdAt: faker.date.past(),
   updatedAt: faker.date.past(),
 });

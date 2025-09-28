@@ -16,15 +16,21 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
+import alertContext from "../context/alert.context";
 import useLanguage from "../hooks/use-language";
-import type { Job } from "../types/job.type";
+import { APPLICATION_STATUS_PENDING, type Job } from "../types/job.type";
 import LetterAvatar from "./LetterAvatar";
+
 export default function JobDiscoveryCard({ job }: { job: Job }) {
+  const { handleAlert } = useContext(alertContext);
   const { t } = useTranslation();
   const { language } = useLanguage();
   const [isSaved, setIsSaved] = useState(job.saved || false);
+  const [applicationStatus, setApplicationStatus] = useState(
+    job.applicationStatus || undefined
+  );
   const postedAtDiff = Date.now() - new Date(job.createdAt).getTime();
   const postedAtSeconds = Math.floor(postedAtDiff / 1000);
   const postedAtMinutes = Math.floor(postedAtDiff / 60000);
@@ -35,6 +41,13 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
 
   const handleSaveClick = () => {
     setIsSaved((currentStatus) => !currentStatus);
+    // TODO: Implement save job logic
+  };
+
+  const handleApplyClick = () => {
+    // TODO: Implement job application logic
+    setApplicationStatus(APPLICATION_STATUS_PENDING);
+    handleAlert("appliedSuccessfully", "info");
   };
 
   return (
@@ -208,8 +221,16 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                   >
                     {isSaved ? t("job.saved") : t("job.save")}{" "}
                   </Button>
-                  <Button variant="contained" size="small" color="primary">
-                    {t("job.apply")}
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color={applicationStatus === undefined ? "primary" : "info"}
+                    onClick={handleApplyClick}
+                    disabled={applicationStatus !== undefined}
+                  >
+                    {applicationStatus === APPLICATION_STATUS_PENDING
+                      ? t("job.pending")
+                      : t("job.apply")}
                   </Button>
                 </Stack>
               </Stack>
