@@ -12,6 +12,7 @@ const createJob = (): Job => ({
   vacancies: faker.number.int({ min: 1, max: 10 }),
   location: faker.helpers.arrayElement(cities),
   notes: faker.lorem.paragraph(),
+  saved: false,
   createdAt: faker.date.past(),
   updatedAt: faker.date.past(),
 });

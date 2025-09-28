@@ -32,6 +32,7 @@ export interface Job {
   vacancies: number;
   location: string;
   notes: string;
+  saved: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

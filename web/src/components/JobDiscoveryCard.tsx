@@ -4,6 +4,7 @@ import {
   PersonOutline,
 } from "@mui/icons-material";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import EventIcon from "@mui/icons-material/Event";
 import {
@@ -15,6 +16,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useLanguage from "../hooks/use-language";
 import type { Job } from "../types/job.type";
@@ -22,6 +24,7 @@ import LetterAvatar from "./LetterAvatar";
 export default function JobDiscoveryCard({ job }: { job: Job }) {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const [isSaved, setIsSaved] = useState(job.saved || false);
   const postedAtDiff = Date.now() - new Date(job.createdAt).getTime();
   const postedAtSeconds = Math.floor(postedAtDiff / 1000);
   const postedAtMinutes = Math.floor(postedAtDiff / 60000);
@@ -29,6 +32,10 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
   const postedAtDays = Math.floor(postedAtDiff / 86400000);
   const postedAtMonths = Math.floor(postedAtDiff / 2592000000);
   const postedAtYears = Math.floor(postedAtDiff / 31536000000);
+
+  const handleSaveClick = () => {
+    setIsSaved((currentStatus) => !currentStatus);
+  };
 
   return (
     <Paper
@@ -190,9 +197,16 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                     variant="outlined"
                     size="small"
                     color="primary"
-                    startIcon={<BookmarkBorderOutlinedIcon />}
+                    startIcon={
+                      isSaved ? (
+                        <BookmarkIcon />
+                      ) : (
+                        <BookmarkBorderOutlinedIcon />
+                      )
+                    }
+                    onClick={handleSaveClick}
                   >
-                    {t("job.save")}
+                    {isSaved ? t("job.saved") : t("job.save")}{" "}
                   </Button>
                   <Button variant="contained" size="small" color="primary">
                     {t("job.apply")}
