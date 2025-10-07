@@ -3,6 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
+import ScrollToTop from "./components/ScrollToTop.tsx";
 import "./i18n";
 
 // Start worker
@@ -24,6 +25,7 @@ enableMocking().then(() => {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          <ScrollToTop />
           <App />
         </BrowserRouter>
       </QueryClientProvider>
