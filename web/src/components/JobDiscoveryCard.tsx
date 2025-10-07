@@ -11,6 +11,7 @@ import {
   Button,
   Chip,
   Divider,
+  Link,
   Paper,
   Stack,
   Tooltip,
@@ -18,12 +19,14 @@ import {
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import alertContext from "../context/alert.context";
 import useLanguage from "../hooks/use-language";
 import { APPLICATION_STATUS_PENDING, type Job } from "../types/job.type";
 import LetterAvatar from "./LetterAvatar";
 
 export default function JobDiscoveryCard({ job }: { job: Job }) {
+  const navigate = useNavigate();
   const { handleAlert } = useContext(alertContext);
   const { t } = useTranslation();
   const { language } = useLanguage();
@@ -90,13 +93,32 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
             >
               <Stack direction="column">
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography
+                  <Link
+                    onClick={() => navigate(`/job/${job.id}`)}
+                    component="button"
+                    type="button"
                     variant="h5"
-                    component="h3"
-                    sx={{ fontWeight: "bold" }}
+                    sx={(theme) => ({
+                      fontWeight: "bold",
+                      "&:hover::before": {
+                        content: '""',
+                        position: "absolute",
+                        width: "100%",
+                        height: "1px",
+                        bottom: 0,
+                        left: 0,
+                        backgroundColor: (theme.vars || theme).palette.text
+                          .secondary,
+                        opacity: 0.3,
+                        transition: "width 0.3s ease, opacity 0.3s ease",
+                      },
+                      "&::before": {
+                        width: 0,
+                      },
+                    })}
                   >
                     {job.title}
-                  </Typography>
+                  </Link>
                   <Chip
                     label={t(`job.${job.type.toLowerCase()}`)}
                     size="small"
@@ -253,13 +275,33 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
           </Stack>
           <Stack direction="column">
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography
+              <Link
+                onClick={() => navigate(`/job/${job.id}`)}
+                component="button"
+                type="button"
                 variant="h5"
-                component="h3"
-                sx={{ fontWeight: "bold" }}
+                sx={(theme) => ({
+                  fontWeight: "bold",
+                  textAlign: "start",
+                  "&:hover::before": {
+                    content: '""',
+                    position: "absolute",
+                    width: "100%",
+                    height: "1px",
+                    bottom: 0,
+                    left: 0,
+                    backgroundColor: (theme.vars || theme).palette.text
+                      .secondary,
+                    opacity: 0.3,
+                    transition: "width 0.3s ease, opacity 0.3s ease",
+                  },
+                  "&::before": {
+                    width: 0,
+                  },
+                })}
               >
                 {job.title}
-              </Typography>
+              </Link>
               <Chip
                 label={t(`job.${job.type.toLowerCase()}`)}
                 size="small"
