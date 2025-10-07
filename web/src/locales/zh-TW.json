@@ -7,7 +7,8 @@
     "or": "或",
     "none": "無",
     "any": "任何",
-    "comma": "，"
+    "comma": "，",
+    "home": "首頁"
   },
   "colorMode": {
     "light": "淺色模式",
@@ -136,6 +137,7 @@
     "department": "單位防護",
     "tournament": "賽會",
     "showMe": "顯示",
+    "timeCommitment": "時間",
     "job": "工作",
     "hiringIn": "招募於",
     "postedAt": "發布於 {{timeAgo}}前",
@@ -147,9 +149,27 @@
     "hours": "工時",
     "location": "地點",
     "date": "日期",
+    "notes": "備註",
     "pending": "審核中",
     "accepted": "已錄取",
-    "rejected": "未錄取"
+    "rejected": "未錄取",
+    "twd": "新台幣",
+    "aboutThisJob": "關於這份工作",
+    "aboutThisCompany": "關於這個單位",
+    "companyName": "單位名稱",
+    "head": "負責人",
+    "taxId": "統一編號",
+    "address": "地址",
+    "contact": "聯絡人",
+    "contactPhone": "聯絡電話",
+    "contactEmail": "聯絡電子郵件",
+    "serviceContent": "服務內容",
+    "athleticTraining": "運動傷害防護",
+    "massageTherapy": "運動按摩",
+    "tournamentName": "賽會名稱",
+    "numberOfTournaments": "賽會場數",
+    "supplies": "耗材",
+    "equipment": "裝備"
   },
   "time": {
     "year": "{{count}} 年",

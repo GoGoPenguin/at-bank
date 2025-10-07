@@ -1,5 +1,9 @@
 import type { SignInRequestBody, SignInResponseBody } from "../types/auth.type";
-import type { GetJobsRequestParams, GetJobsResponse } from "../types/job.type";
+import type {
+  GetJobResponse,
+  GetJobsRequestParams,
+  GetJobsResponse,
+} from "../types/job.type";
 import type { SignUpRequestBody, User } from "../types/user.type";
 import useAxios from "./use-axios.hook";
 
@@ -32,8 +36,20 @@ const useApi = () => {
     const response = await axios.get("/api/jobs", { params: req });
     return response.data;
   };
+  const getJob = async (id: number): Promise<GetJobResponse> => {
+    const response = await axios.get(`/api/jobs/${id}`);
+    return response.data;
+  };
 
-  return { signIn, signUp, signOut, checkAccountExists, getMe, getJobs };
+  return {
+    signIn,
+    signUp,
+    signOut,
+    checkAccountExists,
+    getMe,
+    getJobs,
+    getJob,
+  };
 };
 
 export default useApi;

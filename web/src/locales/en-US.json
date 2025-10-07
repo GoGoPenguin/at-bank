@@ -8,7 +8,8 @@
     "none": "None",
     "have": "Have",
     "any": "Any",
-    "comma": ","
+    "comma": ",",
+    "home": "Home"
   },
   "colorMode": {
     "light": "Light Mode",
@@ -139,6 +140,7 @@
     "department": "Department",
     "tournament": "Tournament",
     "showMe": "Show Me",
+    "timeCommitment": "Time Commitment",
     "job_one": "Job",
     "job_other": "Jobs",
     "hiringIn": "Hiring in",
@@ -151,9 +153,28 @@
     "hours": "Hours",
     "location": "Location",
     "date": "Date",
+    "notes": "Notes",
     "pending": "Pending",
     "accepted": "Accepted",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "twd": "TWD",
+    "aboutThisJob": "About this job",
+    "aboutThisCompany": "About this company",
+    "companyName": "Company Name",
+    "head": "Head",
+    "taxId": "Tax ID",
+    "address": "Address",
+    "contact": "Contact",
+    "contactPhone": "Contact Phone",
+    "contactEmail": "Contact Email",
+    "serviceContent": "Service Content",
+    "athleticTraining": "Athletic Training",
+    "massageTherapy": "Massage Therapy",
+    "physicalTherapy": "Physical Therapy",
+    "tournamentName": "Tournament Name",
+    "numberOfTournaments": "Number of Tournaments",
+    "supplies": "Supplies",
+    "equipment": "Equipment"
   },
   "time": {
     "year_one": "{{count}} year",
