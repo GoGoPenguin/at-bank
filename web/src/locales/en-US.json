@@ -47,8 +47,8 @@
     "resultTotal": "{{total}} results"
   },
   "profileMenu": {
+    "myJobs": "My Jobs",
     "profile": "Profile",
-    "changePassword": "Change Password",
     "signOut": "Sign Out"
   },
   "signIn": {

@@ -46,8 +46,8 @@
     "resultTotal": "共 {{total}} 筆結果"
   },
   "profileMenu": {
+    "myJobs": "我的工作",
     "profile": "個人資料",
-    "changePassword": "更改密碼",
     "signOut": "登出"
   },
   "signIn": {
