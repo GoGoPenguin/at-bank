@@ -366,12 +366,23 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
             variant="outlined"
             size="small"
             color="primary"
-            startIcon={<BookmarkBorderOutlinedIcon />}
+            startIcon={
+              isSaved ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />
+            }
+            onClick={handleSaveClick}
           >
             {t("job.save")}
           </Button>
-          <Button variant="contained" size="small" color="primary" fullWidth>
-            {t("job.apply")}
+          <Button
+            variant="contained"
+            size="small"
+            color={applicationStatus === undefined ? "primary" : "info"}
+            onClick={handleApplyClick}
+            disabled={applicationStatus !== undefined}
+          >
+            {applicationStatus === APPLICATION_STATUS_PENDING
+              ? t("job.pending")
+              : t("job.apply")}
           </Button>
         </Stack>
       </Stack>
