@@ -37,6 +37,21 @@ const jobHandlers = [
       });
     }
   ),
+  http.get(
+    `${import.meta.env.VITE_BASE_URL}/api/jobs/:id`,
+    async ({ cookies, params }) => {
+      const user = cookies.accessToken;
+      if (!user) {
+        return HttpResponse.json({ error: "unauthorized" }, { status: 401 });
+      }
+
+      const job = mockJobs.find((j) => j.id === Number(params.id));
+      if (!job) {
+        return HttpResponse.json({ error: "not found" }, { status: 404 });
+      }
+      return HttpResponse.json(job);
+    }
+  ),
 ] as const;
 
 export default jobHandlers;
