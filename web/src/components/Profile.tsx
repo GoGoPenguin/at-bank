@@ -1,6 +1,6 @@
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LogoutIcon from "@mui/icons-material/Logout";
-import PasswordIcon from "@mui/icons-material/Password";
+import WorkIcon from "@mui/icons-material/Work";
 import ButtonBase from "@mui/material/ButtonBase";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -76,18 +76,18 @@ export default function Profile() {
       >
         <MenuItem>
           <ListItemIcon>
+            <WorkIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText disableTypography>
+            {t("profileMenu.myJobs")}
+          </ListItemText>
+        </MenuItem>
+        <MenuItem disabled>
+          <ListItemIcon>
             <AccountBoxIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText disableTypography>
             {t("profileMenu.profile")}
-          </ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <PasswordIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText disableTypography>
-            {t("profileMenu.changePassword")}
           </ListItemText>
         </MenuItem>
         <Divider></Divider>
