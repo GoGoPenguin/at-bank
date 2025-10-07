@@ -4,7 +4,7 @@ import Divider from "@mui/material/Divider";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Container from "../components/Container";
 import Footer from "../components/Footer";
@@ -39,6 +39,10 @@ function AthleticTrainerHome() {
     setPage(1);
     refetch();
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page, setPage]);
 
   return (
     <>
