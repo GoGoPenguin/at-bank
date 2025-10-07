@@ -14,12 +14,16 @@ import Search from "../components/Search";
 import useApi from "../hooks/use-api.hook";
 import type { JobType } from "../types/job.type";
 
+const PAGE_NUMBER_KEY = "athleticTrainerHomePageNumber";
+
 function AthleticTrainerHome() {
   const { t } = useTranslation();
   const { getJobs } = useApi();
   const [jobType, setJobType] = useState<JobType | undefined>(undefined);
   const [location, setLocation] = useState<string | undefined>(undefined);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() => {
+    return parseInt(sessionStorage.getItem(PAGE_NUMBER_KEY) || "1", 10);
+  });
   const {
     data: resp,
     isLoading,
@@ -42,6 +46,7 @@ function AthleticTrainerHome() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    sessionStorage.setItem(PAGE_NUMBER_KEY, page.toString());
   }, [page, setPage]);
 
   return (
