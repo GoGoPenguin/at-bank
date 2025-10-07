@@ -6,6 +6,7 @@ on:
   pull_request:
   push:
     paths:
+      - .github/workflows/firebase-hosting-pull-request.yml
       - "web/**"
     branches:
       - develop
