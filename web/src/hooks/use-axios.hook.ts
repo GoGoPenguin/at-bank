@@ -37,7 +37,7 @@ const useAxios = () => {
                   navigate("/sign-in", { replace: true });
                 });
             }
-            return false;
+            break;
           case 403:
             return false;
           case 404:
