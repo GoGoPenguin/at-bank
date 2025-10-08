@@ -36,10 +36,6 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Prepare Google Application Credentials
-        run: |
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_AT_BANK_490B5 }}" > google-application-credentials.json
-
       - name: Deploy to Firebase Functions
         env:
           GOOGLE_APPLICATION_CREDENTIALS: google-application-credentials.json
@@ -49,6 +45,7 @@ jobs:
           uv venv venv
           source venv/bin/activate
           uv sync --active
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_AT_BANK_490B5 }}" > google-application-credentials.json
           cat google-application-credentials.json
           firebase deploy --only functions --project at-bank-490b5
           deactivate
