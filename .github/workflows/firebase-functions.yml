@@ -45,7 +45,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: google-application-credentials.json
         run: |
           cd api
-          uv install -r requirements.txt
+          uv export --no-dev -o requirements.txt
           uv venv venv
           source venv/bin/activate
           uv sync
