@@ -45,7 +45,7 @@ jobs:
           uv venv venv
           source venv/bin/activate
           uv sync --active
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_AT_BANK_490B5 }}" > $GOOGLE_APPLICATION_CREDENTIALS
+          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
           cat $GOOGLE_APPLICATION_CREDENTIALS
           firebase deploy --only functions --project at-bank-490b5 --non-interactive --debug
           deactivate
