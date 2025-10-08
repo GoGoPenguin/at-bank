@@ -48,6 +48,7 @@ jobs:
           uv export --no-dev -o requirements.txt
           uv venv venv
           source venv/bin/activate
-          uv sync
+          uv sync --active
+          cat google-application-credentials.json
           firebase deploy --only functions --project at-bank-490b5
           deactivate
