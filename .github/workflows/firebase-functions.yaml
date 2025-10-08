@@ -1,0 +1,54 @@
+# .github/workflows/deploy.yml
+
+name: Deploy to Google Apps Script
+
+# Trigger the workflow on pushes to the 'main' branch
+on:
+  push:
+    paths:
+      - .github/workflows/firebase-functions.yml
+      - "api/**"
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".tool-versions"
+          cache: "pip"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".tool-versions"
+          cache: "npm"
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Prepare Google Application Credentials
+        run: |
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_AT_BANK_490B5 }}" | base64 --decode > "google-application-credentials.json"
+
+      - name: Deploy to Firebase Functions
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: google-application-credentials.json
+        run: |
+          cd api
+          uv install -r requirements.txt
+          uv venv venv
+          source venv/bin/activate
+          uv sync
+          firebase deploy --only functions --project at-bank-490b5
+          deactivate
