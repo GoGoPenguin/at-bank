@@ -9,6 +9,7 @@ on:
       - .github/workflows/firebase-functions.yml
       - "api/**"
     branches:
+      - develop
       - main
 
 jobs:
