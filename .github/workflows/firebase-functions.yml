@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version-file: ".tool-versions"
+          node-version: "20"
 
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
