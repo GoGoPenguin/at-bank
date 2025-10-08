@@ -46,5 +46,6 @@ jobs:
           source venv/bin/activate
           uv sync --active
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
-          firebase deploy --only functions --project at-bank-490b5 --non-interactive
+          firebase functions:artifacts:setpolicy --location asia-east1
+          firebase deploy --only functions --project at-bank-490b5 --non-interactive --force
           deactivate
