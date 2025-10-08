@@ -1,6 +1,6 @@
 # .github/workflows/deploy.yml
 
-name: Deploy to Google Apps Script
+name: Deploy to Firebase Functions
 
 # Trigger the workflow on pushes to the 'main' branch
 on:
