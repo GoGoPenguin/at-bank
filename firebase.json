@@ -20,6 +20,7 @@
     {
       "source": "api",
       "codebase": "default",
+      "runtime": "python312",
       "ignore": [
         ".venv",
         "venv",
