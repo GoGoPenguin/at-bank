@@ -1,0 +1,18 @@
+[project]
+dependencies = [
+  "fastapi>=0.118.0",
+  "firebase-admin>=7.1.0",
+  "firebase-functions>=0.4.3",
+  "uvicorn>=0.37.0",
+]
+description = "Add your description here"
+name = "api"
+readme = "README.md"
+requires-python = ">=3.12"
+version = "0.1.0"
+
+[dependency-groups]
+dev = [
+  "black>=25.9.0",
+  "ruff>=0.14.0",
+]
