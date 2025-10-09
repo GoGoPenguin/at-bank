@@ -3,6 +3,7 @@ dependencies = [
   "fastapi>=0.118.0",
   "firebase-admin>=7.1.0",
   "firebase-functions>=0.4.3",
+  "pymongo>=4.15.3",
   "uvicorn>=0.37.0",
 ]
 description = "Add your description here"
