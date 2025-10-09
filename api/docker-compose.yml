@@ -1,0 +1,25 @@
+x-default: &default
+  restart: always
+  tty: true
+  stdin_open: true
+  env_file:
+    - .env
+
+services:
+  db:
+    <<: *default
+    image: mongo:8.0
+    volumes:
+      - ./data/db:/data/db
+    container_name: at-db
+    hostname: at-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+
+networks:
+  default:
+    name: at_net
+    driver: bridge
