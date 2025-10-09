@@ -3,6 +3,8 @@ dependencies = [
   "fastapi>=0.118.0",
   "firebase-admin>=7.1.0",
   "firebase-functions>=0.4.3",
+  "pydantic>=2.12.0",
+  "pydantic-settings>=2.11.0",
   "pymongo>=4.15.3",
   "uvicorn>=0.37.0",
 ]
