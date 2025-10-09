@@ -7,10 +7,10 @@
     },
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
-    "python.defaultInterpreterPath": "api/venv/bin/python",
+    "python.defaultInterpreterPath": "api/.venv/bin/python",
     "python.analysis.typeCheckingMode": "standard",
     "python.analysis.extraPaths": [
-        "api/venv/lib/python3.12/site-packages"
+        "api/.venv/lib/python3.12/site-packages"
     ],
     "python-envs.defaultEnvManager": "ms-python.python:system",
     "python-envs.pythonProjects": [],
