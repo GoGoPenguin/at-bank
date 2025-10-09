@@ -3,10 +3,15 @@ import asyncio
 import firebase_admin
 import uvicorn
 from fastapi import FastAPI
+from firebase_admin import firestore
 from firebase_functions import https_fn, options
 from src.router import router
 
 options.set_global_options(region="asia-east1")
+
+if not firebase_admin._apps:
+    firebase_admin.initialize_app()
+    firestore.client()
 
 app = FastAPI()
 app.include_router(router, prefix="/api")
