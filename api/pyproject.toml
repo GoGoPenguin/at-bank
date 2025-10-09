@@ -1,5 +1,6 @@
 [project]
 dependencies = [
+  "dependency-injector>=4.48.2",
   "fastapi>=0.118.0",
   "firebase-admin>=7.1.0",
   "firebase-functions>=0.4.3",
