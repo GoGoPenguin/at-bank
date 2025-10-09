@@ -5,6 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from firebase_admin import firestore
 from firebase_functions import https_fn, options
+from src.container import Container
 from src.router import router
 
 options.set_global_options(region="asia-east1")
@@ -13,7 +14,19 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app()
     firestore.client()
 
+container = Container()
+container.wire(
+    modules=[
+        ".handler",
+        ".middleware",
+        ".service",
+    ],
+    from_package="src",
+)
+container.init_resources()
+
 app = FastAPI()
+app.container = container  # type: ignore
 app.include_router(router, prefix="/api")
 
 
