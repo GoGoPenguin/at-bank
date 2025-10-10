@@ -14,8 +14,8 @@ services:
     container_name: at-db
     hostname: at-db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: ${DB__USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB__PASSWORD}
     ports:
       - "27017:27017"
 
