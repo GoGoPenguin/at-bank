@@ -1,7 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from ._app_config import AppConfig
+from ._cookies_config import CookiesConfig
 from ._db_config import DatabaseConfig
+from ._jwt_config import JWTConfig
 
 
 class Config(BaseSettings):
@@ -14,3 +16,5 @@ class Config(BaseSettings):
 
     app: AppConfig
     db: DatabaseConfig
+    jwt: JWTConfig
+    cookies: CookiesConfig
