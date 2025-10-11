@@ -3,9 +3,11 @@ import asyncio
 import firebase_admin
 import uvicorn
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from firebase_admin import firestore
 from firebase_functions import https_fn, options
 from src.container import Container
+from src.handler import error_handler
 from src.router import router
 
 options.set_global_options(region="asia-east1")
@@ -27,6 +29,8 @@ container.init_resources()
 
 app = FastAPI()
 app.container = container  # type: ignore
+app.add_exception_handler(Exception, error_handler)
+app.add_exception_handler(RequestValidationError, error_handler)
 app.include_router(router, prefix="/api")
 
 
@@ -87,9 +91,9 @@ def handler(req: https_fn.Request) -> https_fn.Response:
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
-        host="0.0.0.0",
-        port=80,
-        reload=True,
+        host=container.config.app.host(),
+        port=container.config.app.port(),
+        reload=container.config.app.reload(),
         reload_dirs=["."],
-        timeout_keep_alive=60,
+        timeout_keep_alive=container.config.app.timeout_keep_alive(),
     )

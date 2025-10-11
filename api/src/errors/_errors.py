@@ -1,5 +1,8 @@
 from typing import Optional
 
+from fastapi import status
+from fastapi.exception_handlers import RequestValidationError
+
 
 class Error(Exception):
     """
@@ -35,6 +38,18 @@ class Error(Exception):
         self.instance = instance
         super().__init__(title)
 
+    def model_dump(self):
+        result = {
+            "type": self.type,
+            "title": self.title,
+            "status": self.status,
+        }
+        if self.detail:
+            result["details"] = self.detail
+        if self.instance:
+            result["instance"] = self.instance
+        return result
+
 
 class InvalidCredentialsError(Error):
     """
@@ -48,7 +63,7 @@ class InvalidCredentialsError(Error):
         super().__init__(
             type="https://example.com/probs/invalid-credentials",
             title="Invalid Credentials",
-            status=401,
+            status=status.HTTP_401_UNAUTHORIZED,
             detail="The username or password provided is incorrect.",
             instance="/api/sign-in",
         )
@@ -68,7 +83,61 @@ class UnauthorizedError(Error):
         super().__init__(
             type="https://example.com/probs/unauthorized",
             title="Unauthorized",
-            status=401,
+            status=status.HTTP_401_UNAUTHORIZED,
             detail="Authentication is required to access this resource.",
             instance=instance,
         )
+
+
+class InternalServerError(Error):
+    """
+    Exception raised for unexpected server errors.
+
+    This error indicates that an internal server error has occurred and sets the HTTP status code to 500 Internal Server Error.
+
+    Args:
+      detail (Optional[str], optional): Detailed explanation of the problem. Defaults to None.
+      instance (Optional[str], optional): URI identifying the specific occurrence. Defaults to None.
+    """
+
+    def __init__(self, detail: Optional[str] = None, instance: Optional[str] = None):
+        super().__init__(
+            type="https://example.com/probs/internal-server-error",
+            title="Internal Server Error",
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=detail or "An unexpected error occurred on the server.",
+            instance=instance,
+        )
+
+
+class ValidationError(Error):
+    """
+    Exception raised for validation errors.
+
+    This error indicates that the input data failed validation and sets the HTTP status code to 400 Bad Request.
+
+    Args:
+      detail (Optional[str], optional): Detailed explanation of the problem. Defaults to None.
+      instance (Optional[str], optional): URI identifying the specific occurrence. Defaults to None.
+    """
+
+    def __init__(
+        self,
+        errors: RequestValidationError,
+        detail: Optional[str] = None,
+        instance: Optional[str] = None,
+    ):
+        super().__init__(
+            type="https://example.com/probs/validation-error",
+            title="Validation Error",
+            status=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail=detail or "The input data is invalid.",
+            instance=instance,
+        )
+        self.errors = errors or None
+
+    def model_dump(self):
+        result = super().model_dump()
+        if self.errors:
+            result["errors"] = self.errors.errors()
+        return result
