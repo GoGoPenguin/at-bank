@@ -1,6 +1,8 @@
 from dependency_injector import containers, providers
 from mongoengine import connect
+from src.service import AuthService
 from src.utils.config import Config
+from src.utils.jwt import JWT
 
 
 class Container(containers.DeclarativeContainer):
@@ -18,3 +20,12 @@ class Container(containers.DeclarativeContainer):
             options=config.db.options(),
         ),
     )
+
+    jwt = providers.Singleton(
+        JWT,
+        key=config.jwt.secret(),
+        issuer=config.jwt.issuer(),
+        audience=config.jwt.audience(),
+    )
+
+    auth_service = providers.Singleton(AuthService)
