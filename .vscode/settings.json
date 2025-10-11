@@ -1,5 +1,5 @@
 {
-    "editor.tabSize": 2,
+    "editor.tabSize": 4,
     "editor.trimAutoWhitespace": true,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -16,6 +16,8 @@
     "python-envs.pythonProjects": [],
     "cSpell.words": [
         "asgi",
-        "firestore"
+        "firestore",
+        "mongoengine",
+        "Pylance"
     ],
 }
