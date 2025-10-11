@@ -8,5 +8,5 @@ router.add_api_route(
     name="Ping",
     path="/ping",
     methods=[HttpMethod.GET],
-    endpoint=handler.PingHandler(),
+    endpoint=handler.PingHandler().handle,
 )

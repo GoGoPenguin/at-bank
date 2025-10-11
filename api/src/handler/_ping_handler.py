@@ -1,3 +1,3 @@
 class PingHandler:
-    def __call__(self) -> str:
+    def handle(self) -> str:
         return "pong"
