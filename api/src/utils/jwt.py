@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta, timezone
-from typing import Optional, cast
+from typing import cast
 from uuid import uuid4
 
-from jose import jwt
+import jwt
 from src.document import User
 from src.schema import JWTClaim
 
@@ -21,7 +21,7 @@ class JWT:
     def encode(
         self,
         user: User,
-        ttl: Optional[int],
+        ttl: int,
         scope: str = "*",
     ) -> str:
         """Encodes a claims set and returns a JWT string.
@@ -39,17 +39,17 @@ class JWT:
         """
         now = datetime.now(timezone.utc)
         return jwt.encode(
-            claims=JWTClaim(
+            JWTClaim(
                 iss=self.issuer,
                 sub=str(user.id),
                 aud=self.audience,
-                exp=now + timedelta(minutes=ttl) if ttl else None,
+                exp=now + timedelta(minutes=ttl),
                 nbf=now,
                 iat=now,
                 jti=str(uuid4()),
                 scope=scope,
                 account=cast(str, user.account),
-            ).model_dump(exclude_none=True),
+            ).model_dump(),
             key=self.key,
         )
 
@@ -70,10 +70,10 @@ class JWT:
         """
         return JWTClaim.model_validate(
             jwt.decode(
-                token=token,
+                token,
                 key=self.key,
+                algorithms=["HS256"],
                 audience=self.audience,
                 issuer=self.issuer,
-                options={"verify_aud": bool(self.audience)},
             )
         )
