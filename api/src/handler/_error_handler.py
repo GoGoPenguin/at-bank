@@ -3,7 +3,7 @@ from typing import cast
 from fastapi import Request
 from fastapi.exception_handlers import RequestValidationError
 from fastapi.responses import ORJSONResponse
-from jose import JWTError
+from jwt import PyJWTError
 from src.errors import Error, InternalServerError, UnauthorizedError, ValidationError
 
 
@@ -19,7 +19,7 @@ async def error_handler(request: Request, ex: Exception):
                 content=err.model_dump(),
                 status_code=err.status,
             )
-        case JWTError():
+        case PyJWTError():
             err = UnauthorizedError()
             return ORJSONResponse(
                 headers={
