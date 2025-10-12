@@ -79,12 +79,12 @@ class UnauthorizedError(Error):
       instance (Optional[str], optional): URI identifying the specific occurrence. Defaults to None.
     """
 
-    def __init__(self, instance: Optional[str] = None):
+    def __init__(self, detail: Optional[str] = None, instance: Optional[str] = None):
         super().__init__(
             type="https://example.com/probs/unauthorized",
             title="Unauthorized",
             status=status.HTTP_401_UNAUTHORIZED,
-            detail="Authentication is required to access this resource.",
+            detail=detail or "Authentication is required to access this resource.",
             instance=instance,
         )
 
