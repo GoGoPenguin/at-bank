@@ -4,10 +4,12 @@ import firebase_admin
 import uvicorn
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.gzip import GZipMiddleware
 from firebase_admin import firestore
 from firebase_functions import https_fn, options
 from src.container import Container
 from src.handler import error_handler
+from src.middleware import JWTMiddleware
 from src.router import router
 
 options.set_global_options(region="asia-east1")
@@ -31,6 +33,10 @@ app = FastAPI()
 app.container = container  # type: ignore
 app.add_exception_handler(Exception, error_handler)
 app.add_exception_handler(RequestValidationError, error_handler)
+
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+app.add_middleware(JWTMiddleware)
+
 app.include_router(router, prefix="/api")
 
 
