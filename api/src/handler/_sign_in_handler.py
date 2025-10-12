@@ -1,5 +1,5 @@
 from dependency_injector.wiring import Provide
-from src.schema import Cookies, SignInRequest
+from src.schema import Cookies, SignInSchema
 from src.service import AuthService
 from src.utils.glossary import Token
 
@@ -11,7 +11,7 @@ class SignInHandler(BaseHandler):
     jwt_ttl: int = Provide["config.jwt.ttl"]
     jwt_refresh_ttl: int = Provide["config.jwt.refresh_ttl"]
 
-    def handle(self, params: SignInRequest):
+    def handle(self, params: SignInSchema):
         access_token, refresh_token = self.service.sign_in(
             account=params.account,
             password=params.password.encode(),
