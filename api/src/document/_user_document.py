@@ -19,6 +19,15 @@ class User(Base):
     )
     line_id = StringField(regex=r"^[a-z0-9\-_]{2,20}$", unique_with="deleted_at")
 
+    def to_dict(self) -> dict:
+        return {
+            "id": str(self.id),
+            "account": self.account,
+            "role": self.role,
+            "phone": self.phone,
+            "line_id": self.line_id,
+        }
+
 
 class AthleticTrainer(User):
     chinese_name = StringField(regex=r"^[\u4e00-\u9fa5]{2,50}$", required=True)
@@ -47,6 +56,27 @@ class AthleticTrainer(User):
         values["role"] = Role.ATHLETIC_TRAINER
         super().__init__(*args, **values)
 
+    def to_dict(self) -> dict:
+        return {
+            **super().to_dict(),
+            "chinese_name": self.chinese_name,
+            "english_name": self.english_name,
+            "birthday": self.birthday,
+            "email": self.email,
+            "id_number": self.id_number,
+            "post_office_account": self.post_office_account,
+            "permanent_address": self.permanent_address,
+            "correspondence_address": self.correspondence_address,
+            "emt_license": self.emt_license,
+            "emt_license_valid_until": (
+                self.emt_license_valid_until if self.emt_license_valid_until else None
+            ),
+            "tats_license": self.tats_license,
+            "tats_license_valid_until": (
+                self.tats_license_valid_until if self.tats_license_valid_until else None
+            ),
+        }
+
 
 class Department(User):
     name = StringField(max_length=100, required=True)
@@ -59,4 +89,14 @@ class Department(User):
     def __init__(self, *args, **values):
         values["role"] = Role.DEPARTMENT
         super().__init__(*args, **values)
-        super().__init__(*args, **values)
+
+    def to_dict(self) -> dict:
+        return {
+            **super().to_dict(),
+            "name": self.name,
+            "contact_person": self.contact_person,
+            "tax_id": self.tax_id,
+            "city": self.city,
+            "district": self.district,
+            "address": self.address,
+        }

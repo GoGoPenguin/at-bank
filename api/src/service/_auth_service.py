@@ -22,9 +22,7 @@ class AuthService:
             raise InvalidCredentialsError()
 
         access_token = self.jwt.encode(user=user, ttl=self.jwt_ttl)
-        refresh_token = self.jwt.encode(
-            user=user, ttl=self.jwt_refresh_ttl if remember_me else None
-        )
+        refresh_token = self.jwt.encode(user=user, ttl=self.jwt_refresh_ttl)
         return access_token, refresh_token
 
     def sign_out(self, token: str) -> None: ...

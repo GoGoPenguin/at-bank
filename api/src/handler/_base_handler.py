@@ -19,7 +19,7 @@ class BaseHandler:
 
     def respond(
         self,
-        data: Any = None,
+        data: Any = {},
         cookies: List[Cookies] = [],
         delete_cookies: List[str] = [],
     ) -> ORJSONResponse:
