@@ -11,11 +11,11 @@ class SignInHandler(BaseHandler):
     jwt_ttl: int = Provide["config.jwt.ttl"]
     jwt_refresh_ttl: int = Provide["config.jwt.refresh_ttl"]
 
-    def handle(self, request: SignInRequest):
+    def handle(self, params: SignInRequest):
         access_token, refresh_token = self.service.sign_in(
-            account=request.account,
-            password=request.password.encode(),
-            remember_me=request.remember_me,
+            account=params.account,
+            password=params.password.encode(),
+            remember_me=params.remember_me,
         )
 
         return self.respond(
@@ -28,7 +28,7 @@ class SignInHandler(BaseHandler):
                 Cookies(
                     key=Token.REFRESH_TOKEN,
                     value=refresh_token,
-                    max_age=self.jwt_refresh_ttl if request.remember_me else None,
+                    max_age=self.jwt_refresh_ttl if params.remember_me else None,
                 ),
             ]
         )

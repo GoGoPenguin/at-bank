@@ -14,7 +14,7 @@ class BaseHandler:
     cookies_http_only: bool = Provide["config.cookies.http_only"]
     cookies_samesite: SameSite = Provide["config.cookies.samesite"]
 
-    def handle(self, request: Any):
+    def handle(self, *args: Any, **kwds: Any):
         raise NotImplementedError
 
     def respond(
