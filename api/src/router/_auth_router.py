@@ -10,3 +10,9 @@ router.add_api_route(
     methods=[HttpMethod.POST],
     endpoint=handler.SignInHandler().handle,
 )
+router.add_api_route(
+    name="Sign Out",
+    path="/sign-out",
+    methods=[HttpMethod.DELETE],
+    endpoint=handler.SignOutHandler().handle,
+)
