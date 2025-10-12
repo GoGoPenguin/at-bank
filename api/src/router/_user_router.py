@@ -10,3 +10,9 @@ router.add_api_route(
     methods=[HttpMethod.GET],
     endpoint=handler.GetMeHandler().handle,
 )
+router.add_api_route(
+    name="Check Account",
+    path="/{account}",
+    methods=[HttpMethod.GET],
+    endpoint=handler.CheckAccountHandler().handle,
+)
