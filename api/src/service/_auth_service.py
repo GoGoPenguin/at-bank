@@ -2,9 +2,10 @@ from typing import Tuple, cast
 
 from dependency_injector.wiring import Provide
 
-from src.document import User
+from src.document import AthleticTrainer, Department, User
 from src.errors import InvalidCredentialsError
-from src.schema import JWTClaim
+from src.schema import JWTClaim, SignUpRequestSchema
+from src.utils.glossary import Role
 from src.utils.hasher import check_password, hash_password
 from src.utils.jwt import JWT
 
@@ -27,7 +28,21 @@ class AuthService:
         refresh_token = self.jwt.encode(user=user, ttl=self.jwt_refresh_ttl)
         return access_token, refresh_token
 
-    def sign_up(self, account: str, password: str, role: str) -> str: ...
+    def sign_up(self, params: SignUpRequestSchema) -> str:
+        print(params)
+        params.password = hash_password(params.password)
+
+        user: User
+        if params.role == Role.ATHLETIC_TRAINER:
+            user = AthleticTrainer(**params.model_dump())
+        elif params.role == Role.DEPARTMENT:
+            user = Department(**params.model_dump())
+        else:
+            raise ValueError("Invalid role provided for sign up.")
+
+        user.save()
+        access_token = self.jwt.encode(user=user, ttl=self.jwt_ttl)
+        return access_token
 
     def refresh(self, claim: JWTClaim) -> str:
         user = cast(User, User.objects(id=claim.sub).first())

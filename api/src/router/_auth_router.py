@@ -18,6 +18,12 @@ router.add_api_route(
     endpoint=handler.SignOutHandler().handle,
 )
 router.add_api_route(
+    name="Sign Up",
+    path="/sign-up",
+    methods=[HttpMethod.POST],
+    endpoint=handler.SignUpHandler().handle,
+)
+router.add_api_route(
     name="Refresh Token",
     path="/refresh-token",
     methods=[HttpMethod.PUT],
