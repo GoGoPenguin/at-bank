@@ -27,8 +27,6 @@ class AuthService:
         refresh_token = self.jwt.encode(user=user, ttl=self.jwt_refresh_ttl)
         return access_token, refresh_token
 
-    def sign_out(self, token: str) -> None: ...
-
     def sign_up(self, account: str, password: str, role: str) -> str: ...
 
     def refresh(self, claim: JWTClaim) -> str:

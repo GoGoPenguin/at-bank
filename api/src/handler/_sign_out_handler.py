@@ -17,4 +17,3 @@ class SignOutHandler:
         response.delete_cookie(key=Token.ACCESS_TOKEN.value)
         response.delete_cookie(key=Token.REFRESH_TOKEN.value)
         return response
-        return response
