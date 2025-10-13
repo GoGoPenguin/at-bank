@@ -6,10 +6,8 @@ from src.document import AthleticTrainer, Department
 from src.schema import AthleticTrainerSchema, DepartmentSchema, UserSchema
 from src.service import UserService
 
-from ._base_handler import BaseHandler
 
-
-class GetMeHandler(BaseHandler):
+class GetMeHandler:
     user_service: UserService = Provide["user_service"]
 
     def handle(
