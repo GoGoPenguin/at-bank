@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from src import handler
 from src.utils.glossary import HttpMethod
 
@@ -15,4 +16,10 @@ router.add_api_route(
     path="/sign-out",
     methods=[HttpMethod.DELETE],
     endpoint=handler.SignOutHandler().handle,
+)
+router.add_api_route(
+    name="Refresh Token",
+    path="/refresh-token",
+    methods=[HttpMethod.PUT],
+    endpoint=handler.RefreshTokenHandler().handle,
 )

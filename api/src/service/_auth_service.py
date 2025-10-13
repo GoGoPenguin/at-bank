@@ -1,6 +1,7 @@
 from typing import Tuple, cast
 
 from dependency_injector.wiring import Provide
+
 from src.document import User
 from src.errors import InvalidCredentialsError
 from src.utils.hasher import check_password, hash_password
@@ -28,3 +29,15 @@ class AuthService:
     def sign_out(self, token: str) -> None: ...
 
     def sign_up(self, account: str, password: str, role: str) -> str: ...
+
+    def refresh(self, refresh_token: str) -> str:
+        claim = self.jwt.decode(refresh_token)
+        if not claim:
+            return ""
+
+        user = cast(User, User.objects(id=claim.sub).first())
+        if not user:
+            return ""
+
+        new_access_token = self.jwt.encode(user=user, ttl=self.jwt_ttl)
+        return new_access_token
