@@ -16,12 +16,7 @@ class RefreshTokenHandler:
     cookies_samesite: SameSite = Provide["config.cookies.samesite"]
 
     def handle(self, request: Request):
-        new_access_token = self.service.refresh(
-            request.cookies.get(Token.REFRESH_TOKEN.value, "")
-        )
-        if not new_access_token:
-            return {"error": "Invalid refresh token"}, 401
-
+        new_access_token = self.service.refresh(request.state.refresh_token)
         response = ORJSONResponse(
             content={},
             status_code=status.HTTP_200_OK,

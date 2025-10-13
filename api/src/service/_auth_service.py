@@ -4,6 +4,7 @@ from dependency_injector.wiring import Provide
 
 from src.document import User
 from src.errors import InvalidCredentialsError
+from src.schema import JWTClaim
 from src.utils.hasher import check_password, hash_password
 from src.utils.jwt import JWT
 
@@ -30,14 +31,10 @@ class AuthService:
 
     def sign_up(self, account: str, password: str, role: str) -> str: ...
 
-    def refresh(self, refresh_token: str) -> str:
-        claim = self.jwt.decode(refresh_token)
-        if not claim:
-            return ""
-
+    def refresh(self, claim: JWTClaim) -> str:
         user = cast(User, User.objects(id=claim.sub).first())
         if not user:
-            return ""
+            raise InvalidCredentialsError()
 
         new_access_token = self.jwt.encode(user=user, ttl=self.jwt_ttl)
         return new_access_token
