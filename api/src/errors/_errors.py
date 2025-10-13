@@ -141,3 +141,24 @@ class ValidationError(Error):
         if self.errors:
             result["errors"] = self.errors.errors()
         return result
+
+
+class ConflictError(Error):
+    """
+    Exception raised for conflict errors, such as duplicate entries.
+
+    This error indicates that a conflict occurred due to existing data and sets the HTTP status code to 409 Conflict.
+
+    Args:
+      detail (Optional[str], optional): Detailed explanation of the problem. Defaults to None.
+      instance (Optional[str], optional): URI identifying the specific occurrence. Defaults to None.
+    """
+
+    def __init__(self, detail: Optional[str] = None, instance: Optional[str] = None):
+        super().__init__(
+            type="https://example.com/probs/conflict-error",
+            title="Conflict Error",
+            status=status.HTTP_409_CONFLICT,
+            detail=detail or "A conflict occurred due to existing data.",
+            instance=instance,
+        )

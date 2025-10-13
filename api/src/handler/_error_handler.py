@@ -4,7 +4,10 @@ from fastapi import Request
 from fastapi.exception_handlers import RequestValidationError
 from fastapi.responses import ORJSONResponse
 from jwt import PyJWTError
+from mongoengine import NotUniqueError
+
 from src.errors import Error, InternalServerError, UnauthorizedError, ValidationError
+from src.errors._errors import ConflictError
 
 
 async def error_handler(request: Request, ex: Exception):
@@ -21,6 +24,15 @@ async def error_handler(request: Request, ex: Exception):
             )
         case PyJWTError():
             err = UnauthorizedError()
+            return ORJSONResponse(
+                headers={
+                    "Content-Type": "application/problem+json",
+                },
+                content=err.model_dump(),
+                status_code=err.status,
+            )
+        case NotUniqueError():
+            err = ConflictError(instance=request.url.path)
             return ORJSONResponse(
                 headers={
                     "Content-Type": "application/problem+json",
