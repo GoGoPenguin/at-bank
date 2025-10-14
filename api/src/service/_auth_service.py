@@ -29,7 +29,6 @@ class AuthService:
         return access_token, refresh_token
 
     def sign_up(self, params: SignUpRequestSchema) -> str:
-        print(params)
         params.password = hash_password(params.password)
 
         user: User
