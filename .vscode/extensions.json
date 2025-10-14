@@ -16,6 +16,5 @@
     "vivaxy.vscode-conventional-commits",
     "ms-python.black-formatter",
     "charliermarsh.ruff",
-    "ms-python.isort"
   ]
 }

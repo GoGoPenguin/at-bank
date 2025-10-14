@@ -3,10 +3,14 @@
     "editor.trimAutoWhitespace": true,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-        "source.organizeImports": "explicit"
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
     },
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+    },
     "python.defaultInterpreterPath": "api/.venv/bin/python",
     "python.analysis.typeCheckingMode": "standard",
     "python.analysis.extraPaths": [
@@ -16,8 +20,28 @@
     "python-envs.pythonProjects": [],
     "cSpell.words": [
         "asgi",
+        "changhua",
+        "chiayi",
+        "daigou",
         "firestore",
+        "hsinchu",
+        "hualien",
+        "kinmen",
+        "lienchiang",
+        "miaoli",
         "mongoengine",
-        "Pylance"
+        "nantou",
+        "penghu",
+        "pingtung",
+        "Pylance",
+        "taitung",
+        "taoyuan",
+        "yilan",
+        "yunlin"
+    ],
+    "conventionalCommits.scopes": [
+        "api",
+        "web",
+        "admin"
     ],
 }
