@@ -38,13 +38,14 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-key.json
         run: |
           cd api
-          uv export --no-dev -o requirements.txt
+          uv export --no-dev -o requirements.txt 2>&1 >/dev/null
           uv venv venv
           source venv/bin/activate
           uv sync --active
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
           # firebase functions:artifacts:setpolicy --location asia-east1
           cp .env.template .env
+          sed -i "s/^GOOGLE_APPLICATION_CREDENTIALS_BASE64=.*/GOOGLE_APPLICATION_CREDENTIALS_BASE64=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}/" .env
           firebase deploy --only functions --project at-bank-490b5 --non-interactive --force
           rm $GOOGLE_APPLICATION_CREDENTIALS
           deactivate
