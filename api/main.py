@@ -7,16 +7,20 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.gzip import GZipMiddleware
 from firebase_admin import firestore
 from firebase_functions import https_fn, options
+
 from src.container import Container
 from src.handler import error_handler
-from src.middleware import JWTMiddleware
+from src.middleware import AccessLogMiddleware, JWTMiddleware
 from src.router import router
+from src.utils.logger import init_logging
 
 options.set_global_options(region="asia-east1")
 
 if not firebase_admin._apps:
     firebase_admin.initialize_app()
     firestore.client()
+
+init_logging()
 
 container = Container()
 container.wire(
@@ -36,6 +40,7 @@ app.add_exception_handler(RequestValidationError, error_handler)
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.add_middleware(JWTMiddleware)
+app.add_middleware(AccessLogMiddleware)
 
 app.include_router(router, prefix="/api")
 

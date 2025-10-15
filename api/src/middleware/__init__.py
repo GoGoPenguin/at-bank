@@ -1,1 +1,2 @@
+from ._access_log_middleware import AccessLogMiddleware
 from ._jwt_middleware import JWTMiddleware
