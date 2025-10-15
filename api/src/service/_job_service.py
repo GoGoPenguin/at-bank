@@ -1,4 +1,4 @@
-from typing import List, Optional, cast
+from typing import List, cast
 
 from mongoengine import QuerySet
 
@@ -33,9 +33,11 @@ class JobService:
 
         return cast(List[Job], query.all())
 
-    def get_job(self, id: str) -> Optional[Job]:
+    def get_job(self, id: str) -> Job:
         job = Job.objects(id=id).first()
-        return cast(Optional[Job], job)
+        if job is None:
+            raise NotFoundError(detail="Job not found.")
+        return cast(Job, job)
 
     def create_job(self, user: User, params: CreateJobRequestSchema) -> Job:
         if params.type == JobType.INDIVIDUAL:
@@ -51,12 +53,10 @@ class JobService:
         job.save()
         return job
 
-    def apply_to_job(self, job_id, user_id): ...
+    def apply_to_job(self, user: AthleticTrainer, job_id: str) -> None: ...
 
     def save_job(self, user: AthleticTrainer, job_id: str):
         job = self.get_job(job_id)
-        if job is None:
-            raise NotFoundError(detail="Job not found.")
 
         if job in cast(List[Job], user.saved_jobs):
             raise ConflictError(detail="Job already saved.")
@@ -67,8 +67,6 @@ class JobService:
 
     def unsave_job(self, user: AthleticTrainer, job_id: str):
         job = self.get_job(job_id)
-        if job is None:
-            raise NotFoundError(detail="Job not found.")
 
         if job in cast(List[Job], user.saved_jobs):
             cast(List[Job], user.saved_jobs).remove(job)

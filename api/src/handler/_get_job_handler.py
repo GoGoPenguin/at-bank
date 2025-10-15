@@ -11,4 +11,4 @@ class GetJobHandler:
 
     def handle(self, id: str) -> Optional[JobSchema]:
         job = self.job_service.get_job(id)
-        return JobSchema(**job.to_dict()) if job else None
+        return JobSchema(**job.to_dict())
