@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 from ._job_shit_schema import JobShiftSchema
@@ -16,6 +18,9 @@ class JobSchema(BaseModel):
     district: str = Field(description="District where the job is located")
     address: str = Field(description="Detailed address of the job location")
     shifts: list[JobShiftSchema] = Field(description="List of job shifts")
+    is_saved: Optional[bool] = Field(
+        description="Indicates if the job is saved by the user", default=None
+    )
     created_at: str = Field(description="Timestamp when the job was created")
     updated_at: str = Field(description="Timestamp when the job was last updated")
 

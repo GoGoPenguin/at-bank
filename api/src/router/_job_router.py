@@ -10,12 +10,14 @@ router.add_api_route(
     path="/{id}",
     methods=[HttpMethod.GET],
     endpoint=handler.GetJobHandler().handle,
+    response_model_exclude_none=True,
 )
 router.add_api_route(
     name="Get Jobs",
     path="/",
     methods=[HttpMethod.GET],
     endpoint=handler.GetJobsHandler().handle,
+    response_model_exclude_none=True,
 )
 router.add_api_route(
     name="Create Job",

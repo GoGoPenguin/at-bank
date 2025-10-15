@@ -3,6 +3,7 @@ from typing import List, cast
 
 from mongoengine import (
     NULLIFY,
+    BooleanField,
     EmailField,
     EmbeddedDocumentListField,
     EnumField,
@@ -45,6 +46,7 @@ class Job(Base):
     vacancies = IntField(min_value=1, required=True)
     notes = StringField()
     shifts = EmbeddedDocumentListField(JobShift, required=True)
+    is_saved = BooleanField(default=None, null=True)
     created_by = ReferenceField(Department, required=True, reverse_delete_rule=NULLIFY)
 
     def to_dict(self) -> dict:
@@ -68,6 +70,7 @@ class Job(Base):
                 }
                 for shift in cast(List[JobShift], self.shifts)
             ],
+            "is_saved": self.is_saved,
             "created_at": cast(datetime, self.created_at).isoformat(),
             "updated_at": cast(datetime, self.updated_at).isoformat(),
             "deleted_at": cast(datetime, self.deleted_at).isoformat(),
