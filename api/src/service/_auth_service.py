@@ -28,7 +28,7 @@ class AuthService:
         refresh_token = self.jwt.encode(user=user, ttl=self.jwt_refresh_ttl)
         return access_token, refresh_token
 
-    def sign_up(self, params: SignUpRequestSchema) -> str:
+    def sign_up(self, params: SignUpRequestSchema) -> None:
         params.password = hash_password(params.password)
 
         user: User
@@ -40,8 +40,6 @@ class AuthService:
             raise ValueError("Invalid role provided for sign up.")
 
         user.save()
-        access_token = self.jwt.encode(user=user, ttl=self.jwt_ttl)
-        return access_token
 
     def refresh(self, claim: JWTClaim) -> str:
         user = cast(User, User.objects(id=claim.sub).first())
