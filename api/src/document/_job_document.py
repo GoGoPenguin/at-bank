@@ -62,7 +62,7 @@ class Job(Base):
             "notes": self.notes,
             "shifts": [
                 {
-                    "date": shift.date,
+                    "date": cast(datetime, shift.date).isoformat(),
                     "start_time": shift.start_time,
                     "end_time": shift.end_time,
                 }
