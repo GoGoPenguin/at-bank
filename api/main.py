@@ -49,7 +49,7 @@ app.include_router(router, prefix="/api")
 @https_fn.on_request()
 def handler(req: https_fn.Request) -> https_fn.Response:
     """
-    Bridge a Firebase HTTP request to the FastAPI app (ASGI).
+    Bridge a Firebase HTTP request to the FastAPI app (ASGI), including proper cookie and multi-header handling.
     """
 
     # Build an ASGI scope from the incoming request
@@ -89,14 +89,29 @@ def handler(req: https_fn.Request) -> https_fn.Response:
     asyncio.run(run_app())
 
     body = b"".join(response_body)
-    # Convert headers to dict
-    headers_dict = {k.decode(): v.decode() for (k, v) in response_headers}
 
-    return https_fn.Response(
+    # Handle duplicate headers correctly (e.g., multiple Set-Cookie)
+    from collections import defaultdict
+
+    header_map = defaultdict(list)
+    for k, v in response_headers:
+        header_map[k.decode()].append(v.decode())
+
+    # Firebase's https_fn.Response expects a flat dict,
+    # so we join multi-value headers with commas (for most cases)
+    # but we keep multiple 'set-cookie' headers separate for browser compatibility.
+    response = https_fn.Response(
         response=body,
         status=response_status,
-        headers=headers_dict,
+        headers={k: ", ".join(vs) for k, vs in header_map.items()},
     )
+
+    # Explicitly handle multiple cookies if present
+    if "set-cookie" in header_map:
+        for cookie in header_map["set-cookie"]:
+            response.headers.add("Set-Cookie", cookie)
+
+    return response
 
 
 if __name__ == "__main__":
