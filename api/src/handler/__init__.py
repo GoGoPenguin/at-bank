@@ -6,6 +6,8 @@ from ._get_jobs_handler import GetJobsHandler
 from ._get_me_handler import GetMeHandler
 from ._ping_handler import PingHandler
 from ._refresh_token_handler import RefreshTokenHandler
+from ._save_job_handler import SaveJobHandler
 from ._sign_in_handler import SignInHandler
 from ._sign_out_handler import SignOutHandler
 from ._sign_up_handler import SignUpHandler
+from ._unsave_job_handler import UnsaveJobHandler

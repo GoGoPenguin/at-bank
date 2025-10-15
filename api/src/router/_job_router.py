@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 
 from src import handler
 from src.utils.glossary import HttpMethod
@@ -22,4 +22,28 @@ router.add_api_route(
     path="/",
     methods=[HttpMethod.POST],
     endpoint=handler.CreateJobHandler().handle,
+)
+router.add_api_route(
+    name="Save Job",
+    path="/{id}/save",
+    methods=[HttpMethod.PATCH],
+    endpoint=handler.SaveJobHandler().handle,
+    responses={
+        status.HTTP_204_NO_CONTENT: {
+            "description": "Job saved successfully",
+            "content": {},
+        },
+    },
+)
+router.add_api_route(
+    name="Unsave Job",
+    path="/{id}/unsave",
+    methods=[HttpMethod.PATCH],
+    endpoint=handler.UnsaveJobHandler().handle,
+    responses={
+        status.HTTP_204_NO_CONTENT: {
+            "description": "Job unsaved successfully",
+            "content": {},
+        }
+    },
 )

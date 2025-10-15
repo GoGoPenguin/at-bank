@@ -1,4 +1,12 @@
-from mongoengine import BinaryField, DateField, EmailField, EnumField, StringField
+from mongoengine import (
+    BinaryField,
+    DateField,
+    EmailField,
+    EnumField,
+    ListField,
+    ReferenceField,
+    StringField,
+)
 
 from src.utils.glossary import EMTLicense, Role
 
@@ -45,6 +53,7 @@ class AthleticTrainer(User):
     emt_license_valid_until = DateField()
     tats_license = StringField(max_length=20)
     tats_license_valid_until = DateField()
+    saved_jobs = ListField(ReferenceField("Job"))
 
     def __init__(self, *args, **values):
         values["role"] = Role.ATHLETIC_TRAINER

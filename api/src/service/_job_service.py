@@ -3,6 +3,7 @@ from typing import List, Optional, cast
 from mongoengine import QuerySet
 
 from src.document import (
+    AthleticTrainer,
     Department,
     DepartmentJob,
     IndividualJob,
@@ -10,6 +11,7 @@ from src.document import (
     TournamentJob,
     User,
 )
+from src.errors import ConflictError, NotFoundError
 from src.schema import CreateJobRequestSchema, GetJobsRequestSchema
 from src.utils.glossary import JobStatus, JobType
 
@@ -51,4 +53,27 @@ class JobService:
 
     def apply_to_job(self, job_id, user_id): ...
 
-    def save_job(self, job_id, user_id): ...
+    def save_job(self, user: AthleticTrainer, job_id: str):
+        job = self.get_job(job_id)
+        if job is None:
+            raise NotFoundError(detail="Job not found.")
+
+        if job in cast(List[Job], user.saved_jobs):
+            raise ConflictError(detail="Job already saved.")
+        else:
+            cast(List[Job], user.saved_jobs).append(job)
+
+        user.save()
+
+    def unsave_job(self, user: AthleticTrainer, job_id: str):
+        job = self.get_job(job_id)
+        if job is None:
+            raise NotFoundError(detail="Job not found.")
+
+        if job in cast(List[Job], user.saved_jobs):
+            cast(List[Job], user.saved_jobs).remove(job)
+        else:
+            raise NotFoundError(detail="Job not in saved list.")
+
+        user.save()
+        return user
