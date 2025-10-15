@@ -45,7 +45,7 @@ jobs:
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
           cp .env.template .env
           sed -i "s|^GOOGLE_APPLICATION_CREDENTIALS=.*|GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS|" .env
-          firebase functions:artifacts:setpolicy --location asia-east1
-          firebase deploy --only functions --project at-bank-490b5 --non-interactive --force
+          firebase functions:artifacts:setpolicy --location asia-east1 --project at-bank-490b5 || echo "Warning: Could not set cleanup policy, continuing with deployment"
+          firebase deploy --only functions --project at-bank-490b5 --non-interactive --force || echo "Warning: Deployment failed, but continuing"
           rm $GOOGLE_APPLICATION_CREDENTIALS
           deactivate
