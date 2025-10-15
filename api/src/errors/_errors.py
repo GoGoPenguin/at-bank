@@ -162,3 +162,46 @@ class ConflictError(Error):
             detail=detail or "A conflict occurred due to existing data.",
             instance=instance,
         )
+
+
+class NotFoundError(Error):
+    """
+    Exception raised when a requested resource is not found.
+
+    This error indicates that the specified resource does not exist and sets the HTTP status code to 404 Not Found.
+
+    Args:
+      detail (Optional[str], optional): Detailed explanation of the problem. Defaults to None.
+      instance (Optional[str], optional): URI identifying the specific occurrence. Defaults to None.
+    """
+
+    def __init__(self, detail: Optional[str] = None, instance: Optional[str] = None):
+        super().__init__(
+            type="https://example.com/probs/not-found",
+            title="Not Found",
+            status=status.HTTP_404_NOT_FOUND,
+            detail=detail or "The requested resource was not found.",
+            instance=instance,
+        )
+
+
+class ForbiddenError(Error):
+    """
+    Exception raised when a user attempts to access a resource they do not have permission for.
+
+    This error indicates that the user is authenticated but does not have the necessary permissions,
+    setting the HTTP status code to 403 Forbidden.
+
+    Args:
+      detail (Optional[str], optional): Detailed explanation of the problem. Defaults to None.
+      instance (Optional[str], optional): URI identifying the specific occurrence. Defaults to None.
+    """
+
+    def __init__(self, detail: Optional[str] = None, instance: Optional[str] = None):
+        super().__init__(
+            type="https://example.com/probs/forbidden",
+            title="Forbidden",
+            status=status.HTTP_403_FORBIDDEN,
+            detail=detail or "You do not have permission to access this resource.",
+            instance=instance,
+        )

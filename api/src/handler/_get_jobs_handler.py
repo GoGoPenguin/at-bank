@@ -1,0 +1,36 @@
+from typing import Annotated, List, Union
+
+from dependency_injector.wiring import Provide
+from fastapi import Query, Request
+
+from src.document import DepartmentJob, IndividualJob
+from src.errors import UnauthorizedError
+from src.schema import (
+    DepartmentJobSchema,
+    GetJobsRequestSchema,
+    IndividualJobSchema,
+    TournamentJobSchema,
+)
+from src.service import JobService, UserService
+
+
+class GetJobsHandler:
+    job_service: JobService = Provide["job_service"]
+    user_service: UserService = Provide["user_service"]
+
+    def handle(
+        self, request: Request, params: Annotated[GetJobsRequestSchema, Query()]
+    ) -> List[Union[IndividualJobSchema, DepartmentJobSchema, TournamentJobSchema]]:
+        user = self.user_service.get_user_by_account(request.state.access_token.account)
+        if user is None:
+            raise UnauthorizedError(detail="User not found.")
+        jobs = self.job_service.get_jobs(user, params)
+
+        return [
+            IndividualJobSchema(**job.to_dict())
+            if isinstance(job, IndividualJob)
+            else DepartmentJobSchema(**job.to_dict())
+            if isinstance(job, DepartmentJob)
+            else TournamentJobSchema(**job.to_dict())
+            for job in jobs
+        ]

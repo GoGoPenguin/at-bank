@@ -42,5 +42,19 @@ class Base(Document):
 
     @queryset
     @queryset_manager
-    def objects(doc_cls, queryset: QuerySet):
+    def objects(cls, queryset: QuerySet):
+        """
+        Returns a queryset of objects that have not been deleted.
+
+        This manager filters the queryset to include only documents where
+        the 'deleted_at' field is set to the minimum datetime value, indicating
+        that the document has not been marked as deleted.
+
+        Args:
+            cls: The document class being queried.
+            queryset (QuerySet): The initial queryset to filter.
+
+        Returns:
+            QuerySet: A queryset containing only non-deleted documents.
+        """
         return queryset.filter(deleted_at=datetime.datetime.min)
