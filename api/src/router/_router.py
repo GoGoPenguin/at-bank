@@ -14,4 +14,5 @@ router.add_api_route(
     path="/ping",
     methods=[HttpMethod.GET],
     endpoint=handler.PingHandler().handle,
+    tags=["health check"],
 )

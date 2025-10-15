@@ -1,3 +1,6 @@
+from typing import Literal
+
+
 class PingHandler:
-    def handle(self) -> str:
+    def handle(self) -> Literal["pong"]:
         return "pong"
