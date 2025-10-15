@@ -32,7 +32,8 @@
         "*.toml",
         "*.lock",
         "*.md",
-        ".python-version"
+        ".python-version",
+        ".env.template"
       ]
     }
   ]
