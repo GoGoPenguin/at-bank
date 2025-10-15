@@ -1,10 +1,10 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr
 
 
 class JWTConfig(BaseModel):
-    secret: str
+    secret: SecretStr
     issuer: str
     audience: Optional[str]
     ttl: int

@@ -24,7 +24,7 @@ class Container(containers.DeclarativeContainer):
 
     jwt = providers.Singleton(
         JWT,
-        key=config.jwt.secret(),
+        key=config.jwt.secret().get_secret_value(),
         issuer=config.jwt.issuer(),
         audience=config.jwt.audience(),
     )
