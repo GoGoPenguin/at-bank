@@ -1,8 +1,5 @@
-# .github/workflows/deploy.yml
-
 name: Deploy to Firebase Functions
 
-# Trigger the workflow on pushes to the 'main' branch
 on:
   push:
     paths:
@@ -14,7 +11,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -47,6 +44,7 @@ jobs:
           uv sync --active
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
           # firebase functions:artifacts:setpolicy --location asia-east1
-          firebase deploy --only functions --project at-bank-490b5 --non-interactive --force || true
+          cp .env.template .env
+          firebase deploy --only functions --project at-bank-490b5 --non-interactive --force
           rm $GOOGLE_APPLICATION_CREDENTIALS
           deactivate
