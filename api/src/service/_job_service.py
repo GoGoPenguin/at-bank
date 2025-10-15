@@ -1,9 +1,12 @@
+from datetime import date
 from typing import List, cast
 
 from loguru import logger
 
 from src.document import (
+    Application,
     AthleticTrainer,
+    AvailabilitySlot,
     Department,
     DepartmentJob,
     IndividualJob,
@@ -104,7 +107,23 @@ class JobService:
         job.save()
         return job
 
-    def apply_to_job(self, user: AthleticTrainer, job_id: str) -> None: ...
+    def apply_to_job(
+        self,
+        user: AthleticTrainer,
+        job_id: str,
+        available_slots: List[date],
+    ) -> None:
+        job = self.get_job(job_id)
+
+        # TODO: Check if the user has already applied to this job
+        # TODO: Check if the job has available vacancies
+
+        application = Application(
+            applicant=user,
+            job=job,
+            available_slots=[AvailabilitySlot(date=slot) for slot in available_slots],
+        )
+        application.save()
 
     def save_job(self, user: AthleticTrainer, job_id: str):
         job = self.get_job(job_id)

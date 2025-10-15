@@ -1,3 +1,4 @@
+from ._apply_to_job_schema import ApplyToJobSchema
 from ._check_account_schema import CheckAccountResponseSchema
 from ._cookies_schema import Cookies
 from ._create_job_schema import CreateJobRequestSchema

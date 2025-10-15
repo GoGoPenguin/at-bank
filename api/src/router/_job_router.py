@@ -33,7 +33,6 @@ router.add_api_route(
     responses={
         status.HTTP_204_NO_CONTENT: {
             "description": "Job saved successfully",
-            "content": {},
         },
     },
 )
@@ -45,7 +44,17 @@ router.add_api_route(
     responses={
         status.HTTP_204_NO_CONTENT: {
             "description": "Job unsaved successfully",
-            "content": {},
+        }
+    },
+)
+router.add_api_route(
+    name="Apply to Job",
+    path="/apply",
+    methods=[HttpMethod.POST],
+    endpoint=handler.ApplyToJobHandler().handle,
+    responses={
+        status.HTTP_204_NO_CONTENT: {
+            "description": "Job applied successfully",
         }
     },
 )

@@ -1,3 +1,4 @@
+from ._apply_to_job_handler import ApplyToJobHandler
 from ._check_account_handler import CheckAccountHandler
 from ._create_job_handler import CreateJobHandler
 from ._error_handler import error_handler
