@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List, Tuple, cast
+from typing import List, Optional, Tuple, cast
 
 from src.document import (
     Application,
@@ -85,10 +85,13 @@ class JobService:
             for row in rows
         ], (total_items, total_pages)
 
-    def get_job(self, id: str) -> Job:
+    def get_job(self, id: str, user: Optional[User] = None) -> Job:
         job = Job.objects(id=id).first()
         if job is None:
             raise NotFoundError(detail="Job not found.")
+        if isinstance(user, AthleticTrainer):
+            setattr(job, "is_saved", job in cast(List[Job], user.saved_jobs))
+
         return cast(Job, job)
 
     def create_job(self, user: User, params: CreateJobRequestSchema) -> Job:
