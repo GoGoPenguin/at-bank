@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field
+
 from src.utils.glossary import Role
 
 
@@ -34,7 +35,7 @@ class AthleticTrainerSchema(UserSchema):
     emt_license_valid_until: Optional[datetime] = Field(
         description="EMT license valid until date"
     )
-    tats_license: Optional[str] = Field(
+    tats_license_number: Optional[str] = Field(
         description="TATS license of the athletic trainer"
     )
     tats_license_valid_until: Optional[datetime] = Field(

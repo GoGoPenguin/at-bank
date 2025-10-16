@@ -38,16 +38,16 @@ class SignUpAthleticTrainerSchema(BaseModel):
         description="Correspondence address of the athletic trainer", max_length=255
     )
     emt_license: Optional[str] = Field(
-        description="EMT license of the athletic trainer"
+        description="EMT license of the athletic trainer", default=None
     )
     emt_license_valid_until: Optional[datetime] = Field(
-        description="EMT license valid until date"
+        description="EMT license valid until date", default=None
     )
-    tats_license: Optional[str] = Field(
-        description="TATS license of the athletic trainer"
+    tats_license_number: Optional[str] = Field(
+        description="TATS license of the athletic trainer", default=None
     )
     tats_license_valid_until: Optional[datetime] = Field(
-        description="TATS license valid until date"
+        description="TATS license valid until date", default=None
     )
 
 

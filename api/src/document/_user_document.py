@@ -23,12 +23,8 @@ class User(Base):
     account = StringField(max_length=50, required=True, unique_with="deleted_at")
     password = BinaryField(required=True)
     role = EnumField(Role, required=True)
-    phone = StringField(
-        regex=r"^(09|\+8869)[0-9]{8}$", required=True, unique_with="deleted_at"
-    )
-    line_id = StringField(
-        regex=r"^[a-z0-9\-_]{2,20}$", required=True, unique_with="deleted_at"
-    )
+    phone = StringField(regex=r"^(09|\+8869)[0-9]{8}$", required=True)
+    line_id = StringField(regex=r"^[a-z0-9\-_]{2,20}$", required=True)
 
     def to_dict(self) -> dict:
         return {
@@ -51,7 +47,7 @@ class AthleticTrainer(User):
     correspondence_address = StringField(max_length=255, required=True)
     emt_license = EnumField(EMTLicense)
     emt_license_valid_until = DateField()
-    tats_license = StringField(max_length=20)
+    tats_license_number = StringField(max_length=20)
     tats_license_valid_until = DateField()
     saved_jobs = ListField(ReferenceField("Job"))
 
@@ -74,7 +70,7 @@ class AthleticTrainer(User):
             "emt_license_valid_until": (
                 self.emt_license_valid_until if self.emt_license_valid_until else None
             ),
-            "tats_license": self.tats_license,
+            "tats_license_number": self.tats_license_number,
             "tats_license_valid_until": (
                 self.tats_license_valid_until if self.tats_license_valid_until else None
             ),
