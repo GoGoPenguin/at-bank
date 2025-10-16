@@ -641,5 +641,12 @@
       "juguang-township": "Juguang Township",
       "dongyin-township": "Dongyin Township"
     }
+  },
+  "modal": {
+    "apply": {
+      "title": "Apply for Job",
+      "selectShifts": "Please select the shifts you want to apply for:",
+      "submit": "Submit Application"
+    }
   }
 }

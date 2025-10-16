@@ -191,6 +191,13 @@
     "thousand": "{{value}} 千",
     "thousand_tens": "{{value}} 萬"
   },
+  "modal": {
+    "apply": {
+      "title": "應徵工作",
+      "selectShifts": "請選擇您要申請的班次：",
+      "submit": "提交申請"
+    }
+  },
   "cities": {
     "taipei-city": "臺北市",
     "keelung-city": "基隆市",
