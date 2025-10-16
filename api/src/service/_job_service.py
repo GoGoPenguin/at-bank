@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List, cast
+from typing import List, Tuple, cast
 
 from src.document import (
     Application,
@@ -18,13 +18,11 @@ from src.utils.glossary import JobType
 
 
 class JobService:
-    def get_jobs(self, user: User, params: GetJobsRequestSchema) -> List[Job]:
+    def get_jobs(
+        self, user: User, params: GetJobsRequestSchema
+    ) -> Tuple[List[Job], Tuple[int, int]]:
         skipping = (params.page - 1) * params.size
-        pipeline = [
-            {"$sort": {"created_at": -1}},  # Or any other sort order
-            {"$skip": skipping},
-            {"$limit": params.size},
-        ]
+        pipeline = []
 
         if params.city:
             pipeline.insert(0, {"$match": {"city": params.city}})
@@ -74,6 +72,9 @@ class JobService:
                 ]
             )
         rows = list(Job.objects().aggregate(pipeline))
+        total_items = len(rows)
+        total_pages = (total_items + params.size - 1) // params.size
+        rows = rows[skipping : skipping + params.size]
         return [
             (
                 job := Job._from_son(row),
@@ -82,7 +83,7 @@ class JobService:
             if isinstance(user, AthleticTrainer) and "is_saved" in row
             else Job._from_son(row)
             for row in rows
-        ]
+        ], (total_items, total_pages)
 
     def get_job(self, id: str) -> Job:
         job = Job.objects(id=id).first()

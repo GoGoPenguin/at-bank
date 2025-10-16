@@ -10,6 +10,7 @@ from ._job_schema import (
     TournamentJobSchema,
 )
 from ._jwt_claim_schema import JWTClaim
+from ._pagination_schema import PaginationSchema
 from ._sign_in_schema import SignInRequestSchema
 from ._sign_up_schema import SignUpRequestSchema
 from ._user_schema import AthleticTrainerSchema, DepartmentSchema, UserSchema

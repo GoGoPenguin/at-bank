@@ -8,6 +8,24 @@ from ._job_shit_schema import JobShiftSchema
 class JobSchema(BaseModel):
     id: str = Field(description="Unique identifier for the job")
     title: str = Field(description="Job title")
+    department_id: Optional[str] = Field(
+        description="ID of the department associated with the job"
+    )
+    department_phone: Optional[str] = Field(
+        description="Phone number of the department"
+    )
+    department_name: Optional[str] = Field(description="Name of the department")
+    department_contact_person: Optional[str] = Field(
+        description="Contact person of the department"
+    )
+    department_tax_id: Optional[str] = Field(description="Tax ID of the department")
+    department_city: Optional[str] = Field(
+        description="City where the department is located"
+    )
+    department_district: Optional[str] = Field(
+        description="District where the department is located"
+    )
+    department_address: Optional[str] = Field(description="Address of the department")
     wage: int = Field(description="Wage per hour in NTD", ge=0)
     vacancies: int = Field(description="Number of job vacancies", ge=0)
     notes: str = Field(description="Additional notes about the job")

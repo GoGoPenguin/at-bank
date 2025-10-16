@@ -55,10 +55,16 @@ class Job(Base):
             "type": self.type,
             "status": self.status,
             "title": self.title,
-            # "department": {
-            #     "id": str(self.department.id),
-            #     "name": self.department.name,
-            # },
+            "department_id": str(cast(Department, self.created_by).id),
+            "department_phone": cast(Department, self.created_by).phone,
+            "department_name": cast(Department, self.created_by).name,
+            "department_contact_person": cast(
+                Department, self.created_by
+            ).contact_person,
+            "department_tax_id": cast(Department, self.created_by).tax_id,
+            "department_city": cast(Department, self.created_by).city,
+            "department_district": cast(Department, self.created_by).district,
+            "department_address": cast(Department, self.created_by).address,
             "wage": self.wage,
             "vacancies": self.vacancies,
             "notes": self.notes,
