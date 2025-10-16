@@ -123,7 +123,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Stack direction="column">
+              <Stack direction="column" sx={{ maxWidth: "62%" }}>
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Link
                     onClick={() => navigate(`/job/${job.id}`)}
@@ -131,6 +131,10 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                     type="button"
                     variant="h5"
                     sx={(theme) => ({
+                      textAlign: "start",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
                       fontWeight: "bold",
                       "&:hover::before": {
                         content: '""',
@@ -164,7 +168,10 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                   />
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <Tooltip title={job.notes}>
+                  <Tooltip
+                    title={job.notes}
+                    disableHoverListener={job.notes.length <= 120} // NOTE: Approximate check for overflow
+                  >
                     <Typography
                       variant="body2"
                       color="text.secondary"
@@ -275,7 +282,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                     }
                     onClick={handleSaveClick}
                   >
-                    {isSaved ? t("job.saved") : t("job.save")}{" "}
+                    {isSaved ? t("job.saved") : t("job.save")}
                   </Button>
                   <Button
                     variant="contained"
@@ -351,7 +358,10 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
           </Stack>
         </Stack>
         <Stack direction="row">
-          <Tooltip title={job.notes}>
+          <Tooltip
+            title={job.notes}
+            disableHoverListener={job.notes.length <= 100} // Approximate check for overflow
+          >
             <Typography
               variant="body2"
               color="text.secondary"
