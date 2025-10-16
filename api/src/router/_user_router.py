@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from src import handler
 from src.utils.glossary import HttpMethod
 
@@ -13,6 +14,6 @@ router.add_api_route(
 router.add_api_route(
     name="Check Account",
     path="/{account}",
-    methods=[HttpMethod.GET],
+    methods=[HttpMethod.HEAD],
     endpoint=handler.CheckAccountHandler().handle,
 )

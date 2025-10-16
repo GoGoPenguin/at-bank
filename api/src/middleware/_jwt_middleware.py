@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 from dependency_injector.wiring import Provide
@@ -16,13 +17,19 @@ class JWTMiddleware(BaseHTTPMiddleware):
     jwt: JWT = Provide["jwt"]
 
     @property
-    def allow_list(self) -> List[str]:
+    def allow_list_regex(self) -> List[str]:
         return [
-            "/api/ping",
-            "/api/auth/sign-in",
-            "/api/auth/sign-up",
-            "/api/auth/refresh",
+            r"^/api/ping$",
+            r"^/api/auth/sign-in$",
+            r"^/api/auth/sign-up$",
+            r"^/api/auth/refresh$",
+            r"^/api/user/.*$",
         ]
+
+    @validate_call
+    def _is_path_allowed(self, path: str) -> bool:
+        """Check if the path matches any of the allowed regex patterns."""
+        return any(re.match(pattern, path) for pattern in self.allow_list_regex)
 
     @validate_call
     def _is_refresh_token(self, path: str) -> bool:
@@ -32,7 +39,7 @@ class JWTMiddleware(BaseHTTPMiddleware):
         self, request: Request, call_next: RequestResponseEndpoint
     ) -> Response:
         path = request.url.path
-        if path.startswith("/api") and path not in self.allow_list:
+        if path.startswith("/api") and not self._is_path_allowed(path):
             try:
                 access_token = request.cookies.get(Token.ACCESS_TOKEN.value)
                 refresh_token = request.cookies.get(Token.REFRESH_TOKEN.value)

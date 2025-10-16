@@ -7,6 +7,7 @@ class HttpMethod(str, Enum):
     PUT = "PUT"
     PATCH = "PATCH"
     DELETE = "DELETE"
+    HEAD = "HEAD"
 
 
 class Role(str, Enum):
