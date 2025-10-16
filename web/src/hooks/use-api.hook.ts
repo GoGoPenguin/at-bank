@@ -49,6 +49,9 @@ const useApi = () => {
   const unsaveJob = async (id: string): Promise<void> => {
     await axios.patch(`/api/jobs/${id}/unsave`);
   };
+  const applyToJob = async (id: string, shifts: string[]): Promise<void> => {
+    await axios.post(`/api/jobs/apply`, { jobId: id, availableSlots: shifts });
+  };
 
   return {
     signIn,
@@ -60,6 +63,7 @@ const useApi = () => {
     getJob,
     saveJob,
     unsaveJob,
+    applyToJob,
   };
 };
 

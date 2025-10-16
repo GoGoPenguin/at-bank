@@ -24,6 +24,7 @@ import alertContext from "../context/alert.context";
 import useApi from "../hooks/use-api.hook";
 import useLanguage from "../hooks/use-language";
 import { APPLICATION_STATUS_PENDING, type Job } from "../types/job.type";
+import ApplyModal from "./ApplyModal";
 import LetterAvatar from "./LetterAvatar";
 
 export default function JobDiscoveryCard({ job }: { job: Job }) {
@@ -33,6 +34,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
   const { t } = useTranslation();
   const { language } = useLanguage();
   const [isSaved, setIsSaved] = useState(job.isSaved);
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(
     job.applicationStatus || undefined
   );
@@ -64,10 +66,11 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
       });
   };
 
-  const handleApplyClick = () => {
-    // TODO: Implement job application logic
-    setApplicationStatus(APPLICATION_STATUS_PENDING);
-    handleAlert("appliedSuccessfully", "info");
+  const handleCloseApplyModal = (success?: boolean) => {
+    setApplyModalOpen(false);
+    if (success) {
+      setApplicationStatus(APPLICATION_STATUS_PENDING);
+    }
   };
 
   const formatDate = (date: Date, includeYear = false) => {
@@ -305,7 +308,9 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                     variant="contained"
                     size="small"
                     color={applicationStatus === undefined ? "primary" : "info"}
-                    onClick={handleApplyClick}
+                    onClick={() => {
+                      setApplyModalOpen(true);
+                    }}
                     disabled={applicationStatus !== undefined}
                   >
                     {applicationStatus === APPLICATION_STATUS_PENDING
@@ -480,7 +485,9 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
             variant="contained"
             size="small"
             color={applicationStatus === undefined ? "primary" : "info"}
-            onClick={handleApplyClick}
+            onClick={() => {
+              setApplyModalOpen(true);
+            }}
             disabled={applicationStatus !== undefined}
           >
             {applicationStatus === APPLICATION_STATUS_PENDING
@@ -489,6 +496,11 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
           </Button>
         </Stack>
       </Stack>
+      <ApplyModal
+        job={job}
+        open={applyModalOpen}
+        handleClose={handleCloseApplyModal}
+      />
     </Paper>
   );
 }

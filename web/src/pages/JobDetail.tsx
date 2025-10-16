@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
+import ApplyModal from "../components/ApplyModal";
 import LetterAvatar from "../components/LetterAvatar";
 import NavBar from "../components/NavBar";
 import alertContext from "../context/alert.context";
@@ -53,6 +54,7 @@ function JobDetail() {
   const [applicationStatus, setApplicationStatus] = useState(
     job?.applicationStatus || undefined
   );
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
   const postedAtDiff = Date.now() - new Date(job?.createdAt ?? "").getTime();
   const postedAtSeconds = Math.floor(postedAtDiff / 1000);
   const postedAtMinutes = Math.floor(postedAtDiff / 60000);
@@ -68,11 +70,6 @@ function JobDetail() {
 
   const handleGoBack = () => {
     navigate(-1);
-  };
-  const handleApplyClick = () => {
-    // TODO: Implement job application logic
-    setApplicationStatus(APPLICATION_STATUS_PENDING);
-    handleAlert("appliedSuccessfully", "info");
   };
   const handleSaveClick = () => {
     if (job === undefined) return;
@@ -120,6 +117,13 @@ function JobDetail() {
       (sum, shift) => sum + (shift.endTime - shift.startTime) / 3600,
       0
     );
+  };
+
+  const handleCloseApplyModal = (success?: boolean) => {
+    setApplyModalOpen(false);
+    if (success) {
+      setApplicationStatus(APPLICATION_STATUS_PENDING);
+    }
   };
 
   return (
@@ -217,7 +221,9 @@ function JobDetail() {
                       color={
                         applicationStatus === undefined ? "primary" : "info"
                       }
-                      onClick={handleApplyClick}
+                      onClick={() => {
+                        setApplyModalOpen(true);
+                      }}
                       disabled={applicationStatus !== undefined}
                     >
                       {applicationStatus === APPLICATION_STATUS_PENDING
@@ -417,7 +423,9 @@ function JobDetail() {
                   variant="contained"
                   size="small"
                   color={applicationStatus === undefined ? "primary" : "info"}
-                  onClick={handleApplyClick}
+                  onClick={() => {
+                    setApplyModalOpen(true);
+                  }}
                   disabled={applicationStatus !== undefined}
                 >
                   {applicationStatus === APPLICATION_STATUS_PENDING
@@ -523,6 +531,13 @@ function JobDetail() {
           </>
         )}
       </Container>
+      {job !== undefined && (
+        <ApplyModal
+          job={job}
+          open={applyModalOpen}
+          handleClose={handleCloseApplyModal}
+        />
+      )}
     </Box>
   );
 }
