@@ -1,6 +1,5 @@
 import { http, HttpResponse } from "msw";
 import type { Job, JobType } from "../../types/job.type";
-import type { Pagination } from "../../types/pagination.type";
 import mockJobs from "../db/job.db";
 
 const jobHandlers = [
@@ -27,13 +26,10 @@ const jobHandlers = [
       const limit = Number(getParam("limit", 10));
       const location = getParam("location", null) as string | null;
       const jobs = filterByLocation(filterByJobType(mockJobs, type), location);
-      const pagination: Pagination = {
-        totalItems: jobs.length,
-        totalPages: Math.ceil(jobs.length / limit),
-      };
       return HttpResponse.json({
         data: paginate(jobs, page, limit),
-        pagination,
+        totalItems: jobs.length,
+        totalPages: Math.ceil(jobs.length / limit),
       });
     }
   ),

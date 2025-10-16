@@ -77,7 +77,6 @@ const authHandlers = [
         createdAt: new Date(),
         updatedAt: null,
       } as User);
-      console.log(mockUsers);
       return HttpResponse.json({}, { status: 200 });
     }
   ),
