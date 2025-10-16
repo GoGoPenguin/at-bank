@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import LetterAvatar from "../components/LetterAvatar";
@@ -39,7 +39,7 @@ function JobDetail() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { id } = useParams();
-  const { getJob } = useApi();
+  const { getJob, saveJob, unsaveJob } = useApi();
   const { handleAlert } = useContext(alertContext);
   const {
     data: job,
@@ -61,6 +61,11 @@ function JobDetail() {
   const postedAtMonths = Math.floor(postedAtDiff / 2592000000);
   const postedAtYears = Math.floor(postedAtDiff / 31536000000);
 
+  useEffect(() => {
+    setIsSaved(job?.isSaved || false);
+    setApplicationStatus(job?.applicationStatus || undefined);
+  }, [job]);
+
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -70,8 +75,19 @@ function JobDetail() {
     handleAlert("appliedSuccessfully", "info");
   };
   const handleSaveClick = () => {
-    setIsSaved((currentStatus) => !currentStatus);
-    // TODO: Implement save job logic
+    if (job === undefined) return;
+    const action = isSaved ? unsaveJob : saveJob;
+    action(job.id)
+      .then(() => {
+        setIsSaved((currentStatus) => !currentStatus);
+        handleAlert(
+          isSaved ? "unsavedSuccessfully" : "savedSuccessfully",
+          "success"
+        );
+      })
+      .catch(() => {
+        handleAlert("networkError", "error");
+      });
   };
 
   const formatDate = (date: Date, includeYear = false) => {

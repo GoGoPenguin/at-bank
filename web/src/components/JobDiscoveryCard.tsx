@@ -17,10 +17,11 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import alertContext from "../context/alert.context";
+import useApi from "../hooks/use-api.hook";
 import useLanguage from "../hooks/use-language";
 import { APPLICATION_STATUS_PENDING, type Job } from "../types/job.type";
 import LetterAvatar from "./LetterAvatar";
@@ -28,9 +29,10 @@ import LetterAvatar from "./LetterAvatar";
 export default function JobDiscoveryCard({ job }: { job: Job }) {
   const navigate = useNavigate();
   const { handleAlert } = useContext(alertContext);
+  const { saveJob, unsaveJob } = useApi();
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const [isSaved, setIsSaved] = useState(job.isSaved || false);
+  const [isSaved, setIsSaved] = useState(job.isSaved);
   const [applicationStatus, setApplicationStatus] = useState(
     job.applicationStatus || undefined
   );
@@ -42,9 +44,24 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
   const postedAtMonths = Math.floor(postedAtDiff / 2592000000);
   const postedAtYears = Math.floor(postedAtDiff / 31536000000);
 
+  useEffect(() => {
+    setIsSaved(job?.isSaved || false);
+    setApplicationStatus(job?.applicationStatus || undefined);
+  }, [job]);
+
   const handleSaveClick = () => {
-    setIsSaved((currentStatus) => !currentStatus);
-    // TODO: Implement save job logic
+    const action = isSaved ? unsaveJob : saveJob;
+    action(job.id)
+      .then(() => {
+        setIsSaved((currentStatus) => !currentStatus);
+        handleAlert(
+          isSaved ? "unsavedSuccessfully" : "savedSuccessfully",
+          "success"
+        );
+      })
+      .catch(() => {
+        handleAlert("networkError", "error");
+      });
   };
 
   const handleApplyClick = () => {
@@ -243,7 +260,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
               <Stack direction="column">
                 <Stack
                   direction="row"
-                  spacing={1}
+                  spacing={0.5}
                   alignItems="center"
                   display="flex"
                 >

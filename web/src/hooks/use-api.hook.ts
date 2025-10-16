@@ -43,6 +43,12 @@ const useApi = () => {
     const response = await axios.get(`/api/jobs/${id}`);
     return response.data;
   };
+  const saveJob = async (id: string): Promise<void> => {
+    await axios.patch(`/api/jobs/${id}/save`);
+  };
+  const unsaveJob = async (id: string): Promise<void> => {
+    await axios.patch(`/api/jobs/${id}/unsave`);
+  };
 
   return {
     signIn,
@@ -52,6 +58,8 @@ const useApi = () => {
     getMe,
     getJobs,
     getJob,
+    saveJob,
+    unsaveJob,
   };
 };
 
