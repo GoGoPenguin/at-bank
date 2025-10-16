@@ -1,12 +1,20 @@
 import datetime
 from typing import Self, cast
 
+from loguru import logger
 from mongoengine import (
     DateTimeField,
     Document,
     ObjectIdField,
     QuerySet,
     queryset_manager,
+)
+from pymongo import monitoring
+from pymongo.monitoring import (
+    CommandFailedEvent,
+    CommandListener,
+    CommandStartedEvent,
+    CommandSucceededEvent,
 )
 
 
@@ -58,3 +66,17 @@ class Base(Document):
             QuerySet: A queryset containing only non-deleted documents.
         """
         return queryset.filter(deleted_at=datetime.datetime.min)
+
+
+class CommandLogger(CommandListener):
+    def started(self, event: CommandStartedEvent):
+        logger.trace(event)
+
+    def succeeded(self, event: CommandSucceededEvent):
+        logger.trace(event)
+
+    def failed(self, event: CommandFailedEvent):
+        logger.trace(event)
+
+
+monitoring.register(CommandLogger())
