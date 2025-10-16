@@ -29,7 +29,7 @@ const useAxios = () => {
           case 401:
             if (error.config.url !== "/api/refresh-token") {
               instance
-                .post("/api/refresh-token")
+                .post("/api/auth/refresh-token")
                 .then(() => {
                   instance(error.config);
                 })

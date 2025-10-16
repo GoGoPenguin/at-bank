@@ -13,14 +13,17 @@ const useApi = () => {
   const signIn = async (
     req: SignInRequestBody
   ): Promise<SignInResponseBody> => {
-    const response = await axios.post<SignInResponseBody>("/api/sign-in", req);
+    const response = await axios.post<SignInResponseBody>(
+      "/api/auth/sign-in",
+      req
+    );
     return response.data;
   };
   const signUp = async (req: SignUpRequestBody): Promise<void> => {
-    await axios.post("/api/sign-up", req);
+    await axios.post("/api/auth/sign-up", req);
   };
   const signOut = async (): Promise<void> => {
-    await axios.delete("/api/sign-out");
+    await axios.delete("/api/auth/sign-out");
   };
   const checkAccountExists = async (account: string): Promise<boolean> => {
     const response = await axios.head(`/api/user/${account}`);

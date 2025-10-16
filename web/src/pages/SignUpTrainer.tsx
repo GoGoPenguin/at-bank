@@ -31,7 +31,7 @@ import ColorModeSelect from "../components/theme/ColorModeSelect";
 import AlertContext from "../context/alert.context";
 import useApi from "../hooks/use-api.hook";
 import { EMT_LICENSES } from "../types/emt-licenses.type";
-import { USER_TYPE_ATHLETIC_TRAINER, USER_TYPES } from "../types/user.type";
+import { ROLE_ATHLETIC_TRAINER, USER_TYPES } from "../types/user.type";
 
 const stepFields = [
   // Step 1 Fields
@@ -213,7 +213,7 @@ export default function SignUpTrainer() {
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      type: USER_TYPE_ATHLETIC_TRAINER,
+      type: ROLE_ATHLETIC_TRAINER,
       tatsLicense: 0,
       emtLicense: undefined,
     },

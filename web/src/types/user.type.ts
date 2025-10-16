@@ -1,18 +1,15 @@
-export type UserType = "AthleticTrainer" | "Department";
+export type Role = "athletic_trainer" | "department";
 
-export const USER_TYPE_ATHLETIC_TRAINER: UserType = "AthleticTrainer";
-export const USER_TYPE_DEPARTMENT: UserType = "Department";
-export const USER_TYPES = [
-  USER_TYPE_ATHLETIC_TRAINER,
-  USER_TYPE_DEPARTMENT,
-] as const;
+export const ROLE_ATHLETIC_TRAINER: Role = "athletic_trainer";
+export const ROLE_DEPARTMENT: Role = "department";
+export const ROLES = [ROLE_ATHLETIC_TRAINER, ROLE_DEPARTMENT] as const;
 
 interface UserBase {
   account: string;
   password: string;
   phone: string;
   lineId: string;
-  type: UserType;
+  role: Role;
   createdAt: Date;
   updatedAt: Date | null;
 }
@@ -28,7 +25,7 @@ export interface AthleticTrainer extends UserBase {
   correspondenceAddress: string;
   emtLicense: string;
   emtLicenseValidUntil: Date;
-  tatsLicense: boolean;
+  tatsLicense: boolean; // Deprecated: check tatsLicenseNumber instead
   tatsLicenseNumber: string;
   tatsLicenseValidUntil: Date;
 }

@@ -2,8 +2,8 @@ import { fakerZH_TW as faker, faker as fakerEn } from "@faker-js/faker";
 import { EMT_LICENSE_EMT_1 } from "../../types/emt-licenses.type";
 import {
   type User,
-  USER_TYPE_ATHLETIC_TRAINER,
-  USER_TYPE_DEPARTMENT,
+  ROLE_ATHLETIC_TRAINER,
+  ROLE_DEPARTMENT,
 } from "../../types/user.type";
 
 const mockUsers: User[] = [
@@ -12,7 +12,7 @@ const mockUsers: User[] = [
     password: "at",
     phone: faker.phone.number(),
     lineId: faker.string.nanoid(),
-    type: USER_TYPE_ATHLETIC_TRAINER,
+    type: ROLE_ATHLETIC_TRAINER,
     chineseName: faker.person.fullName(),
     englishName: `${fakerEn.person.firstName()} ${fakerEn.person.lastName()}`,
     birthday: faker.date.birthdate(),
@@ -34,7 +34,7 @@ const mockUsers: User[] = [
     password: "dept",
     phone: faker.phone.number(),
     lineId: faker.string.nanoid(),
-    type: USER_TYPE_DEPARTMENT,
+    type: ROLE_DEPARTMENT,
     departmentName: faker.company.name(),
     taxId: faker.string.nanoid(),
     contact: faker.person.fullName(),

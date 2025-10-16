@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/use-api.hook";
 import { useAuthStore } from "../store/use-auth.store";
 import {
-  USER_TYPE_ATHLETIC_TRAINER,
+  ROLE_ATHLETIC_TRAINER,
   type AthleticTrainer,
   type Department,
 } from "../types/user.type";
@@ -52,7 +52,7 @@ export default function Profile() {
           name={
             user === undefined
               ? ""
-              : user.type === USER_TYPE_ATHLETIC_TRAINER
+              : user.role === ROLE_ATHLETIC_TRAINER
               ? (user as AthleticTrainer).chineseName
               : (user as Department).departmentName
           }

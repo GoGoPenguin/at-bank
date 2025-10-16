@@ -25,7 +25,7 @@ import Card from "../components/Card";
 import ColorModeSelect from "../components/theme/ColorModeSelect";
 import alertContext from "../context/alert.context";
 import useApi from "../hooks/use-api.hook";
-import { USER_TYPE_DEPARTMENT, USER_TYPES } from "../types/user.type";
+import { ROLE_DEPARTMENT, USER_TYPES } from "../types/user.type";
 import { cities, districts } from "../utils/address.utils";
 
 const formSchema = z.object({
@@ -88,7 +88,7 @@ export default function SignUpDept() {
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      type: USER_TYPE_DEPARTMENT,
+      type: ROLE_DEPARTMENT,
       city: "",
       district: "",
     },
