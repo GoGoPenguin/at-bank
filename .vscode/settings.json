@@ -16,6 +16,7 @@
     "python.analysis.extraPaths": [
         "api/.venv/lib/python3.12/site-packages"
     ],
+    "python.terminal.useEnvFile": true,
     "python-envs.defaultEnvManager": "ms-python.python:system",
     "python-envs.pythonProjects": [],
     "cSpell.words": [
