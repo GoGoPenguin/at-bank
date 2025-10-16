@@ -35,6 +35,13 @@ jobs:
 
       - name: Deploy to Firebase Functions
         env:
+          DB_HOST: ${{ vars.DB_HOST }}
+          DB_PORT: ${{ vars.DB_PORT }}
+          DB_USER: ${{ vars.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: ${{ vars.DB_DATABASE }}
+          DB_OPTIONS: ${{ vars.DB_OPTIONS }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-key.json
         run: |
           cd api
@@ -43,9 +50,16 @@ jobs:
           source venv/bin/activate
           uv sync --active
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}" | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
-          cp .env.template .env
+          mv .env.template .env
           sed -i "s|^GOOGLE_APPLICATION_CREDENTIALS=.*|GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS|" .env
+          sed -i "s|^DB__HOST=.*|DB__HOST=$DB_HOST|" .env
+          sed -i "s|^DB__PORT=.*|DB__PORT=$DB_PORT|" .env
+          sed -i "s|^DB__USER=.*|DB__USER=$DB_USER|" .env
+          sed -i "s|^DB__PASSWORD=.*|DB__PASSWORD=$DB_PASSWORD|" .env
+          sed -i "s|^DB__DATABASE=.*|DB__DATABASE=$DB_DATABASE|" .env
+          sed -i "s|^DB__OPTIONS=.*|DB__OPTIONS=$DB_OPTIONS|" .env
+          sed -i "s|^JWT__SECRET=.*|JWT__SECRET=$JWT_SECRET|" .env
           firebase functions:artifacts:setpolicy --location asia-east1 --project at-bank-490b5 || echo "Warning: Could not set cleanup policy, continuing with deployment"
-          firebase deploy --only functions --project at-bank-490b5 --non-interactive --force || echo "Warning: Deployment failed, but continuing"
+          firebase deploy --only functions --project at-bank-490b5 --non-interactive --force
           rm $GOOGLE_APPLICATION_CREDENTIALS
           deactivate
