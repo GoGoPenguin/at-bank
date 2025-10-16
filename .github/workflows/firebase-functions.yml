@@ -42,7 +42,7 @@ jobs:
           DB_DATABASE: ${{ vars.DB_DATABASE }}
           DB_OPTIONS: ${{ vars.DB_OPTIONS }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-key.json
+          GOOGLE_APPLICATION_CREDENTIALS: gcp-key.json
         run: |
           cd api
           uv export --no-dev -o requirements.txt >/dev/null
