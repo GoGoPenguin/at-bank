@@ -25,24 +25,30 @@ import Card from "../components/Card";
 import ColorModeSelect from "../components/theme/ColorModeSelect";
 import alertContext from "../context/alert.context";
 import useApi from "../hooks/use-api.hook";
-import { ROLE_DEPARTMENT, USER_TYPES } from "../types/user.type";
+import { ROLE_DEPARTMENT, ROLES } from "../types/user.type";
 import { cities, districts } from "../utils/address.utils";
 
 const formSchema = z.object({
   // Hidden
-  type: z.enum(USER_TYPES),
+  role: z.enum(ROLES),
 
   // Step 1
-  account: z.string().trim().min(1, "error.required"),
+  account: z
+    .string()
+    .trim()
+    .min(1, "error.required")
+    .min(3, "error.accountMinLength")
+    .max(32, "error.accountMaxLength")
+    .regex(/^[a-z0-9][a-z0-9_-]{1,30}[a-z0-9]$/, "error.invalidAccount"),
   password: z.string().trim().min(6, "error.passwordMinLength"),
-  departmentName: z.string().trim().min(1, "error.required"),
+  name: z.string().trim().min(1, "error.required"),
   taxId: z
     .string()
     .trim()
     .regex(/^[0-9]{8}$/, "error.taxIdLength"),
 
   // Step 2
-  contact: z.string().trim().min(1, "error.required"),
+  contactPerson: z.string().trim().min(1, "error.required"),
   phone: z
     .string()
     .trim()
@@ -60,8 +66,8 @@ const formSchema = z.object({
 type TFormSchema = z.infer<typeof formSchema>;
 
 const stepFields = [
-  ["account", "password", "departmentName", "taxId"],
-  ["contact", "phone", "lineId", "city", "district", "address"],
+  ["account", "password", "name", "taxId"],
+  ["contactPerson", "phone", "lineId", "city", "district", "address"],
 ] as const;
 
 export default function SignUpDept() {
@@ -88,7 +94,7 @@ export default function SignUpDept() {
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      type: ROLE_DEPARTMENT,
+      role: ROLE_DEPARTMENT,
       city: "",
       district: "",
     },
@@ -207,13 +213,13 @@ export default function SignUpDept() {
               <Grid container spacing={2}>
                 <Grid size="grow">
                   <FormControl fullWidth>
-                    <FormLabel htmlFor="departmentName">
+                    <FormLabel htmlFor="name">
                       {t("signUpDept.departmentName")}
                     </FormLabel>
                     <TextField
-                      {...register("departmentName")}
-                      error={!!errors.departmentName}
-                      helperText={t(errors.departmentName?.message || "")}
+                      {...register("name")}
+                      error={!!errors.name}
+                      helperText={t(errors.name?.message || "")}
                       placeholder={t("signUpDept.departmentNamePlaceholder")}
                       fullWidth
                       variant="outlined"
@@ -243,14 +249,14 @@ export default function SignUpDept() {
               <Grid container spacing={2}>
                 <Grid size="grow">
                   <FormControl fullWidth>
-                    <FormLabel htmlFor="contact">
-                      {t("signUpDept.contact")}
+                    <FormLabel htmlFor="contactPerson">
+                      {t("signUpDept.contactPerson")}
                     </FormLabel>
                     <TextField
-                      {...register("contact")}
-                      error={!!errors.contact}
-                      helperText={t(errors.contact?.message || "")}
-                      placeholder={t("signUpDept.contactPlaceholder")}
+                      {...register("contactPerson")}
+                      error={!!errors.contactPerson}
+                      helperText={t(errors.contactPerson?.message || "")}
+                      placeholder={t("signUpDept.contactPersonPlaceholder")}
                       fullWidth
                       variant="outlined"
                     />

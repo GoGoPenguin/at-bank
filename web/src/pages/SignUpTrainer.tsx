@@ -31,11 +31,18 @@ import ColorModeSelect from "../components/theme/ColorModeSelect";
 import AlertContext from "../context/alert.context";
 import useApi from "../hooks/use-api.hook";
 import { EMT_LICENSES } from "../types/emt-licenses.type";
-import { ROLE_ATHLETIC_TRAINER, USER_TYPES } from "../types/user.type";
+import { ROLE_ATHLETIC_TRAINER, ROLES } from "../types/user.type";
 
 const stepFields = [
   // Step 1 Fields
-  ["account", "password", "chineseName", "englishName", "birthday", "id"],
+  [
+    "account",
+    "password",
+    "chineseName",
+    "englishName",
+    "birthday",
+    "id_number",
+  ],
   // Step 2 Fields
   [
     "phone",
@@ -58,10 +65,16 @@ const stepFields = [
 const formSchema = z
   .object({
     // Hidden
-    type: z.enum(USER_TYPES),
+    role: z.enum(ROLES),
 
     // Step 1
-    account: z.string().trim().min(1, "error.required"),
+    account: z
+      .string()
+      .trim()
+      .min(1, "error.required")
+      .min(3, "error.accountMinLength")
+      .max(32, "error.accountMaxLength")
+      .regex(/^[a-z0-9][a-z0-9_-]{1,30}[a-z0-9]$/, "error.invalidAccount"),
     password: z.string().trim().min(6, "error.passwordMinLength"),
     chineseName: z
       .string()
@@ -81,33 +94,33 @@ const formSchema = z
       },
       { message: "error.mustBeAtLeast18YearsOld" }
     ),
-    id: z
+    id_number: z
       .string()
       .trim()
       .refine(
-        (id) => {
+        (id_number) => {
           const ID_REGEX = /^[A-Z]{1}[1-2A-D8-9]{1}[0-9]{8}$/;
           const ID_LETTERS = "ABCDEFGHJKLMNPQRSTUVXYWZIO";
 
-          id = id.toUpperCase();
-          if (!ID_REGEX.test(id)) {
+          id_number = id_number.toUpperCase();
+          if (!ID_REGEX.test(id_number)) {
             return false;
           }
 
-          const letterIndex = ID_LETTERS.indexOf(id[0]);
+          const letterIndex = ID_LETTERS.indexOf(id_number[0]);
           let sum = Math.floor(letterIndex / 10 + 1) + letterIndex * 9;
 
           // Legacy ARC
-          if (/[A-Z]/.test(id[1])) {
-            sum += (ID_LETTERS.indexOf(id[1]) % 10) * 8;
+          if (/[A-Z]/.test(id_number[1])) {
+            sum += (ID_LETTERS.indexOf(id_number[1]) % 10) * 8;
           } else {
-            sum += parseInt(id[1]) * 8;
+            sum += parseInt(id_number[1]) * 8;
           }
 
           for (let i = 2; i < 9; i++) {
-            sum += (9 - i) * parseInt(id[i]);
+            sum += (9 - i) * parseInt(id_number[i]);
           }
-          sum += parseInt(id[9]);
+          sum += parseInt(id_number[9]);
 
           return sum % 10 === 0;
         },
@@ -213,7 +226,7 @@ export default function SignUpTrainer() {
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      type: ROLE_ATHLETIC_TRAINER,
+      role: ROLE_ATHLETIC_TRAINER,
       tatsLicense: 0,
       emtLicense: undefined,
     },
@@ -374,9 +387,9 @@ export default function SignUpTrainer() {
               <FormControl>
                 <FormLabel>{t("signUpTrainer.ID")}</FormLabel>
                 <TextField
-                  {...register("id")}
-                  error={!!errors.id}
-                  helperText={t(errors.id?.message || "")}
+                  {...register("id_number")}
+                  error={!!errors.id_number}
+                  helperText={t(errors.id_number?.message || "")}
                   placeholder={t("signUpTrainer.IDPlaceholder")}
                   fullWidth
                   variant="outlined"
