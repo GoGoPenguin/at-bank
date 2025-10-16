@@ -23,7 +23,7 @@ class JWTMiddleware(BaseHTTPMiddleware):
             r"^/api/auth/sign-in$",
             r"^/api/auth/sign-up$",
             r"^/api/auth/refresh$",
-            r"^/api/user/.*$",
+            r"^/api/user/[a-z0-9][a-z0-9_-]{1,30}[a-z0-9]$",
         ]
 
     @validate_call
