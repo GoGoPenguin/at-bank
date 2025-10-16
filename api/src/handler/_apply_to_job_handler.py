@@ -3,7 +3,6 @@ from typing import cast
 from dependency_injector.wiring import Provide
 from fastapi import Request, status
 from fastapi.responses import Response
-from loguru import logger
 
 from src.document import AthleticTrainer
 from src.errors import UnauthorizedError
@@ -20,7 +19,6 @@ class ApplyToJobHandler:
         if user is None:
             raise UnauthorizedError(detail="User not found.")
 
-        logger.debug(params)
         self.job_service.apply_to_job(
             cast(AthleticTrainer, user), params.job_id, params.available_slots
         )

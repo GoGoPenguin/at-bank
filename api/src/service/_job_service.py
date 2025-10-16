@@ -1,8 +1,6 @@
 from datetime import date
 from typing import List, cast
 
-from loguru import logger
-
 from src.document import (
     Application,
     AthleticTrainer,
@@ -76,7 +74,6 @@ class JobService:
                 ]
             )
         rows = list(Job.objects().aggregate(pipeline))
-        logger.debug(f"Aggregated job rows: {rows}")
         return [
             (
                 job := Job._from_son(row),
