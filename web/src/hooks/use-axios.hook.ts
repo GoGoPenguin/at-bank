@@ -1,4 +1,5 @@
 import axios from "axios";
+import { camelizeKeys, decamelizeKeys } from "humps";
 import { useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import AlertContext from "../context/alert.context";
@@ -16,8 +17,28 @@ const useAxios = () => {
     });
   }, []);
 
+  instance.interceptors.request.use((config) => {
+    // NOTE: If the request data or params is an object or array, decamelize its keys
+    if (config.data) {
+      config.data = decamelizeKeys(config.data);
+    }
+    if (config.params) {
+      config.params = decamelizeKeys(config.params);
+    }
+    return config;
+  });
+
   instance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      // NOTE: If the response data is an object or array, camelize its keys
+      if (response.data && typeof response.data === "object") {
+        return {
+          ...response,
+          data: camelizeKeys(response.data),
+        };
+      }
+      return response;
+    },
     (error) => {
       if (error.response) {
         switch (error.response.status) {
@@ -29,7 +50,7 @@ const useAxios = () => {
           case 401:
             if (error.config.url !== "/api/refresh-token") {
               instance
-                .post("/api/auth/refresh-token")
+                .put("/api/auth/refresh-token")
                 .then(() => {
                   instance(error.config);
                 })
