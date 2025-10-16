@@ -36,10 +36,13 @@
   "alert": {
     "error": {
       "invalidAccountOrPassword": "Invalid account or password",
-      "accountExists": "Account already exists"
+      "accountExists": "Account already exists",
+      "networkError": "Network error, please try again later"
     },
     "success": {
-      "signUpSuccessful": "Sign up successful"
+      "signUpSuccessful": "Sign up successful",
+      "savedSuccessfully": "Saved successfully",
+      "unsavedSuccessfully": "Unsaved successfully"
     },
     "info": {
       "appliedSuccessfully": "Application submitted, please wait for a response."

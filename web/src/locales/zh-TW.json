@@ -35,10 +35,13 @@
   "alert": {
     "error": {
       "invalidAccountOrPassword": "帳號或密碼錯誤",
-      "accountExists": "帳號已存在"
+      "accountExists": "帳號已存在",
+      "networkError": "網路錯誤，請稍後再試"
     },
     "success": {
-      "signUpSuccessful": "註冊成功"
+      "signUpSuccessful": "註冊成功",
+      "savedSuccessfully": "儲存成功",
+      "unsavedSuccessfully": "取消儲存成功"
     },
     "info": {
       "appliedSuccessfully": "已送出應徵申請，請耐心等待回覆。"
