@@ -4,6 +4,7 @@ import firebase_admin
 import uvicorn
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from firebase_admin import firestore
 from firebase_functions import https_fn, options
@@ -40,6 +41,13 @@ app.add_exception_handler(RequestValidationError, error_handler)
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.add_middleware(JWTMiddleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=container.config.cors.allow_origins().split(","),
+    allow_methods=container.config.cors.allow_methods().split(","),
+    allow_headers=container.config.cors.allow_headers().split(","),
+    allow_credentials=True,
+)
 app.add_middleware(AccessLogMiddleware)
 
 app.include_router(router, prefix="/api")
