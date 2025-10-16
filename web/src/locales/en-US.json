@@ -44,7 +44,8 @@
   },
   "pagination": {
     "pageOf": "Page {{currentPage}} of {{totalPages}}",
-    "resultTotal": "{{total}} results"
+    "resultTotal": "{{total}} results",
+    "noResults": "No results found"
   },
   "profileMenu": {
     "myJobs": "My Jobs",

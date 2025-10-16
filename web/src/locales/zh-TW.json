@@ -43,7 +43,8 @@
   },
   "pagination": {
     "pageOf": "第 {{currentPage}} 頁，共 {{totalPages}} 頁",
-    "resultTotal": "共 {{total}} 筆結果"
+    "resultTotal": "共 {{total}} 筆結果",
+    "noResults": "沒有符合條件的結果"
   },
   "profileMenu": {
     "myJobs": "我的工作",
