@@ -57,7 +57,7 @@ jobs:
           sed -i "s|^DB__USER=.*|DB__USER=$DB_USER|" .env
           sed -i "s|^DB__PASSWORD=.*|DB__PASSWORD=$DB_PASSWORD|" .env
           sed -i "s|^DB__DATABASE=.*|DB__DATABASE=$DB_DATABASE|" .env
-          sed -i "s|^DB__OPTIONS=.*|DB__OPTIONS=$DB_OPTIONS|" .env
+          sed -i "s|^DB__OPTIONS=.*|DB__OPTIONS=${DB_OPTIONS//&/\\&}|" .env
           sed -i "s|^JWT__SECRET=.*|JWT__SECRET=$JWT_SECRET|" .env
           firebase functions:artifacts:setpolicy --location asia-east1 --project at-bank-490b5 || echo "Warning: Could not set cleanup policy, continuing with deployment"
           firebase deploy --only functions --project at-bank-490b5 --non-interactive --force
