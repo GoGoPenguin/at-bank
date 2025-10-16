@@ -28,6 +28,10 @@ import {
   JOB_TYPE_INDIVIDUAL,
   JOB_TYPE_TOURNAMENT,
   SERVICE_CONTENT_ATHLETIC_TRAINING,
+  type DepartmentJob,
+  type IndividualJob,
+  type Job,
+  type TournamentJob,
 } from "../types/job.type";
 
 function JobDetail() {
@@ -43,9 +47,9 @@ function JobDetail() {
     isSuccess,
   } = useQuery({
     queryKey: ["getJob", id],
-    queryFn: () => getJob(Number(id)),
+    queryFn: () => getJob(String(id)),
   });
-  const [isSaved, setIsSaved] = useState(job?.saved || false);
+  const [isSaved, setIsSaved] = useState(job?.isSaved || false);
   const [applicationStatus, setApplicationStatus] = useState(
     job?.applicationStatus || undefined
   );
@@ -68,6 +72,38 @@ function JobDetail() {
   const handleSaveClick = () => {
     setIsSaved((currentStatus) => !currentStatus);
     // TODO: Implement save job logic
+  };
+
+  const formatDate = (date: Date, includeYear = false) => {
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return includeYear
+      ? `${month}/${day}/${date.getFullYear()}`
+      : `${month}/${day}`;
+  };
+
+  const formatWorkShift = (job: Job) => {
+    const startDate = new Date(job.shifts[0].date);
+    const endDate = new Date(job.shifts[job.shifts.length - 1].date);
+    const isSingleDay =
+      job.shifts.length === 1 ||
+      startDate.toDateString() === endDate.toDateString();
+    const isCrossYear = startDate.getFullYear() !== endDate.getFullYear();
+
+    if (isSingleDay)
+      return `${formatDate(startDate)}, ${startDate.getFullYear()}`;
+    return isCrossYear
+      ? `${formatDate(startDate, true)} - ${formatDate(endDate, true)}`
+      : `${formatDate(startDate)} - ${formatDate(
+          endDate
+        )}, ${startDate.getFullYear()}`;
+  };
+
+  const calculateTotalHours = (job: Job) => {
+    return job.shifts.reduce(
+      (sum, shift) => sum + (shift.endTime - shift.startTime) / 3600,
+      0
+    );
   };
 
   return (
@@ -133,10 +169,10 @@ function JobDetail() {
                   <Stack direction="row" spacing={2} alignItems="center">
                     <LetterAvatar
                       variant="rounded"
-                      name={job?.company ?? ""}
+                      name={job?.departmentName ?? ""}
                       sx={{ width: 48, height: 48 }}
                     ></LetterAvatar>
-                    <Typography variant="h6">{job?.company}</Typography>
+                    <Typography variant="h6">{job?.departmentName}</Typography>
                   </Stack>
                   <Stack
                     direction="row"
@@ -195,10 +231,10 @@ function JobDetail() {
                   divider={<Divider orientation="vertical" flexItem />}
                 >
                   <Typography variant="body1">
-                    {t(`cities.${job?.location}`)}
+                    {t(`cities.${job?.city}`)}
                   </Typography>
                   <Typography variant="body1">
-                    {new Date(job?.date ?? "").toLocaleDateString("en-CA")}
+                    {job === undefined ? "" : formatWorkShift(job)}
                   </Typography>
                   <Typography variant="body1">
                     {Intl.NumberFormat(language, {
@@ -256,19 +292,11 @@ function JobDetail() {
                       {t("job.timeCommitment")}
                     </Typography>
                     <Typography variant="body2">
-                      {`${new Date(job?.startedAt ?? "").toLocaleTimeString(
-                        language,
-                        {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        }
-                      )} - ${new Date(
-                        new Date(job?.startedAt ?? "").getTime() +
-                          (job?.hours ?? 0) * 3600000
-                      ).toLocaleTimeString(language, {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })} (${t("time.hour", { count: job?.hours })})`}
+                      {job !== undefined
+                        ? `${formatWorkShift(job)} (${t("time.hour", {
+                            count: calculateTotalHours(job),
+                          })})`
+                        : null}
                     </Typography>
                   </Grid>
                   <Grid size={6}>
@@ -290,47 +318,84 @@ function JobDetail() {
               }}
             >
               <Typography variant="h4">{t("job.aboutThisJob")}</Typography>
-              {job?.type === JOB_TYPE_TOURNAMENT ? (
-                <Grid container spacing={2} mt={2}>
-                  <Grid size={12}>
-                    <Typography variant="h6" fontWeight="bold">
-                      {t("job.tournamentName")}
-                    </Typography>
-                    <Typography variant="body2" whiteSpace="pre-line">
-                      {job?.tournamentName}
-                    </Typography>
-                  </Grid>
-                  <Grid size={12}>
-                    <Typography variant="h6" fontWeight="bold">
-                      {t("job.numberOfTournaments")}
-                    </Typography>
-                    <Typography variant="body2" whiteSpace="pre-line">
-                      {job?.numberOfTournaments}
-                    </Typography>
-                  </Grid>
+              <Grid container spacing={2} mt={2}>
+                <Grid size={12}>
+                  <Typography variant="h6" fontWeight="bold">
+                    {t("job.shifts")}
+                  </Typography>
+                  <Box component="ul" sx={{ pl: 2, mt: 1 }}>
+                    {job?.shifts.map((shift, index) => {
+                      const date = new Date(shift.date);
+                      const formatTime = (seconds: number) => {
+                        const hours = Math.floor(seconds / 3600)
+                          .toString()
+                          .padStart(2, "0");
+                        const minutes = Math.floor((seconds % 3600) / 60)
+                          .toString()
+                          .padStart(2, "0");
+                        return `${hours}:${minutes}`;
+                      };
+
+                      return (
+                        <Typography
+                          key={index}
+                          component="li"
+                          variant="body2"
+                          sx={{ mb: 0.5 }}
+                        >
+                          {`${date.getFullYear()}/${
+                            date.getMonth() + 1
+                          }/${date.getDate()} ${formatTime(
+                            shift.startTime
+                          )} - ${formatTime(shift.endTime)}`}
+                        </Typography>
+                      );
+                    })}
+                  </Box>
                 </Grid>
-              ) : (
-                <Grid container spacing={2} mt={2}>
-                  <Grid size={12}>
-                    <Typography variant="h6" fontWeight="bold">
-                      {t("job.serviceContent")}
-                    </Typography>
-                    <Typography variant="body2" whiteSpace="pre-line">
-                      {job?.serviceContent === SERVICE_CONTENT_ATHLETIC_TRAINING
-                        ? t("job.athleticTraining")
-                        : t("job.massageTherapy")}
-                    </Typography>
-                  </Grid>
-                  <Grid size={12}>
-                    <Typography variant="h6" fontWeight="bold">
-                      {t("job.notes")}
-                    </Typography>
-                    <Typography variant="body2" whiteSpace="pre-line">
-                      {job?.notes}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              )}
+                {job?.type === JOB_TYPE_TOURNAMENT ? (
+                  <>
+                    <Grid size={12}>
+                      <Typography variant="h6" fontWeight="bold">
+                        {t("job.tournamentName")}
+                      </Typography>
+                      <Typography variant="body2" whiteSpace="pre-line">
+                        {(job as TournamentJob)?.tournamentName}
+                      </Typography>
+                    </Grid>
+                    <Grid size={12}>
+                      <Typography variant="h6" fontWeight="bold">
+                        {t("job.numberOfTournaments")}
+                      </Typography>
+                      <Typography variant="body2" whiteSpace="pre-line">
+                        {(job as TournamentJob)?.numberOfTournaments}
+                      </Typography>
+                    </Grid>
+                  </>
+                ) : (
+                  <>
+                    <Grid size={12}>
+                      <Typography variant="h6" fontWeight="bold">
+                        {t("job.serviceContent")}
+                      </Typography>
+                      <Typography variant="body2" whiteSpace="pre-line">
+                        {(job as IndividualJob)?.serviceContent ===
+                        SERVICE_CONTENT_ATHLETIC_TRAINING
+                          ? t("job.athleticTraining")
+                          : t("job.massageTherapy")}
+                      </Typography>
+                    </Grid>
+                    <Grid size={12}>
+                      <Typography variant="h6" fontWeight="bold">
+                        {t("job.notes")}
+                      </Typography>
+                      <Typography variant="body2" whiteSpace="pre-line">
+                        {job?.notes}
+                      </Typography>
+                    </Grid>
+                  </>
+                )}
+              </Grid>
               <Stack direction="row" justifyContent="center" mt={4}>
                 <Button
                   variant="contained"
@@ -361,19 +426,25 @@ function JobDetail() {
                     <Typography variant="body1" fontWeight="bold">
                       {t("job.contact")}
                     </Typography>
-                    <Typography variant="body2">{job?.contact}</Typography>
+                    <Typography variant="body2">
+                      {(job as IndividualJob)?.contactPerson}
+                    </Typography>
                   </Grid>
                   <Grid size={6}>
                     <Typography variant="body1" fontWeight="bold">
                       {t("job.contactPhone")}
                     </Typography>
-                    <Typography variant="body2">{job?.contactPhone}</Typography>
+                    <Typography variant="body2">
+                      {(job as IndividualJob)?.contactPhone}
+                    </Typography>
                   </Grid>
                   <Grid size={6}>
                     <Typography variant="body1" fontWeight="bold">
                       {t("job.contactEmail")}
                     </Typography>
-                    <Typography variant="body2">{job?.contactEmail}</Typography>
+                    <Typography variant="body2">
+                      {(job as IndividualJob)?.contactEmail}
+                    </Typography>
                   </Grid>
                 </Grid>
               ) : (
@@ -381,36 +452,42 @@ function JobDetail() {
                   <Stack direction="row" spacing={2} alignItems="center" mt={2}>
                     <LetterAvatar
                       variant="rounded"
-                      name={job?.company ?? ""}
+                      name={job?.departmentName ?? ""}
                       sx={{ width: 48, height: 48 }}
                     ></LetterAvatar>
-                    <Typography variant="h6">{job?.company}</Typography>
+                    <Typography variant="h6">{job?.departmentName}</Typography>
                   </Stack>
                   <Grid container spacing={2} mt={2}>
                     <Grid size={6}>
                       <Typography variant="body1" fontWeight="bold">
                         {t("job.companyName")}
                       </Typography>
-                      <Typography variant="body2">{job?.company}</Typography>
+                      <Typography variant="body2">
+                        {job?.departmentName}
+                      </Typography>
                     </Grid>
                     <Grid size={6}>
                       <Typography variant="body1" fontWeight="bold">
                         {t("job.taxId")}
                       </Typography>
-                      <Typography variant="body2">{job?.taxId}</Typography>
+                      <Typography variant="body2">
+                        {(job as DepartmentJob)?.departmentTaxId}
+                      </Typography>
                     </Grid>
                     <Grid size={6}>
                       <Typography variant="body1" fontWeight="bold">
                         {t("job.head")}
                       </Typography>
-                      <Typography variant="body2">{job?.head}</Typography>
+                      <Typography variant="body2">
+                        {(job as DepartmentJob)?.departmentContactPerson}
+                      </Typography>
                     </Grid>
                     <Grid size={6}>
                       <Typography variant="body1" fontWeight="bold">
                         {t("job.contactPhone")}
                       </Typography>
                       <Typography variant="body2">
-                        {job?.contactPhone}
+                        {(job as DepartmentJob)?.departmentPhone}
                       </Typography>
                     </Grid>
                     <Grid size={12}>
@@ -418,7 +495,9 @@ function JobDetail() {
                         {t("job.address")}
                       </Typography>
                       <Typography variant="body2">
-                        {job?.companyAddress}
+                        {`${(job as DepartmentJob)?.departmentCity} ${
+                          (job as DepartmentJob)?.departmentDistrict
+                        } ${(job as DepartmentJob)?.departmentAddress}`}
                       </Typography>
                     </Grid>
                   </Grid>

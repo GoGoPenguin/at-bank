@@ -30,7 +30,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
   const { handleAlert } = useContext(alertContext);
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const [isSaved, setIsSaved] = useState(job.saved || false);
+  const [isSaved, setIsSaved] = useState(job.isSaved || false);
   const [applicationStatus, setApplicationStatus] = useState(
     job.applicationStatus || undefined
   );
@@ -51,6 +51,38 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
     // TODO: Implement job application logic
     setApplicationStatus(APPLICATION_STATUS_PENDING);
     handleAlert("appliedSuccessfully", "info");
+  };
+
+  const formatDate = (date: Date, includeYear = false) => {
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return includeYear
+      ? `${month}/${day}/${date.getFullYear()}`
+      : `${month}/${day}`;
+  };
+
+  const formatWorkShift = (job: Job) => {
+    const startDate = new Date(job.shifts[0].date);
+    const endDate = new Date(job.shifts[job.shifts.length - 1].date);
+    const isSingleDay =
+      job.shifts.length === 1 ||
+      startDate.toDateString() === endDate.toDateString();
+    const isCrossYear = startDate.getFullYear() !== endDate.getFullYear();
+
+    if (isSingleDay)
+      return `${formatDate(startDate)}, ${startDate.getFullYear()}`;
+    return isCrossYear
+      ? `${formatDate(startDate, true)} - ${formatDate(endDate, true)}`
+      : `${formatDate(startDate)} - ${formatDate(
+          endDate
+        )}, ${startDate.getFullYear()}`;
+  };
+
+  const calculateTotalHours = (job: Job) => {
+    return job.shifts.reduce(
+      (sum, shift) => sum + (shift.endTime - shift.startTime) / 3600,
+      0
+    );
   };
 
   return (
@@ -80,7 +112,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
           <Stack direction="column">
             <LetterAvatar
               variant="rounded"
-              name={job.company}
+              name={job.departmentName}
               sx={{ width: 56, height: 56 }}
             ></LetterAvatar>
           </Stack>
@@ -168,7 +200,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                       <LocationOnOutlined fontSize="small" />
                     </Tooltip>
                     <Typography variant="caption">
-                      {t(`cities.${job.location}`)}
+                      {t(`cities.${job.city}`)}
                     </Typography>
                   </Stack>
                   <Stack direction="row" spacing={1}>
@@ -176,7 +208,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                       <EventIcon fontSize="small" />
                     </Tooltip>
                     <Typography variant="caption">
-                      {new Date(job.date).toLocaleDateString("en-CA")}
+                      {formatWorkShift(job)}
                     </Typography>
                   </Stack>
                   <Stack direction="row" spacing={1}>
@@ -184,7 +216,9 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                       <AccessTimeOutlinedIcon fontSize="small" />
                     </Tooltip>
                     <Typography variant="caption">
-                      {t("time.hour", { count: job.hours })}
+                      {t("time.hour", {
+                        count: calculateTotalHours(job),
+                      })}
                     </Typography>
                   </Stack>
                   <Stack direction="row" spacing={1}>
@@ -269,7 +303,7 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
           <Stack direction="column">
             <LetterAvatar
               variant="rounded"
-              name={job.company}
+              name={job.departmentName}
               sx={{ width: 56, height: 56 }}
             ></LetterAvatar>
           </Stack>
@@ -348,16 +382,14 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                 <LocationOnOutlined fontSize="small" />
               </Tooltip>
               <Typography variant="caption">
-                {t(`cities.${job.location}`)}
+                {t(`cities.${job.city}`)}
               </Typography>
             </Stack>
             <Stack direction="row" spacing={1}>
               <Tooltip title={t("job.date")}>
                 <EventIcon fontSize="small" />
               </Tooltip>
-              <Typography variant="caption">
-                {new Date(job.date).toLocaleDateString("en-CA")}
-              </Typography>
+              <Typography variant="caption">{formatWorkShift(job)}</Typography>
             </Stack>
           </Stack>
           <Stack direction="column" flex={1}>
@@ -366,7 +398,9 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
                 <AccessTimeOutlinedIcon fontSize="small" />
               </Tooltip>
               <Typography variant="caption">
-                {t("time.hour", { count: job.hours })}
+                {t("time.hour", {
+                  count: calculateTotalHours(job),
+                })}
               </Typography>
             </Stack>
             <Stack direction="row" spacing={1}>

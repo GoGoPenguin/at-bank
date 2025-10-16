@@ -30,7 +30,8 @@ function AthleticTrainerHome() {
     refetch,
   } = useQuery({
     queryKey: [`jobs`, { jobType, location, page }],
-    queryFn: () => getJobs({ type: jobType, location, page, limit: 10 }),
+    queryFn: () =>
+      getJobs({ jobType: jobType, city: location, page, size: 10 }),
   });
 
   const onChangeJobType = (newJobType: JobType | undefined) => {
@@ -86,17 +87,23 @@ function AthleticTrainerHome() {
           >
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {t("pagination.resultTotal", {
-                total: resp?.pagination.totalItems ?? 0,
+                total: resp?.totalItems ?? 0,
               })}
             </Typography>
             <Typography variant="subtitle2">
               {t("pagination.pageOf", {
                 currentPage: page,
-                totalPages: resp?.pagination.totalPages,
+                totalPages: resp?.totalPages,
               })}
             </Typography>
           </Box>
-          {isLoading ? (
+          {resp?.totalItems === 0 ? (
+            <Container sx={{ textAlign: "center", py: 6 }}>
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                {t("pagination.noResults")}
+              </Typography>
+            </Container>
+          ) : isLoading ? (
             <Grid spacing={2} container>
               <Skeleton variant="rounded" width={800} height={144} />
               <Skeleton variant="rounded" width={800} height={144} />
@@ -122,7 +129,7 @@ function AthleticTrainerHome() {
               <Pagination
                 page={page}
                 onChange={(_, value) => setPage(value)}
-                count={resp?.pagination.totalPages ?? 0}
+                count={resp?.totalPages ?? 0}
                 color="primary"
               />
             </Box>
@@ -130,7 +137,7 @@ function AthleticTrainerHome() {
               <Pagination
                 page={page}
                 onChange={(_, value) => setPage(value)}
-                count={resp?.pagination.totalPages ?? 0}
+                count={resp?.totalPages ?? 0}
                 color="primary"
                 size="small"
               />

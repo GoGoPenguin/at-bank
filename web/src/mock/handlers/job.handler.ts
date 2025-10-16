@@ -19,7 +19,7 @@ const jobHandlers = [
       const filterByJobType = (data: Job[], type: JobType | null) =>
         type ? data.filter((datum) => datum.type === type) : data;
       const filterByLocation = (data: Job[], location: string | null) =>
-        location ? data.filter((datum) => datum.location === location) : data;
+        location ? data.filter((datum) => datum.city === location) : data;
 
       const type = getParam("type", null) as JobType | null;
       const page = Number(getParam("page", 1));

@@ -39,7 +39,7 @@ const useApi = () => {
     const response = await axios.get("/api/jobs", { params: req });
     return response.data;
   };
-  const getJob = async (id: number): Promise<GetJobResponse> => {
+  const getJob = async (id: string): Promise<GetJobResponse> => {
     const response = await axios.get(`/api/jobs/${id}`);
     return response.data;
   };
