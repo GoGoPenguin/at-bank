@@ -401,16 +401,16 @@ function JobDetail() {
                           : t("job.massageTherapy")}
                       </Typography>
                     </Grid>
-                    <Grid size={12}>
-                      <Typography variant="h6" fontWeight="bold">
-                        {t("job.notes")}
-                      </Typography>
-                      <Typography variant="body2" whiteSpace="pre-line">
-                        {job?.notes}
-                      </Typography>
-                    </Grid>
                   </>
                 )}
+                <Grid size={12}>
+                  <Typography variant="h6" fontWeight="bold">
+                    {t("job.notes")}
+                  </Typography>
+                  <Typography variant="body2" whiteSpace="pre-line">
+                    {job?.notes}
+                  </Typography>
+                </Grid>
               </Grid>
               <Stack direction="row" justifyContent="center" mt={4}>
                 <Button
