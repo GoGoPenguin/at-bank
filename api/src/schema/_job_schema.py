@@ -2,6 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from src.utils.glossary import JobApplicationStatus
+
 from ._job_shit_schema import JobShiftSchema
 
 
@@ -38,6 +40,9 @@ class JobSchema(BaseModel):
     shifts: list[JobShiftSchema] = Field(description="List of job shifts")
     is_saved: Optional[bool] = Field(
         description="Indicates if the job is saved by the user", default=None
+    )
+    application_status: Optional[JobApplicationStatus] = Field(
+        description="Application status of the job for the user", default=None
     )
     created_at: str = Field(description="Timestamp when the job was created")
     updated_at: str = Field(description="Timestamp when the job was last updated")

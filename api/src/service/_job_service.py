@@ -61,11 +61,45 @@ class JobService:
                                 }
                             ],
                             "as": "saved_by_user",
+                        },
+                    },
+                    {
+                        "$lookup": {
+                            "from": "application",
+                            "let": {"job_id": "$_id"},
+                            "pipeline": [
+                                {
+                                    "$match": {
+                                        "$expr": {
+                                            "$and": [
+                                                {"$eq": ["$job", "$$job_id"]},
+                                                {"$eq": ["$applicant", user.id]},
+                                            ]
+                                        }
+                                    }
+                                },
+                                {"$project": {"status": 1}},
+                            ],
+                            "as": "application_status",
                         }
                     },
                     {
                         "$addFields": {
-                            "is_saved": {"$gt": [{"$size": "$saved_by_user"}, 0]}
+                            "is_saved": {"$gt": [{"$size": "$saved_by_user"}, 0]},
+                            "application_status": {
+                                "$cond": {
+                                    "if": {
+                                        "$gt": [{"$size": "$application_status"}, 0]
+                                    },
+                                    "then": {
+                                        "$arrayElemAt": [
+                                            "$application_status.status",
+                                            0,
+                                        ]
+                                    },
+                                    "else": None,
+                                }
+                            },
                         }
                     },
                     {"$project": {"saved_by_user": 0}},
@@ -79,8 +113,11 @@ class JobService:
             (
                 job := Job._from_son(row),
                 setattr(job, "is_saved", cast(dict, row).get("is_saved")),
+                setattr(
+                    job, "application_status", cast(dict, row).get("application_status")
+                ),
             )[0]
-            if isinstance(user, AthleticTrainer) and "is_saved" in row
+            if isinstance(user, AthleticTrainer)
             else Job._from_son(row)
             for row in rows
         ], (total_items, total_pages)
@@ -91,6 +128,13 @@ class JobService:
             raise NotFoundError(detail="Job not found.")
         if isinstance(user, AthleticTrainer):
             setattr(job, "is_saved", job in cast(List[Job], user.saved_jobs))
+
+            application = cast(
+                Optional[Application],
+                Application.objects(applicant=user, job=job).first(),
+            )
+            if application is not None:
+                setattr(job, "application_status", application.status)
 
         return cast(Job, job)
 
