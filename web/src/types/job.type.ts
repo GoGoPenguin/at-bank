@@ -1,6 +1,6 @@
 export type JobType = "tournament" | "individual" | "department";
-export type JobStatus = "Active" | "Paused" | "Closed";
-export type ApplicationStatus = "Pending" | "Accepted" | "Rejected";
+export type JobStatus = "active" | "paused" | "closed";
+export type ApplicationStatus = "pending" | "accepted" | "rejected";
 export type ServiceContent = "Athletic Training" | "Massage Therapy";
 export type SuppliesType = "Reimbursement" | "Self-provided" | "Proxy Purchase";
 export type EquipmentType = "Self-provided" | "Rental";
@@ -9,13 +9,13 @@ export const JOB_TYPE_TOURNAMENT: JobType = "tournament";
 export const JOB_TYPE_INDIVIDUAL: JobType = "individual";
 export const JOB_TYPE_DEPARTMENT: JobType = "department";
 
-export const JOB_STATUS_ACTIVE: JobStatus = "Active";
-export const JOB_STATUS_PAUSED: JobStatus = "Paused";
-export const JOB_STATUS_CLOSED: JobStatus = "Closed";
+export const JOB_STATUS_ACTIVE: JobStatus = "active";
+export const JOB_STATUS_PAUSED: JobStatus = "paused";
+export const JOB_STATUS_CLOSED: JobStatus = "closed";
 
-export const APPLICATION_STATUS_PENDING: ApplicationStatus = "Pending";
-export const APPLICATION_STATUS_ACCEPTED: ApplicationStatus = "Accepted";
-export const APPLICATION_STATUS_REJECTED: ApplicationStatus = "Rejected";
+export const APPLICATION_STATUS_PENDING: ApplicationStatus = "pending";
+export const APPLICATION_STATUS_ACCEPTED: ApplicationStatus = "accepted";
+export const APPLICATION_STATUS_REJECTED: ApplicationStatus = "rejected";
 
 export const SERVICE_CONTENT_ATHLETIC_TRAINING: ServiceContent =
   "Athletic Training";
