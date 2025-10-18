@@ -134,9 +134,9 @@ export const colorSchemes = {
         dark: orange[800],
       },
       error: {
-        light: red[300],
+        light: red[100],
         main: red[400],
-        dark: red[800],
+        dark: red[500],
       },
       success: {
         light: green[300],

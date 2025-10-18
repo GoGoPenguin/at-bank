@@ -235,6 +235,24 @@ export const Input: Components<Theme> = {
               }),
             },
           },
+          {
+            props: {
+              variant: "outlined",
+              color: "error",
+            },
+            style: {
+              color: theme.palette.error.main,
+              border: `1px solid ${theme.palette.error.main}`,
+              backgroundColor: "transparent",
+              "&:hover": {
+                backgroundColor: theme.palette.error.light,
+                borderColor: theme.palette.error.dark,
+              },
+              "&:active": {
+                backgroundColor: theme.palette.error.dark,
+              },
+            },
+          },
         ],
       }),
     },
@@ -387,6 +405,10 @@ export const Input: Components<Theme> = {
     styleOverrides: {
       root: {
         border: "none",
+        "&.Mui-disabled, &.Mui-disabled *": {
+          cursor: "not-allowed",
+          pointerEvents: "auto",
+        },
       },
       input: {
         "&::placeholder": {
