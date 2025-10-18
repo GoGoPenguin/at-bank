@@ -8,7 +8,12 @@
     "none": "無",
     "any": "任何",
     "comma": "，",
-    "home": "首頁"
+    "colon": "：",
+    "home": "首頁",
+    "edit": "編輯",
+    "pause": "暫停",
+    "resume": "繼續",
+    "close": "關閉"
   },
   "colorMode": {
     "light": "淺色模式",
@@ -30,7 +35,8 @@
     "invalidPostOfficeAccount": "無效的郵局帳號格式",
     "invalidLineId": "無效的 Line ID",
     "invalidPhoneNumber": "無效的手機號碼格式",
-    "taxIdLength": "統一編號必須為 8 位數字"
+    "taxIdLength": "統一編號必須為 8 位數字",
+    "mustBePositive": "數值必須大於零"
   },
   "alert": {
     "error": {
@@ -172,12 +178,28 @@
     "contactPhone": "聯絡電話",
     "contactEmail": "聯絡電子郵件",
     "serviceContent": "服務內容",
+    "serviceContents": {
+      "athleticTraining": "運動傷害防護",
+      "massageTherapy": "運動按摩"
+    },
     "athleticTraining": "運動傷害防護",
     "massageTherapy": "運動按摩",
     "tournamentName": "賽會名稱",
     "numberOfTournaments": "賽會場數",
     "supplies": "耗材",
-    "equipment": "裝備"
+    "suppliesArrangement": {
+      "reimbursement": "實報實銷",
+      "selfProvided": "自備",
+      "daigou": "代購"
+    },
+    "equipment": "裝備",
+    "equipmentArrangement": {
+      "rental": "租借",
+      "selfProvided": "自備"
+    },
+    "active": "招募中",
+    "paused": "暫停中",
+    "closed": "已結束"
   },
   "time": {
     "year": "{{count}} 年",
@@ -189,14 +211,72 @@
   },
   "money": {
     "thousand": "{{value}} 千",
-    "thousand_tens": "{{value}} 萬"
+    "thousand_tens": "{{value}} 萬",
+    "pricePerDay": "{{price}} / 天"
   },
   "modal": {
     "apply": {
       "title": "應徵工作",
       "selectShifts": "請選擇您要申請的班次：",
       "submit": "提交申請"
+    },
+    "postJob": {
+      "title": "發布新職缺",
+      "submit": "提交職缺",
+      "jobTitle": "職缺標題",
+      "jobTitlePlaceholder": "請輸入職缺標題",
+      "jobDescription": "職缺描述",
+      "jobDescriptionPlaceholder": "請輸入職缺描述",
+      "jobWage": "時薪",
+      "jobWagePlaceholder": "請輸入時薪",
+      "jobVacancies": "需求人數",
+      "jobVacanciesPlaceholder": "請輸入需求人數",
+      "jobShifts": "職缺班表",
+      "addShift": "新增班次",
+      "removeShift": "移除班次",
+      "shiftDate": "班次日期",
+      "shiftStartTime": "開始時間",
+      "shiftEndTime": "結束時間",
+      "jobType": "工作類型",
+      "tournamentName": "賽會名稱",
+      "tournamentNamePlaceholder": "請輸入賽會名稱",
+      "numberOfTournaments": "賽會場數",
+      "numberOfTournamentsPlaceholder": "請輸入賽會場數",
+      "city": "縣市",
+      "cityPlaceholder": "請選擇縣市",
+      "district": "鄉鎮市區",
+      "districtPlaceholder": "請選擇鄉鎮市區",
+      "address": "地址",
+      "addressPlaceholder": "請輸入地址",
+      "tournamentSupplies": "耗材",
+      "tournamentSuppliesPlaceholder": "請選擇耗材",
+      "tournamentSuppliesBudget": "耗材預算",
+      "tournamentSuppliesBudgetPlaceholder": "請輸入耗材預算",
+      "tournamentEquipment": "裝備",
+      "tournamentEquipmentPlaceholder": "請選擇裝備",
+      "serviceContent": "服務內容",
+      "serviceContentPlaceholder": "請選擇服務內容",
+      "contactPerson": "聯絡人",
+      "contactPersonPlaceholder": "請輸入聯絡人",
+      "contactPersonBirthday": "聯絡人生日",
+      "contactPersonBirthdayPlaceholder": "請輸入聯絡人生日",
+      "contactPhone": "聯絡電話",
+      "contactPhonePlaceholder": "請輸入聯絡電話",
+      "contactEmail": "聯絡電子郵件",
+      "contactEmailPlaceholder": "請輸入聯絡電子郵件",
+      "estimatedCost": "預估費用"
     }
+  },
+  "departmentDashboard": {
+    "overview": "概覽",
+    "activeJobs": "有效職缺",
+    "hired": "已錄取",
+    "totalApplicants": "應徵總人數",
+    "totalViews": "職缺總瀏覽數",
+    "postANewJob": "發布新職缺",
+    "yoursPostings": "您的職缺",
+    "noJobsPosted": "您尚未發布任何職缺。",
+    "lastDay": "最近 {{count}} 天"
   },
   "cities": {
     "taipei-city": "臺北市",

@@ -9,7 +9,12 @@
     "have": "Have",
     "any": "Any",
     "comma": ",",
-    "home": "Home"
+    "colon": ":",
+    "home": "Home",
+    "edit": "Edit",
+    "pause": "Pause",
+    "resume": "Resume",
+    "close": "Close"
   },
   "colorMode": {
     "light": "Light Mode",
@@ -31,7 +36,8 @@
     "invalidPostOfficeAccount": "Invalid Post Office Account format",
     "invalidLineId": "Invalid Line ID",
     "invalidPhoneNumber": "Invalid phone number format",
-    "taxIdLength": "Tax ID must be 8 characters"
+    "taxIdLength": "Tax ID must be 8 characters",
+    "mustBePositive": "Value must be greater than zero"
   },
   "alert": {
     "error": {
@@ -182,6 +188,11 @@
     "tournamentName": "Tournament Name",
     "numberOfTournaments": "Number of Tournaments",
     "supplies": "Supplies",
+    "suppliesArrangement": {
+      "reimbursement": "Reimbursement",
+      "selfProvided": "Self Provided",
+      "daigou": "Daigou"
+    },
     "equipment": "Equipment"
   },
   "time": {
@@ -199,7 +210,73 @@
     "second_other": "{{count}} seconds"
   },
   "money": {
-    "thousand": "{{value}}K"
+    "thousand": "{{value}}K",
+    "pricePerDay": "{{price}} / day"
+  },
+  "modal": {
+    "apply": {
+      "title": "Apply for Job",
+      "selectShifts": "Please select the shifts you want to apply for:",
+      "submit": "Submit Application"
+    },
+    "postJob": {
+      "title": "Post a New Job",
+      "submit": "Submit Job",
+      "jobTitle": "Job Title",
+      "jobTitlePlaceholder": "Enter job title",
+      "jobDescription": "Job Description",
+      "jobDescriptionPlaceholder": "Enter job description",
+      "wage": "Wage (per hour)",
+      "wagePlaceholder": "Enter wage",
+      "jobVacancies": "Job Vacancies",
+      "jobVacanciesPlaceholder": "Enter number of vacancies",
+      "jobShifts": "Job Shifts",
+      "addShift": "Add Shift",
+      "removeShift": "Remove Shift",
+      "shiftDate": "Shift Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "jobType": "Job Type",
+      "tournamentName": "Tournament Name",
+      "tournamentNamePlaceholder": "Enter tournament name",
+      "numberOfTournaments": "Number of Tournaments",
+      "numberOfTournamentsPlaceholder": "Enter number of tournaments",
+      "city": "City",
+      "cityPlaceholder": "Select city",
+      "district": "District",
+      "districtPlaceholder": "Select district",
+      "address": "Address",
+      "addressPlaceholder": "Enter tournament address",
+      "tournamentSupplies": "Supplies",
+      "tournamentSuppliesPlaceholder": "Select supplies",
+      "tournamentSuppliesBudget": "Supplies Budget",
+      "tournamentSuppliesBudgetPlaceholder": "Enter supplies budget",
+      "tournamentEquipment": "Equipment",
+      "tournamentEquipmentPlaceholder": "Select equipment",
+      "serviceContent": "Service Content",
+      "serviceContentPlaceholder": "Select service content",
+      "contactPerson": "Contact Person",
+      "contactPersonPlaceholder": "Enter contact person",
+      "contactPersonBirthday": "Contact Person Birthday",
+      "contactPersonBirthdayPlaceholder": "Enter contact person birthday",
+      "contactPhone": "Contact Phone",
+      "contactPhonePlaceholder": "Enter contact phone",
+      "contactEmail": "Contact Email",
+      "contactEmailPlaceholder": "Enter contact email",
+      "estimatedCost": "Estimated Cost"
+    }
+  },
+  "departmentDashboard": {
+    "overview": "Overview",
+    "activeJobs": "Active Postings",
+    "hired": "Hired",
+    "totalApplicants": "Total Applicants",
+    "totalViews": "Total Views",
+    "postANewJob": "Post a New Job",
+    "yoursPostings": "Your Postings",
+    "noJobsPosted": "You have not posted any jobs yet.",
+    "lastDay_one": "Last {{count}} days",
+    "lastDay_other": "Last {{count}} days"
   },
   "cities": {
     "taipei-city": "Taipei City",
@@ -640,13 +717,6 @@
       "beigan-township": "Beigan Township",
       "juguang-township": "Juguang Township",
       "dongyin-township": "Dongyin Township"
-    }
-  },
-  "modal": {
-    "apply": {
-      "title": "Apply for Job",
-      "selectShifts": "Please select the shifts you want to apply for:",
-      "submit": "Submit Application"
     }
   }
 }
