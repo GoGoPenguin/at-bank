@@ -31,9 +31,11 @@ export interface AthleticTrainer extends UserBase {
 }
 
 export interface Department extends UserBase {
-  departmentName: string;
+  name: string;
   taxId: string;
-  contact: string;
+  contactPerson: string;
+  city: string;
+  district: string;
   address: string;
 }
 

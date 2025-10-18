@@ -54,7 +54,7 @@ export default function Profile() {
               ? ""
               : user.role === ROLE_ATHLETIC_TRAINER
               ? (user as AthleticTrainer).chineseName
-              : (user as Department).departmentName
+              : (user as Department).name
           }
           sx={{ width: 30, height: 30, fontSize: "0.875rem" }}
         />
