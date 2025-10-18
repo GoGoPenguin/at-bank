@@ -1,17 +1,14 @@
-import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { FormControl, FormHelperText, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useForkRef } from "@mui/material/utils";
 import {
+  TimePicker,
   useParsedFormat,
   usePickerContext,
-  useSplitFieldProps,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import {
-  DatePicker,
-  type DatePickerFieldProps,
-} from "@mui/x-date-pickers/DatePicker";
+import { type DatePickerFieldProps } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Dayjs } from "dayjs";
 import "dayjs/locale/zh-tw";
@@ -21,7 +18,6 @@ type ButtonFieldProps = DatePickerFieldProps & {
 };
 
 function ButtonField(props: ButtonFieldProps) {
-  const { forwardedProps } = useSplitFieldProps(props, "date");
   const pickerContext = usePickerContext();
   const handleRef = useForkRef(pickerContext.triggerRef, pickerContext.rootRef);
   const parsedFormat = useParsedFormat();
@@ -32,12 +28,11 @@ function ButtonField(props: ButtonFieldProps) {
 
   return (
     <Button
-      {...forwardedProps}
       variant="outlined"
       ref={handleRef}
       onBlur={props.onBlur}
       size="small"
-      startIcon={<CalendarTodayRoundedIcon fontSize="small" />}
+      startIcon={<AccessTimeIcon fontSize="small" />}
       sx={{ minWidth: "fit-content" }}
       onClick={() => pickerContext.setOpen((prev) => !prev)}
     >
@@ -46,15 +41,15 @@ function ButtonField(props: ButtonFieldProps) {
   );
 }
 
-export default function CustomDatePicker({
+export default function CustomTimePicker({
   label,
   value,
   onChange,
   onBlur,
   helperText,
   error,
-  maxDate,
-  minDate,
+  minTime,
+  maxTime,
 }: {
   label?: string;
   value: Dayjs | null;
@@ -62,8 +57,8 @@ export default function CustomDatePicker({
   onBlur?: () => void;
   helperText?: string;
   error?: boolean;
-  maxDate?: Dayjs;
-  minDate?: Dayjs;
+  minTime?: Dayjs;
+  maxTime?: Dayjs;
 }) {
   return (
     <FormControl error={error} fullWidth>
@@ -73,7 +68,7 @@ export default function CustomDatePicker({
         </Typography>
       )}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
+        <TimePicker
           value={value}
           onChange={onChange}
           slots={{ field: ButtonField }}
@@ -82,9 +77,8 @@ export default function CustomDatePicker({
             previousIconButton: { size: "small" },
             field: { onBlur },
           }}
-          maxDate={maxDate}
-          minDate={minDate}
-          defaultValue={minDate || maxDate}
+          minTime={minTime}
+          maxTime={maxTime}
         />
       </LocalizationProvider>
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
