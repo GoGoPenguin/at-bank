@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 from mongoengine import connect
 
-from src.service import AuthService, JobService, UserService
+from src.service import AuthService, EquipmentService, JobService, UserService
 from src.utils.config import Config
 from src.utils.jwt import JWT
 
@@ -32,3 +32,4 @@ class Container(containers.DeclarativeContainer):
     auth_service = providers.Singleton(AuthService)
     user_service = providers.Singleton(UserService)
     job_service = providers.Singleton(JobService)
+    equipment_service = providers.Singleton(EquipmentService)

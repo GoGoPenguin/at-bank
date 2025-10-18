@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from src.utils.glossary import JobApplicationStatus
+from src.utils.glossary import JobApplicationStatus, JobStatus, JobType
 
 from ._job_shit_schema import JobShiftSchema
 
@@ -31,13 +31,14 @@ class JobSchema(BaseModel):
     wage: int = Field(description="Wage per hour in NTD", ge=0)
     vacancies: int = Field(description="Number of job vacancies", ge=0)
     notes: str = Field(description="Additional notes about the job")
-    type: str = Field(
+    type: JobType = Field(
         description="Type of the job (e.g., tournament, individual, department)"
     )
     city: str = Field(description="City where the job is located")
     district: str = Field(description="District where the job is located")
     address: str = Field(description="Detailed address of the job location")
     shifts: list[JobShiftSchema] = Field(description="List of job shifts")
+    status: JobStatus = Field(description="Current status of the job")
     is_saved: Optional[bool] = Field(
         description="Indicates if the job is saved by the user", default=None
     )
