@@ -18,7 +18,6 @@ import Logo from "../assets/logo.png";
 import useApi from "../hooks/use-api.hook";
 import { useAuthStore } from "../store/use-auth.store";
 import Profile from "./Profile";
-import ColorModeIconDropdown from "./theme/ColorModeSelectDropdown";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -69,7 +68,7 @@ export default function NavBar() {
       }}
     >
       <Container maxWidth="lg">
-        <StyledToolbar variant="dense" disableGutters>
+        <StyledToolbar variant="dense" disableGutters sx={{ height: "54px" }}>
           <Box
             sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}
           >
@@ -112,12 +111,10 @@ export default function NavBar() {
               alignItems: "center",
             }}
           >
-            <ColorModeIconDropdown />
             <Divider orientation="vertical" variant="middle" flexItem />
             <Profile />
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
-            <ColorModeIconDropdown size="medium" />
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>

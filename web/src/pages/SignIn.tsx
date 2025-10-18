@@ -20,9 +20,7 @@ import { z } from "zod";
 import Logo from "../assets/logo.png";
 import ForgotPassword from "../components/ForgetPassword";
 import LanguageSelect from "../components/LanguageSelect";
-import ColorModeSelect from "../components/theme/ColorModeSelect";
 import useApi from "../hooks/use-api.hook";
-// import { useAuthStore } from "../store/use-auth.store";
 
 const formSchema = z.object({
   account: z.string().min(1, "error.required"),
@@ -86,7 +84,6 @@ export default function SignIn() {
 
   return (
     <>
-      <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} />
       <Card variant="outlined">
         <Box
           sx={{

@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
-import ColorModeSelect from "../components/theme/ColorModeSelect";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -93,83 +92,80 @@ export default function SignUp() {
   };
 
   return (
-    <>
-      <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} />
-      <Card variant="outlined">
-        <img src={Logo} alt="Logo" width={100} />
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+    <Card variant="outlined">
+      <img src={Logo} alt="Logo" width={100} />
+      <Typography
+        component="h1"
+        variant="h4"
+        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+      >
+        {t("signUp.title")}
+      </Typography>
+      <Box
+        component="form"
+        // onSubmit={onSubmit}
+        noValidate
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          gap: 2,
+        }}
+      >
+        <SplitPanel
+          image={
+            "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1470&q=80"
+          }
         >
-          {t("signUp.title")}
-        </Typography>
-        <Box
-          component="form"
-          // onSubmit={onSubmit}
-          noValidate
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            gap: 2,
-          }}
+          <ContentBox>
+            <Typography variant="h3" gutterBottom>
+              {t("signUp.forAthleticTrainers")}
+            </Typography>
+            <Typography variant="h6">
+              {t("signUp.athleticTrainerDescription")}
+            </Typography>
+            <Box sx={{ flex: "1 1 auto" }} />
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleTrainerRegister}
+              sx={{ mt: 3 }}
+            >
+              {t("signUp.athleticTrainerButton")}
+            </Button>
+          </ContentBox>
+        </SplitPanel>
+        <SplitPanel
+          image={
+            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1587&q=80"
+          }
         >
-          <SplitPanel
-            image={
-              "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1470&q=80"
-            }
-          >
-            <ContentBox>
-              <Typography variant="h3" gutterBottom>
-                {t("signUp.forAthleticTrainers")}
-              </Typography>
-              <Typography variant="h6">
-                {t("signUp.athleticTrainerDescription")}
-              </Typography>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button
-                variant="contained"
-                size="large"
-                onClick={handleTrainerRegister}
-                sx={{ mt: 3 }}
-              >
-                {t("signUp.athleticTrainerButton")}
-              </Button>
-            </ContentBox>
-          </SplitPanel>
-          <SplitPanel
-            image={
-              "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1587&q=80"
-            }
-          >
-            <ContentBox>
-              <Typography variant="h3" gutterBottom>
-                {t("signUp.forDepartment")}
-              </Typography>
-              <Typography variant="h6">
-                {t("signUp.departmentDescription")}
-              </Typography>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button
-                variant="contained"
-                size="large"
-                onClick={handleDepartmentRegister}
-                sx={{ mt: 3 }}
-              >
-                {t("signUp.departmentButton")}
-              </Button>
-            </ContentBox>
-          </SplitPanel>
-        </Box>
-        <Divider>{t("common.or")}</Divider>
-        <Typography sx={{ textAlign: "center" }}>
-          {t("signUp.alreadyHaveAccount")}{" "}
-          <Link href="/sign-in" variant="body2" sx={{ alignSelf: "center" }}>
-            {t("signIn.title")}
-          </Link>
-        </Typography>
-      </Card>
-    </>
+          <ContentBox>
+            <Typography variant="h3" gutterBottom>
+              {t("signUp.forDepartment")}
+            </Typography>
+            <Typography variant="h6">
+              {t("signUp.departmentDescription")}
+            </Typography>
+            <Box sx={{ flex: "1 1 auto" }} />
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleDepartmentRegister}
+              sx={{ mt: 3 }}
+            >
+              {t("signUp.departmentButton")}
+            </Button>
+          </ContentBox>
+        </SplitPanel>
+      </Box>
+      <Divider>{t("common.or")}</Divider>
+      <Typography sx={{ textAlign: "center" }}>
+        {t("signUp.alreadyHaveAccount")}{" "}
+        <Link href="/sign-in" variant="body2" sx={{ alignSelf: "center" }}>
+          {t("signIn.title")}
+        </Link>
+      </Typography>
+    </Card>
   );
 }

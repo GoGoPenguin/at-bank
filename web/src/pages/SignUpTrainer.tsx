@@ -27,7 +27,6 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import Logo from "../assets/logo.png";
 import CustomDatePicker from "../components/CustomDatePicker";
-import ColorModeSelect from "../components/theme/ColorModeSelect";
 import AlertContext from "../context/alert.context";
 import useApi from "../hooks/use-api.hook";
 import { EMT_LICENSES } from "../types/emt-licenses.type";
@@ -277,393 +276,386 @@ export default function SignUpTrainer() {
   };
 
   return (
-    <>
-      <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} />
-      <Card variant="outlined">
-        <img src={Logo} alt="Logo" width={100} />
-        <IconButton aria-label="go back" onClick={handleGoBack}>
-          <ArrowBackIcon />
-        </IconButton>
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            gap: 2,
-          }}
-        >
-          <Stepper activeStep={activeStep}>
-            {steps.map((label) => {
-              const stepProps: { completed?: boolean } = {};
-              const labelProps: {
-                optional?: React.ReactNode;
-              } = {};
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          {activeStep === 0 && (
-            <React.Fragment>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>{t("signUpTrainer.account")}</FormLabel>
-                    <TextField
-                      {...register("account")}
-                      error={!!errors.account}
-                      helperText={t(errors.account?.message || "")}
-                      placeholder={t("signUpTrainer.accountPlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>{t("signUpTrainer.password")}</FormLabel>
-                    <TextField
-                      {...register("password")}
-                      type="password"
-                      error={!!errors.password}
-                      helperText={t(errors.password?.message || "")}
-                      placeholder={t("signUpTrainer.passwordPlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
+    <Card variant="outlined">
+      <img src={Logo} alt="Logo" width={100} />
+      <IconButton aria-label="go back" onClick={handleGoBack}>
+        <ArrowBackIcon />
+      </IconButton>
+      <Box
+        component="div"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 2,
+        }}
+      >
+        <Stepper activeStep={activeStep}>
+          {steps.map((label) => {
+            const stepProps: { completed?: boolean } = {};
+            const labelProps: {
+              optional?: React.ReactNode;
+            } = {};
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+        {activeStep === 0 && (
+          <React.Fragment>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.account")}</FormLabel>
+                  <TextField
+                    {...register("account")}
+                    error={!!errors.account}
+                    helperText={t(errors.account?.message || "")}
+                    placeholder={t("signUpTrainer.accountPlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
               </Grid>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>{t("signUpTrainer.chineseName")}</FormLabel>
-                    <TextField
-                      {...register("chineseName")}
-                      error={!!errors.chineseName}
-                      helperText={t(errors.chineseName?.message || "")}
-                      placeholder={t("signUpTrainer.chineseNamePlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>{t("signUpTrainer.englishName")}</FormLabel>
-                    <TextField
-                      {...register("englishName")}
-                      error={!!errors.englishName}
-                      helperText={t(errors.englishName?.message || "")}
-                      placeholder={t("signUpTrainer.englishNamePlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.password")}</FormLabel>
+                  <TextField
+                    {...register("password")}
+                    type="password"
+                    error={!!errors.password}
+                    helperText={t(errors.password?.message || "")}
+                    placeholder={t("signUpTrainer.passwordPlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
               </Grid>
-              <FormControl>
-                <FormLabel>{t("signUpTrainer.birthday")}</FormLabel>
-                <Controller
-                  control={control}
-                  name="birthday"
-                  render={({ field }) => (
-                    <CustomDatePicker
-                      value={field.value ? dayjs(field.value) : null}
-                      onChange={(v) => {
-                        field.onChange(v ? v.toDate() : null);
-                      }}
-                      onBlur={field.onBlur}
-                      maxDate={dayjs().subtract(18, "year")}
-                      error={!!errors.birthday}
-                      helperText={t(errors.birthday?.message || "")}
-                    />
-                  )}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>{t("signUpTrainer.ID")}</FormLabel>
-                <TextField
-                  {...register("id_number")}
-                  error={!!errors.id_number}
-                  helperText={t(errors.id_number?.message || "")}
-                  placeholder={t("signUpTrainer.IDPlaceholder")}
-                  fullWidth
-                  variant="outlined"
-                />
-              </FormControl>
-            </React.Fragment>
-          )}
-          {activeStep === 1 && (
-            <React.Fragment>
-              <FormControl>
-                <FormLabel>{t("signUpTrainer.phone")}</FormLabel>
-                <TextField
-                  {...register("phone")}
-                  error={!!errors.phone}
-                  helperText={t(errors.phone?.message || "")}
-                  placeholder={t("signUpTrainer.phonePlaceholder")}
-                  fullWidth
-                  variant="outlined"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>{t("signUpTrainer.permanentAddress")}</FormLabel>
-                <TextField
-                  {...register("permanentAddress")}
-                  error={!!errors.permanentAddress}
-                  helperText={t(errors.permanentAddress?.message || "")}
-                  placeholder={t("signUpTrainer.permanentAddressPlaceholder")}
-                  fullWidth
-                  variant="outlined"
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>
-                  {t("signUpTrainer.correspondenceAddress")}
-                </FormLabel>
-                <TextField
-                  {...register("correspondenceAddress")}
-                  error={!!errors.correspondenceAddress}
-                  helperText={t(errors.correspondenceAddress?.message || "")}
-                  placeholder={t(
-                    "signUpTrainer.correspondenceAddressPlaceholder"
-                  )}
-                  fullWidth
-                  variant="outlined"
-                />
-              </FormControl>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>{t("signUpTrainer.email")}</FormLabel>
-                    <TextField
-                      {...register("email")}
-                      error={!!errors.email}
-                      helperText={t(errors.email?.message || "")}
-                      placeholder={t("signUpTrainer.emailPlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>{t("signUpTrainer.lineId")}</FormLabel>
-                    <TextField
-                      {...register("lineId")}
-                      error={!!errors.lineId}
-                      helperText={t(errors.lineId?.message || "")}
-                      placeholder={t("signUpTrainer.lineIdPlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.chineseName")}</FormLabel>
+                  <TextField
+                    {...register("chineseName")}
+                    error={!!errors.chineseName}
+                    helperText={t(errors.chineseName?.message || "")}
+                    placeholder={t("signUpTrainer.chineseNamePlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
               </Grid>
-              <FormControl>
-                <FormLabel>{t("signUpTrainer.postOfficeAccount")}</FormLabel>
-                <TextField
-                  {...register("postOfficeAccount")}
-                  error={!!errors.postOfficeAccount}
-                  helperText={t(errors.postOfficeAccount?.message || "")}
-                  type="text"
-                  placeholder={t("signUpTrainer.postOfficeAccountPlaceholder")}
-                  fullWidth
-                  variant="outlined"
-                />
-              </FormControl>
-            </React.Fragment>
-          )}
-          {activeStep === 2 && (
-            <React.Fragment>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>{t("signUpTrainer.emtLicense")}</FormLabel>
-                    <Controller
-                      name="emtLicense"
-                      control={control}
-                      render={({ field }) => (
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.englishName")}</FormLabel>
+                  <TextField
+                    {...register("englishName")}
+                    error={!!errors.englishName}
+                    helperText={t(errors.englishName?.message || "")}
+                    placeholder={t("signUpTrainer.englishNamePlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <FormControl>
+              <FormLabel>{t("signUpTrainer.birthday")}</FormLabel>
+              <Controller
+                control={control}
+                name="birthday"
+                render={({ field }) => (
+                  <CustomDatePicker
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(v) => {
+                      field.onChange(v ? v.toDate() : null);
+                    }}
+                    onBlur={field.onBlur}
+                    maxDate={dayjs().subtract(18, "year")}
+                    error={!!errors.birthday}
+                    helperText={t(errors.birthday?.message || "")}
+                  />
+                )}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>{t("signUpTrainer.ID")}</FormLabel>
+              <TextField
+                {...register("id_number")}
+                error={!!errors.id_number}
+                helperText={t(errors.id_number?.message || "")}
+                placeholder={t("signUpTrainer.IDPlaceholder")}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+          </React.Fragment>
+        )}
+        {activeStep === 1 && (
+          <React.Fragment>
+            <FormControl>
+              <FormLabel>{t("signUpTrainer.phone")}</FormLabel>
+              <TextField
+                {...register("phone")}
+                error={!!errors.phone}
+                helperText={t(errors.phone?.message || "")}
+                placeholder={t("signUpTrainer.phonePlaceholder")}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>{t("signUpTrainer.permanentAddress")}</FormLabel>
+              <TextField
+                {...register("permanentAddress")}
+                error={!!errors.permanentAddress}
+                helperText={t(errors.permanentAddress?.message || "")}
+                placeholder={t("signUpTrainer.permanentAddressPlaceholder")}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>{t("signUpTrainer.correspondenceAddress")}</FormLabel>
+              <TextField
+                {...register("correspondenceAddress")}
+                error={!!errors.correspondenceAddress}
+                helperText={t(errors.correspondenceAddress?.message || "")}
+                placeholder={t(
+                  "signUpTrainer.correspondenceAddressPlaceholder"
+                )}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.email")}</FormLabel>
+                  <TextField
+                    {...register("email")}
+                    error={!!errors.email}
+                    helperText={t(errors.email?.message || "")}
+                    placeholder={t("signUpTrainer.emailPlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
+              </Grid>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.lineId")}</FormLabel>
+                  <TextField
+                    {...register("lineId")}
+                    error={!!errors.lineId}
+                    helperText={t(errors.lineId?.message || "")}
+                    placeholder={t("signUpTrainer.lineIdPlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <FormControl>
+              <FormLabel>{t("signUpTrainer.postOfficeAccount")}</FormLabel>
+              <TextField
+                {...register("postOfficeAccount")}
+                error={!!errors.postOfficeAccount}
+                helperText={t(errors.postOfficeAccount?.message || "")}
+                type="text"
+                placeholder={t("signUpTrainer.postOfficeAccountPlaceholder")}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+          </React.Fragment>
+        )}
+        {activeStep === 2 && (
+          <React.Fragment>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.emtLicense")}</FormLabel>
+                  <Controller
+                    name="emtLicense"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        variant="outlined"
+                        displayEmpty
+                        label="emtLicense"
+                        sx={{
+                          backgroundColor: "hsl(0, 0%, 99%)",
+                          boxShadow: 0,
+                        }}
+                      >
+                        <MenuItem value={undefined}>
+                          <em>{t("common.none")}</em>
+                        </MenuItem>
+                        {EMT_LICENSES.map((license) => (
+                          <MenuItem key={license} value={license}>
+                            {license}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
+                  ></Controller>
+                </FormControl>
+              </Grid>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>
+                    {t("signUpTrainer.emtLicenseValidUntil")}
+                  </FormLabel>
+                  <Controller
+                    name="emtLicenseValidUntil"
+                    control={control}
+                    render={({ field }) => (
+                      <CustomDatePicker
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={(v) => {
+                          field.onChange(v ? v.toDate() : null);
+                        }}
+                        onBlur={field.onBlur}
+                        error={!!errors.emtLicenseValidUntil}
+                        helperText={t(
+                          errors.emtLicenseValidUntil?.message || ""
+                        )}
+                        minDate={dayjs().add(1, "day")}
+                      />
+                    )}
+                  ></Controller>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.tatsLicense")}</FormLabel>
+                  <Controller
+                    control={control}
+                    name="tatsLicense"
+                    render={({ field }) => (
+                      <>
                         <Select
                           {...field}
                           variant="outlined"
+                          error={!!errors.tatsLicense}
                           displayEmpty
-                          label="emtLicense"
+                          label="tatsLicense"
                           sx={{
                             backgroundColor: "hsl(0, 0%, 99%)",
                             boxShadow: 0,
                           }}
                         >
-                          <MenuItem value={undefined}>
+                          <MenuItem value={0}>
                             <em>{t("common.none")}</em>
                           </MenuItem>
-                          {EMT_LICENSES.map((license) => (
-                            <MenuItem key={license} value={license}>
-                              {license}
-                            </MenuItem>
-                          ))}
+                          <MenuItem value={1}>
+                            <em>{t("signUpTrainer.hasTatsLicense")}</em>
+                          </MenuItem>
                         </Select>
-                      )}
-                    ></Controller>
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>
-                      {t("signUpTrainer.emtLicenseValidUntil")}
-                    </FormLabel>
-                    <Controller
-                      name="emtLicenseValidUntil"
-                      control={control}
-                      render={({ field }) => (
-                        <CustomDatePicker
-                          value={field.value ? dayjs(field.value) : null}
-                          onChange={(v) => {
-                            field.onChange(v ? v.toDate() : null);
-                          }}
-                          onBlur={field.onBlur}
-                          error={!!errors.emtLicenseValidUntil}
-                          helperText={t(
-                            errors.emtLicenseValidUntil?.message || ""
-                          )}
-                          minDate={dayjs().add(1, "day")}
-                        />
-                      )}
-                    ></Controller>
-                  </FormControl>
-                </Grid>
+                        {errors.tatsLicense && (
+                          <FormHelperText>
+                            {t(errors.tatsLicense?.message || "")}
+                          </FormHelperText>
+                        )}
+                      </>
+                    )}
+                  />
+                </FormControl>
               </Grid>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>{t("signUpTrainer.tatsLicense")}</FormLabel>
-                    <Controller
-                      control={control}
-                      name="tatsLicense"
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            variant="outlined"
-                            error={!!errors.tatsLicense}
-                            displayEmpty
-                            label="tatsLicense"
-                            sx={{
-                              backgroundColor: "hsl(0, 0%, 99%)",
-                              boxShadow: 0,
-                            }}
-                          >
-                            <MenuItem value={0}>
-                              <em>{t("common.none")}</em>
-                            </MenuItem>
-                            <MenuItem value={1}>
-                              <em>{t("signUpTrainer.hasTatsLicense")}</em>
-                            </MenuItem>
-                          </Select>
-                          {errors.tatsLicense && (
-                            <FormHelperText>
-                              {t(errors.tatsLicense?.message || "")}
-                            </FormHelperText>
-                          )}
-                        </>
-                      )}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>
-                      {t("signUpTrainer.tatsLicenseNumber")}
-                    </FormLabel>
-                    <TextField
-                      {...register("tatsLicenseNumber")}
-                      error={!!errors.tatsLicenseNumber}
-                      helperText={t(errors.tatsLicenseNumber?.message || "")}
-                      placeholder={t(
-                        "signUpTrainer.tatsLicenseNumberPlaceholder"
-                      )}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel>
-                      {t("signUpTrainer.tatsLicenseValidUntil")}
-                    </FormLabel>
-                    <Controller
-                      name="tatsLicenseValidUntil"
-                      control={control}
-                      render={({ field }) => (
-                        <CustomDatePicker
-                          value={field.value ? dayjs(field.value) : null}
-                          onChange={(v) => {
-                            field.onChange(v ? v.toDate() : null);
-                          }}
-                          onBlur={field.onBlur}
-                          error={!!errors.tatsLicenseValidUntil}
-                          helperText={t(
-                            errors.tatsLicenseValidUntil?.message || ""
-                          )}
-                          minDate={dayjs().add(1, "day")}
-                        />
-                      )}
-                    ></Controller>
-                  </FormControl>
-                </Grid>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>{t("signUpTrainer.tatsLicenseNumber")}</FormLabel>
+                  <TextField
+                    {...register("tatsLicenseNumber")}
+                    error={!!errors.tatsLicenseNumber}
+                    helperText={t(errors.tatsLicenseNumber?.message || "")}
+                    placeholder={t(
+                      "signUpTrainer.tatsLicenseNumberPlaceholder"
+                    )}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
               </Grid>
-            </React.Fragment>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel>
+                    {t("signUpTrainer.tatsLicenseValidUntil")}
+                  </FormLabel>
+                  <Controller
+                    name="tatsLicenseValidUntil"
+                    control={control}
+                    render={({ field }) => (
+                      <CustomDatePicker
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={(v) => {
+                          field.onChange(v ? v.toDate() : null);
+                        }}
+                        onBlur={field.onBlur}
+                        error={!!errors.tatsLicenseValidUntil}
+                        helperText={t(
+                          errors.tatsLicenseValidUntil?.message || ""
+                        )}
+                        minDate={dayjs().add(1, "day")}
+                      />
+                    )}
+                  ></Controller>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </React.Fragment>
+        )}
+        <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          {activeStep !== 0 && (
+            <Button
+              size="small"
+              color="secondary"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+              hidden={activeStep === 0}
+            >
+              {t("common.back")}
+            </Button>
           )}
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            {activeStep !== 0 && (
-              <Button
-                size="small"
-                color="secondary"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-                hidden={activeStep === 0}
-              >
-                {t("common.back")}
-              </Button>
-            )}
-            <Box sx={{ flex: "1 1 auto" }} />
-            {activeStep === steps.length - 1 ? (
-              <Button
-                sx={{ mr: 1 }}
-                variant="contained"
-                size="small"
-                color="primary"
-                onClick={handleSubmit(onSubmit)}
-              >
-                {t("signUp.title")}
-              </Button>
-            ) : (
-              <Button
-                onClick={handleNext}
-                sx={{ mr: 1 }}
-                size="small"
-                variant="contained"
-                color="primary"
-              >
-                {t("common.next")}
-              </Button>
-            )}
-          </Box>
-          <Divider>{t("common.or")}</Divider>
-          <Typography sx={{ textAlign: "center" }}>
-            {t("signUp.alreadyHaveAccount")}{" "}
-            <Link href="/sign-in" variant="body2" sx={{ alignSelf: "center" }}>
-              {t("signIn.title")}
-            </Link>
-          </Typography>
+          <Box sx={{ flex: "1 1 auto" }} />
+          {activeStep === steps.length - 1 ? (
+            <Button
+              sx={{ mr: 1 }}
+              variant="contained"
+              size="small"
+              color="primary"
+              onClick={handleSubmit(onSubmit)}
+            >
+              {t("signUp.title")}
+            </Button>
+          ) : (
+            <Button
+              onClick={handleNext}
+              sx={{ mr: 1 }}
+              size="small"
+              variant="contained"
+              color="primary"
+            >
+              {t("common.next")}
+            </Button>
+          )}
         </Box>
-      </Card>
-    </>
+        <Divider>{t("common.or")}</Divider>
+        <Typography sx={{ textAlign: "center" }}>
+          {t("signUp.alreadyHaveAccount")}{" "}
+          <Link href="/sign-in" variant="body2" sx={{ alignSelf: "center" }}>
+            {t("signIn.title")}
+          </Link>
+        </Typography>
+      </Box>
+    </Card>
   );
 }

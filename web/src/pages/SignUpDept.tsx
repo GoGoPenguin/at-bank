@@ -22,7 +22,6 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import Logo from "../assets/logo.png";
 import Card from "../components/Card";
-import ColorModeSelect from "../components/theme/ColorModeSelect";
 import alertContext from "../context/alert.context";
 import useApi from "../hooks/use-api.hook";
 import { ROLE_DEPARTMENT, ROLES } from "../types/user.type";
@@ -146,282 +145,273 @@ export default function SignUpDept() {
   };
 
   return (
-    <>
-      <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} />
-      <Card variant="outlined" width={650}>
-        <img src={Logo} alt="Logo" width={100} />
-        <IconButton aria-label="go back" onClick={handleGoBack}>
-          <ArrowBackIcon />
-        </IconButton>
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            gap: 2,
-          }}
-        >
-          <Stepper activeStep={activeStep}>
-            {steps.map((label) => {
-              const stepProps: { completed?: boolean } = {};
-              const labelProps: {
-                optional?: React.ReactNode;
-              } = {};
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          {activeStep === 0 && (
-            <React.Fragment>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel htmlFor="account">
-                      {t("signUpDept.account")}
-                    </FormLabel>
-                    <TextField
-                      {...register("account")}
-                      error={!!errors.account}
-                      helperText={t(errors.account?.message || "")}
-                      placeholder={t("signUpDept.accountPlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel htmlFor="password">
-                      {t("signUpDept.password")}
-                    </FormLabel>
-                    <TextField
-                      {...register("password")}
-                      error={!!errors.password}
-                      helperText={t(errors.password?.message || "")}
-                      type="password"
-                      placeholder={t("signUpDept.passwordPlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
+    <Card variant="outlined" width={650}>
+      <img src={Logo} alt="Logo" width={100} />
+      <IconButton aria-label="go back" onClick={handleGoBack}>
+        <ArrowBackIcon />
+      </IconButton>
+      <Box
+        component="div"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 2,
+        }}
+      >
+        <Stepper activeStep={activeStep}>
+          {steps.map((label) => {
+            const stepProps: { completed?: boolean } = {};
+            const labelProps: {
+              optional?: React.ReactNode;
+            } = {};
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+        {activeStep === 0 && (
+          <React.Fragment>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="account">
+                    {t("signUpDept.account")}
+                  </FormLabel>
+                  <TextField
+                    {...register("account")}
+                    error={!!errors.account}
+                    helperText={t(errors.account?.message || "")}
+                    placeholder={t("signUpDept.accountPlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
               </Grid>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel htmlFor="name">
-                      {t("signUpDept.departmentName")}
-                    </FormLabel>
-                    <TextField
-                      {...register("name")}
-                      error={!!errors.name}
-                      helperText={t(errors.name?.message || "")}
-                      placeholder={t("signUpDept.departmentNamePlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel htmlFor="taxId">
-                      {t("signUpDept.taxId")}
-                    </FormLabel>
-                    <TextField
-                      {...register("taxId")}
-                      error={!!errors.taxId}
-                      helperText={t(errors.taxId?.message || "")}
-                      placeholder={t("signUpDept.taxIdPlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="password">
+                    {t("signUpDept.password")}
+                  </FormLabel>
+                  <TextField
+                    {...register("password")}
+                    error={!!errors.password}
+                    helperText={t(errors.password?.message || "")}
+                    type="password"
+                    placeholder={t("signUpDept.passwordPlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
               </Grid>
-            </React.Fragment>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="name">
+                    {t("signUpDept.departmentName")}
+                  </FormLabel>
+                  <TextField
+                    {...register("name")}
+                    error={!!errors.name}
+                    helperText={t(errors.name?.message || "")}
+                    placeholder={t("signUpDept.departmentNamePlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
+              </Grid>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="taxId">{t("signUpDept.taxId")}</FormLabel>
+                  <TextField
+                    {...register("taxId")}
+                    error={!!errors.taxId}
+                    helperText={t(errors.taxId?.message || "")}
+                    placeholder={t("signUpDept.taxIdPlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+          </React.Fragment>
+        )}
+        {activeStep === 1 && (
+          <React.Fragment>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="contactPerson">
+                    {t("signUpDept.contactPerson")}
+                  </FormLabel>
+                  <TextField
+                    {...register("contactPerson")}
+                    error={!!errors.contactPerson}
+                    helperText={t(errors.contactPerson?.message || "")}
+                    placeholder={t("signUpDept.contactPersonPlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
+              </Grid>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="phone">{t("signUpDept.phone")}</FormLabel>
+                  <TextField
+                    {...register("phone")}
+                    error={!!errors.phone}
+                    helperText={t(errors.phone?.message || "")}
+                    placeholder={t("signUpDept.phonePlaceholder")}
+                    fullWidth
+                    variant="outlined"
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <FormControl>
+              <FormLabel htmlFor="lineId">{t("signUpDept.lineId")}</FormLabel>
+              <TextField
+                {...register("lineId")}
+                error={!!errors.lineId}
+                helperText={t(errors.lineId?.message || "")}
+                placeholder={t("signUpDept.lineIdPlaceholder")}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+            <Grid container spacing={2}>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="city">{t("signUpDept.city")}</FormLabel>
+                  <Controller
+                    control={control}
+                    name="city"
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          variant="outlined"
+                          error={!!errors.city}
+                          displayEmpty
+                          sx={{
+                            backgroundColor: "hsl(0, 0%, 99%)",
+                            boxShadow: 0,
+                          }}
+                        >
+                          {cities.map((city) => (
+                            <MenuItem key={city} value={city}>
+                              {t(`cities.${city}`)}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {errors.city && (
+                          <FormHelperText error>
+                            {t(errors.city.message || "")}
+                          </FormHelperText>
+                        )}
+                      </>
+                    )}
+                  ></Controller>
+                </FormControl>
+              </Grid>
+              <Grid size="grow">
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="district">
+                    {t("signUpDept.district")}
+                  </FormLabel>
+                  <Controller
+                    control={control}
+                    name="district"
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          error={!!errors.district}
+                          variant="outlined"
+                          displayEmpty
+                          sx={{
+                            backgroundColor: "hsl(0, 0%, 99%)",
+                            boxShadow: 0,
+                          }}
+                          disabled={!watchedCity}
+                        >
+                          {districts[watchedCity]?.map((district) => (
+                            <MenuItem key={district} value={district}>
+                              {t(`districts.${watchedCity}.${district}`)}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {errors.district && (
+                          <FormHelperText error>
+                            {t(errors.district.message || "")}
+                          </FormHelperText>
+                        )}
+                      </>
+                    )}
+                  ></Controller>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <FormControl>
+              <FormLabel htmlFor="address">{t("signUpDept.address")}</FormLabel>
+              <TextField
+                {...register("address")}
+                error={!!errors.address}
+                helperText={t(errors.address?.message || "")}
+                placeholder={t("signUpDept.addressPlaceholder")}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+          </React.Fragment>
+        )}
+        <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          {activeStep !== 0 && (
+            <Button
+              size="small"
+              color="secondary"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+              hidden={activeStep === 0}
+            >
+              {t("common.back")}
+            </Button>
           )}
-          {activeStep === 1 && (
-            <React.Fragment>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel htmlFor="contactPerson">
-                      {t("signUpDept.contactPerson")}
-                    </FormLabel>
-                    <TextField
-                      {...register("contactPerson")}
-                      error={!!errors.contactPerson}
-                      helperText={t(errors.contactPerson?.message || "")}
-                      placeholder={t("signUpDept.contactPersonPlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel htmlFor="phone">
-                      {t("signUpDept.phone")}
-                    </FormLabel>
-                    <TextField
-                      {...register("phone")}
-                      error={!!errors.phone}
-                      helperText={t(errors.phone?.message || "")}
-                      placeholder={t("signUpDept.phonePlaceholder")}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <FormControl>
-                <FormLabel htmlFor="lineId">{t("signUpDept.lineId")}</FormLabel>
-                <TextField
-                  {...register("lineId")}
-                  error={!!errors.lineId}
-                  helperText={t(errors.lineId?.message || "")}
-                  placeholder={t("signUpDept.lineIdPlaceholder")}
-                  fullWidth
-                  variant="outlined"
-                />
-              </FormControl>
-              <Grid container spacing={2}>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel htmlFor="city">{t("signUpDept.city")}</FormLabel>
-                    <Controller
-                      control={control}
-                      name="city"
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            variant="outlined"
-                            error={!!errors.city}
-                            displayEmpty
-                            sx={{
-                              backgroundColor: "hsl(0, 0%, 99%)",
-                              boxShadow: 0,
-                            }}
-                          >
-                            {cities.map((city) => (
-                              <MenuItem key={city} value={city}>
-                                {t(`cities.${city}`)}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                          {errors.city && (
-                            <FormHelperText error>
-                              {t(errors.city.message || "")}
-                            </FormHelperText>
-                          )}
-                        </>
-                      )}
-                    ></Controller>
-                  </FormControl>
-                </Grid>
-                <Grid size="grow">
-                  <FormControl fullWidth>
-                    <FormLabel htmlFor="district">
-                      {t("signUpDept.district")}
-                    </FormLabel>
-                    <Controller
-                      control={control}
-                      name="district"
-                      render={({ field }) => (
-                        <>
-                          <Select
-                            {...field}
-                            error={!!errors.district}
-                            variant="outlined"
-                            displayEmpty
-                            sx={{
-                              backgroundColor: "hsl(0, 0%, 99%)",
-                              boxShadow: 0,
-                            }}
-                            disabled={!watchedCity}
-                          >
-                            {districts[watchedCity]?.map((district) => (
-                              <MenuItem key={district} value={district}>
-                                {t(`districts.${watchedCity}.${district}`)}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                          {errors.district && (
-                            <FormHelperText error>
-                              {t(errors.district.message || "")}
-                            </FormHelperText>
-                          )}
-                        </>
-                      )}
-                    ></Controller>
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <FormControl>
-                <FormLabel htmlFor="address">
-                  {t("signUpDept.address")}
-                </FormLabel>
-                <TextField
-                  {...register("address")}
-                  error={!!errors.address}
-                  helperText={t(errors.address?.message || "")}
-                  placeholder={t("signUpDept.addressPlaceholder")}
-                  fullWidth
-                  variant="outlined"
-                />
-              </FormControl>
-            </React.Fragment>
+          <Box sx={{ flex: "1 1 auto" }} />
+          {activeStep === steps.length - 1 ? (
+            <Button
+              sx={{ mr: 1 }}
+              variant="contained"
+              size="small"
+              color="primary"
+              onClick={handleSubmit(onSubmit)}
+            >
+              {t("signUp.title")}
+            </Button>
+          ) : (
+            <Button
+              onClick={handleNext}
+              sx={{ mr: 1 }}
+              size="small"
+              variant="contained"
+              color="primary"
+            >
+              {t("common.next")}
+            </Button>
           )}
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            {activeStep !== 0 && (
-              <Button
-                size="small"
-                color="secondary"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-                hidden={activeStep === 0}
-              >
-                {t("common.back")}
-              </Button>
-            )}
-            <Box sx={{ flex: "1 1 auto" }} />
-            {activeStep === steps.length - 1 ? (
-              <Button
-                sx={{ mr: 1 }}
-                variant="contained"
-                size="small"
-                color="primary"
-                onClick={handleSubmit(onSubmit)}
-              >
-                {t("signUp.title")}
-              </Button>
-            ) : (
-              <Button
-                onClick={handleNext}
-                sx={{ mr: 1 }}
-                size="small"
-                variant="contained"
-                color="primary"
-              >
-                {t("common.next")}
-              </Button>
-            )}
-          </Box>
-          <Divider>{t("common.or")}</Divider>
-          <Typography sx={{ textAlign: "center" }}>
-            {t("signUp.alreadyHaveAccount")}{" "}
-            <Link href="/sign-in" variant="body2" sx={{ alignSelf: "center" }}>
-              {t("signIn.title")}
-            </Link>
-          </Typography>
         </Box>
-      </Card>
-    </>
+        <Divider>{t("common.or")}</Divider>
+        <Typography sx={{ textAlign: "center" }}>
+          {t("signUp.alreadyHaveAccount")}{" "}
+          <Link href="/sign-in" variant="body2" sx={{ alignSelf: "center" }}>
+            {t("signIn.title")}
+          </Link>
+        </Typography>
+      </Box>
+    </Card>
   );
 }
