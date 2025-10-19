@@ -7,6 +7,7 @@ from src.document import (
     AvailabilitySlot,
     Department,
     DepartmentJob,
+    EquipmentSnapshot,
     IndividualJob,
     Job,
     TournamentJob,
@@ -145,7 +146,10 @@ class JobService:
         elif params.type == JobType.DEPARTMENT:
             job = DepartmentJob(**params.model_dump())
         elif params.type == JobType.TOURNAMENT:
-            equipments = Equipment.objects(id__in=params.equipment_rentals)
+            equipments = [
+                EquipmentSnapshot(**equipment.to_dict())
+                for equipment in Equipment.objects(id__in=params.equipment_rentals)
+            ]
             data = params.model_dump()
             data["equipment_rentals"] = equipments
             job = TournamentJob(**data)

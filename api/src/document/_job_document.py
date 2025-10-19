@@ -8,7 +8,6 @@ from mongoengine import (
     EmbeddedDocumentListField,
     EnumField,
     IntField,
-    ListField,
     ReferenceField,
     StringField,
 )
@@ -22,7 +21,7 @@ from src.utils.glossary import (
 )
 
 from ._base_document import Base
-from ._equipment_document import Equipment
+from ._equipment_document import Equipment, EquipmentSnapshot
 from ._job_shift_document import JobShift
 from ._user_document import Department
 
@@ -100,7 +99,7 @@ class TournamentJob(Job):
     number_of_tournaments = IntField(min_value=1)
     supplies_arrangement = EnumField(SuppliesArrangement)
     supplies_daigou_budget = IntField(min_value=0)
-    equipment_rentals = ListField(ReferenceField(Equipment))
+    equipment_rentals = EmbeddedDocumentListField(EquipmentSnapshot)
 
     def __init__(self, *args, **values):
         values["type"] = JobType.TOURNAMENT
@@ -118,7 +117,6 @@ class TournamentJob(Job):
             "supplies_daigou_budget": self.supplies_daigou_budget,
             "equipment_rentals": [
                 {
-                    "id": str(equipment.id),
                     "name": equipment.name,
                     "price_per_day": equipment.price_per_day,
                     "notes": equipment.notes,
