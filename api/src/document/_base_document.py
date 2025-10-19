@@ -67,6 +67,20 @@ class Base(Document):
         """
         return queryset.filter(deleted_at=datetime.datetime.min)
 
+    def to_dict(self) -> dict:
+        return {
+            "id": str(self.id),
+            "created_at": cast(datetime.datetime, self.created_at)
+            .replace(tzinfo=datetime.timezone.utc)
+            .isoformat(),
+            "updated_at": cast(datetime.datetime, self.updated_at)
+            .replace(tzinfo=datetime.timezone.utc)
+            .isoformat(),
+            "deleted_at": cast(datetime.datetime, self.deleted_at)
+            .replace(tzinfo=datetime.timezone.utc)
+            .isoformat(),
+        }
+
 
 class CommandLogger(CommandListener):
     def started(self, event: CommandStartedEvent):

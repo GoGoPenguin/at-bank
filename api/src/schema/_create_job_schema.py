@@ -4,13 +4,11 @@ from pydantic import BaseModel, Field
 
 from src.utils.glossary import (
     Cities,
-    EquipmentArrangement,
     JobType,
     ServiceContent,
     SuppliesArrangement,
 )
 
-from ._equipment_schema import EquipmentSchema
 from ._job_shit_schema import JobShiftSchema
 
 
@@ -35,13 +33,10 @@ class CreateTournamentJobSchema(CreateJobSchema):
         description="Arrangement for supplies"
     )
     supplies_daigou_budget: Optional[int] = Field(
-        description="Daigou budget for supplies", ge=0
+        description="Daigou budget for supplies", ge=0, default=None
     )
-    equipment_arrangement: EquipmentArrangement = Field(
-        description="Arrangement for equipment"
-    )
-    equipment_rentals: List[EquipmentSchema] = Field(
-        description="List of equipments want to rent", default_factory=list
+    equipment_rentals: List[str] = Field(
+        description="List of equipment ids want to rent", default_factory=list
     )
 
 

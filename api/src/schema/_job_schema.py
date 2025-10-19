@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from src.schema._equipment_schema import EquipmentSchema
 from src.utils.glossary import JobApplicationStatus, JobStatus, JobType
 
 from ._job_shit_schema import JobShiftSchema
@@ -63,8 +64,7 @@ class TournamentJobSchema(JobSchema):
     supplies_daigou_budget: int | None = Field(
         default=None, description="Daigou budget for supplies", ge=0
     )
-    equipment_arrangement: str = Field(description="Arrangement for equipment")
-    equipment_rentals: list[str] = Field(
+    equipment_rentals: list[EquipmentSchema] = Field(
         default_factory=list, description="List of equipments rented"
     )
 

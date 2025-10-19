@@ -12,6 +12,7 @@ from src.document import (
     TournamentJob,
     User,
 )
+from src.document._equipment_document import Equipment
 from src.errors import ConflictError, NotFoundError
 from src.schema import CreateJobRequestSchema, GetJobsRequestSchema
 from src.utils.glossary import JobType
@@ -144,7 +145,10 @@ class JobService:
         elif params.type == JobType.DEPARTMENT:
             job = DepartmentJob(**params.model_dump())
         elif params.type == JobType.TOURNAMENT:
-            job = TournamentJob(**params.model_dump())
+            equipments = Equipment.objects(id__in=params.equipment_rentals)
+            data = params.model_dump()
+            data["equipment_rentals"] = equipments
+            job = TournamentJob(**data)
         else:
             raise ValueError("Invalid job type provided.")
 

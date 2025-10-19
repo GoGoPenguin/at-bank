@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, cast
 
 from mongoengine import (
@@ -14,7 +14,6 @@ from mongoengine import (
 )
 
 from src.utils.glossary import (
-    EquipmentArrangement,
     JobApplicationStatus,
     JobStatus,
     JobType,
@@ -53,7 +52,7 @@ class Job(Base):
 
     def to_dict(self) -> dict:
         return {
-            "id": str(self.id),
+            **super().to_dict(),
             "type": self.type,
             "status": self.status,
             "title": self.title,
@@ -72,7 +71,9 @@ class Job(Base):
             "notes": self.notes,
             "shifts": [
                 {
-                    "date": cast(datetime, shift.date).isoformat(),
+                    "date": cast(datetime, shift.date)
+                    .replace(tzinfo=timezone.utc)
+                    .isoformat(),
                     "start_time": shift.start_time,
                     "end_time": shift.end_time,
                 }
@@ -80,9 +81,6 @@ class Job(Base):
             ],
             "is_saved": self.is_saved,
             "application_status": self.application_status,
-            "created_at": cast(datetime, self.created_at).isoformat(),
-            "updated_at": cast(datetime, self.updated_at).isoformat(),
-            "deleted_at": cast(datetime, self.deleted_at).isoformat(),
         }
 
 
@@ -95,15 +93,18 @@ class TournamentJob(Job):
         ],
     }
 
-    city = StringField(max_length=50, required=True)
-    district = StringField(max_length=50, required=True)
-    address = StringField(max_length=255, required=True)
-    tournament_name = StringField(max_length=100, required=True)
-    number_of_tournaments = IntField(min_value=1, required=True)
-    supplies_arrangement = EnumField(SuppliesArrangement, required=True)
+    city = StringField(max_length=50)
+    district = StringField(max_length=50)
+    address = StringField(max_length=255)
+    tournament_name = StringField(max_length=100)
+    number_of_tournaments = IntField(min_value=1)
+    supplies_arrangement = EnumField(SuppliesArrangement)
     supplies_daigou_budget = IntField(min_value=0)
-    equipment_arrangement = EnumField(EquipmentArrangement, required=True)
     equipment_rentals = ListField(ReferenceField(Equipment))
+
+    def __init__(self, *args, **values):
+        values["type"] = JobType.TOURNAMENT
+        super().__init__(*args, **values)
 
     def to_dict(self) -> dict:
         return {
@@ -115,12 +116,12 @@ class TournamentJob(Job):
             "number_of_tournaments": self.number_of_tournaments,
             "supplies_arrangement": self.supplies_arrangement,
             "supplies_daigou_budget": self.supplies_daigou_budget,
-            "equipment_arrangement": self.equipment_arrangement,
             "equipment_rentals": [
                 {
                     "id": str(equipment.id),
                     "name": equipment.name,
                     "price_per_day": equipment.price_per_day,
+                    "notes": equipment.notes,
                 }
                 for equipment in cast(List[Equipment], self.equipment_rentals)
             ],
@@ -136,14 +137,17 @@ class IndividualJob(Job):
         ],
     }
 
-    type = JobType.INDIVIDUAL
     service_content = EnumField(ServiceContent)
-    contact_person = StringField(max_length=100, required=True)
-    contact_phone = StringField(regex=r"^(09|\+8869)[0-9]{8}$", required=True)
+    contact_person = StringField(max_length=100)
+    contact_phone = StringField(regex=r"^(09|\+8869)[0-9]{8}$")
     contact_email = EmailField(required=True)
-    city = StringField(max_length=50, required=True)
-    district = StringField(max_length=50, required=True)
-    address = StringField(max_length=255, required=True)
+    city = StringField(max_length=50)
+    district = StringField(max_length=50)
+    address = StringField(max_length=255)
+
+    def __init__(self, *args, **values):
+        values["type"] = JobType.INDIVIDUAL
+        super().__init__(*args, **values)
 
     def to_dict(self) -> dict:
         return {
@@ -159,11 +163,17 @@ class IndividualJob(Job):
 
 
 class DepartmentJob(Job):
-    type = JobType.DEPARTMENT
     service_content = EnumField(ServiceContent)
+
+    def __init__(self, *args, **values):
+        values["type"] = JobType.DEPARTMENT
+        super().__init__(*args, **values)
 
     def to_dict(self) -> dict:
         return {
             **super().to_dict(),
             "service_content": self.service_content,
+            "city": cast(Department, self.created_by).city,
+            "district": cast(Department, self.created_by).district,
+            "address": cast(Department, self.created_by).address,
         }
