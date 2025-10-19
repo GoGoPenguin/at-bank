@@ -48,7 +48,8 @@
     "success": {
       "signUpSuccessful": "Sign up successful",
       "savedSuccessfully": "Saved successfully",
-      "unsavedSuccessfully": "Unsaved successfully"
+      "unsavedSuccessfully": "Unsaved successfully",
+      "jobPostedSuccessfully": "Job posted successfully"
     },
     "info": {
       "appliedSuccessfully": "Application submitted, please wait for a response."

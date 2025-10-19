@@ -47,7 +47,8 @@
     "success": {
       "signUpSuccessful": "註冊成功",
       "savedSuccessfully": "儲存成功",
-      "unsavedSuccessfully": "取消儲存成功"
+      "unsavedSuccessfully": "取消儲存成功",
+      "jobPostedSuccessfully": "職缺發布成功"
     },
     "info": {
       "appliedSuccessfully": "已送出應徵申請，請耐心等待回覆。"
