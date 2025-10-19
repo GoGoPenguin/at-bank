@@ -1,8 +1,11 @@
 import type { SignInRequestBody, SignInResponseBody } from "../types/auth.type";
-import type {
-  GetJobResponse,
-  GetJobsRequestParams,
-  GetJobsResponse,
+import type { Equipment } from "../types/equipment.type";
+import {
+  JOB_TYPE_TOURNAMENT,
+  type CreateJobRequest,
+  type GetJobResponse,
+  type GetJobsRequestParams,
+  type GetJobsResponse,
 } from "../types/job.type";
 import type { SignUpRequestBody, User } from "../types/user.type";
 import useAxios from "./use-axios.hook";
@@ -49,8 +52,35 @@ const useApi = () => {
   const unsaveJob = async (id: string): Promise<void> => {
     await axios.patch(`/api/jobs/${id}/unsave`);
   };
+  const createJob = async (data: CreateJobRequest): Promise<void> => {
+    data.shifts = data.shifts.map((shift) => ({
+      ...shift,
+      startTime:
+        typeof shift.startTime === "number"
+          ? shift.startTime
+          : shift.startTime.getHours() * 3600 +
+            shift.startTime.getMinutes() * 60,
+      endTime:
+        typeof shift.endTime === "number"
+          ? shift.endTime
+          : shift.endTime.getHours() * 3600 + shift.endTime.getMinutes() * 60,
+    }));
+    if (data.type === JOB_TYPE_TOURNAMENT) {
+      data.city = data.tournamentCity;
+      data.district = data.tournamentDistrict;
+      data.address = data.tournamentAddress;
+      delete data.tournamentCity;
+      delete data.tournamentDistrict;
+      delete data.tournamentAddress;
+    }
+    await axios.post(`/api/jobs`, data);
+  };
   const applyToJob = async (id: string, shifts: string[]): Promise<void> => {
     await axios.post(`/api/jobs/apply`, { jobId: id, availableSlots: shifts });
+  };
+  const getEquipments = async (): Promise<Equipment[]> => {
+    const response = await axios.get("/api/equipments");
+    return response.data;
   };
 
   return {
@@ -63,7 +93,9 @@ const useApi = () => {
     getJob,
     saveJob,
     unsaveJob,
+    createJob,
     applyToJob,
+    getEquipments,
   };
 };
 

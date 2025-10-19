@@ -1,17 +1,10 @@
+import { Delete, Edit, MoreVert, PauseCircle } from "@mui/icons-material";
 import {
-  Delete,
-  Edit,
-  MoreVert,
-  PauseCircle,
-  PlayCircle,
-  Visibility,
-} from "@mui/icons-material";
-import {
-  Button,
   Card,
   CardActions,
   CardContent,
   Chip,
+  Container,
   Divider,
   IconButton,
   ListItemIcon,
@@ -21,74 +14,106 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import dayjs from "dayjs";
 import React, { useState } from "react";
-
-type JobType = "Tournament" | "Individual" | "Department";
-type JobStatus = "Active" | "Paused" | "Closed";
-
-export interface JobPosting {
-  id: string;
-  title: string;
-  status: JobStatus;
-  jobType: JobType;
-  applicants: number;
-  needsReview: number;
-  datePosted: Date;
-}
+import { useTranslation } from "react-i18next";
+import type { Job, JobStatus, JobType } from "../types/job.type";
 
 const jobTypeColors: Record<JobType, "primary" | "secondary" | "info"> = {
-  Tournament: "info",
-  Individual: "primary",
-  Department: "secondary",
+  tournament: "info",
+  individual: "primary",
+  department: "secondary",
 };
 
 const jobStatusColors: Record<JobStatus, "success" | "warning" | "default"> = {
-  Active: "success",
-  Paused: "warning",
-  Closed: "default",
+  active: "warning",
+  paused: "success",
+  closed: "default",
 };
 
-const JobDashboardCard: React.FC<{ job: JobPosting }> = ({ job }) => {
+const JobDashboardCard: React.FC<{ job: Job }> = ({ job }) => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+  const postedAtDiff = Date.now() - new Date(job.createdAt).getTime();
+  const postedAtSeconds = Math.floor(postedAtDiff / 1000);
+  const postedAtMinutes = Math.floor(postedAtDiff / 60000);
+  const postedAtHours = Math.floor(postedAtDiff / 3600000);
+  const postedAtDays = Math.floor(postedAtDiff / 86400000);
+  const postedAtMonths = Math.floor(postedAtDiff / 2592000000);
+  const postedAtYears = Math.floor(postedAtDiff / 31536000000);
+
   return (
     <Card
       variant="outlined"
       sx={{
-        marginRight: "auto",
         height: "100%",
         width: "350px",
+        display: "flex",
+        flexDirection: "column",
         transition: "transform 0.2s, box-shadow 0.2s",
         "&:hover": {
           boxShadow: "0 8px 16px rgba(0,0,0,0.05)",
         },
       }}
     >
-      <CardContent sx={{ flexGrow: 1, p: 3 }}>
+      <CardContent
+        sx={{
+          flexGrow: 3,
+          p: 3,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Stack direction="row" justifyContent="space-between" spacing={1}>
           <Chip
-            label={job.jobType}
-            color={jobTypeColors[job.jobType]}
+            label={t(`job.${job.type}`)}
+            color={jobTypeColors[job.type]}
             size="small"
             sx={{ fontWeight: 600 }}
           />
           <Chip
-            label={job.status}
-            color={jobStatusColors[job.status]}
+            label={t(`job.${job.status}`)}
+            color={job.status ? jobStatusColors[job.status] : "default"}
             size="small"
             variant="outlined"
           />
         </Stack>
-        <Typography variant="h6" component="h3" sx={{ mt: 2, mb: 1 }}>
+        <Typography
+          variant="h6"
+          component="h3"
+          sx={{
+            mt: 2,
+            mb: 1,
+            flexGrow: 1,
+          }}
+        >
           {job.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Posted on {dayjs(job.datePosted).format("MMM d, YYYY")}
+          {t("job.postedAt", {
+            timeAgo:
+              postedAtYears > 0
+                ? t("time.year", { count: postedAtYears })
+                : postedAtMonths > 0
+                ? t("time.month", { count: postedAtMonths })
+                : postedAtDays > 0
+                ? t("time.day", { count: postedAtDays })
+                : postedAtHours > 0
+                ? t("time.hour", {
+                    count: Math.max(postedAtHours, 1),
+                  })
+                : postedAtMinutes > 0
+                ? t("time.minute", {
+                    count: Math.max(postedAtMinutes, 1),
+                  })
+                : t("time.second", {
+                    count: Math.max(postedAtSeconds, 1),
+                  }),
+          })}
         </Typography>
       </CardContent>
       <Divider />
@@ -98,13 +123,15 @@ const JobDashboardCard: React.FC<{ job: JobPosting }> = ({ job }) => {
           p: 2,
         }}
       >
-        <Button
+        {/* NOTE: dummy container for future use */}
+        <Container></Container>
+        {/* <Button
           startIcon={<Visibility />}
           size="small"
           onClick={() => alert(`Viewing applicants for ${job.title}`)}
         >
           View Applicants ({job.applicants})
-        </Button>
+        </Button> */}
         <IconButton id={`more-button-${job.id}`} onClick={handleClick}>
           <MoreVert />
         </IconButton>
@@ -118,9 +145,16 @@ const JobDashboardCard: React.FC<{ job: JobPosting }> = ({ job }) => {
             <ListItemIcon>
               <Edit fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Edit</ListItemText>
+            <ListItemText>{t("common.edit")}</ListItemText>
           </MenuItem>
-          {job.status === "Active" && (
+
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <PauseCircle fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>{t("common.pause")}</ListItemText>
+          </MenuItem>
+          {/* {job.applicationStatus === "Active" && (
             <MenuItem onClick={handleClose}>
               <ListItemIcon>
                 <PauseCircle fontSize="small" />
@@ -135,12 +169,12 @@ const JobDashboardCard: React.FC<{ job: JobPosting }> = ({ job }) => {
               </ListItemIcon>
               <ListItemText>Resume</ListItemText>
             </MenuItem>
-          )}
+          )} */}
           <MenuItem onClick={handleClose} sx={{ color: "error.main" }}>
             <ListItemIcon sx={{ color: "error.main" }}>
               <Delete fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Close Job</ListItemText>
+            <ListItemText>{t("common.close")}</ListItemText>
           </MenuItem>
         </Menu>
       </CardActions>

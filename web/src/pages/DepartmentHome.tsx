@@ -9,51 +9,32 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Container from "../components/Container";
 import Footer from "../components/Footer";
-import JobCard, { type JobPosting } from "../components/JobDashboardCard";
+import JobDashboardCard from "../components/JobDashboardCard";
 import NavBar from "../components/NavBar";
+import PostJobModal from "../components/PostJobModal";
 import StatsCard from "../components/StatsCard";
+import useApi from "../hooks/use-api.hook";
 
 function DepartmentHome() {
-  const mockJobs: JobPosting[] = [
-    {
-      id: "101",
-      title: "Assistant Athletic Trainer",
-      status: "Active",
-      jobType: "Department",
-      applicants: 15,
-      needsReview: 4,
-      datePosted: new Date(2025, 7, 28),
-    },
-    {
-      id: "102",
-      title: "Head AT - Men's Basketball",
-      status: "Active",
-      jobType: "Individual",
-      applicants: 22,
-      needsReview: 8,
-      datePosted: new Date(2025, 7, 22),
-    },
-    {
-      id: "103",
-      title: "Weekend Tournament Coverage",
-      status: "Paused",
-      jobType: "Tournament",
-      applicants: 8,
-      needsReview: 0,
-      datePosted: new Date(2025, 6, 30),
-    },
-    {
-      id: "104",
-      title: "Graduate Assistant Athletic Trainer",
-      status: "Closed",
-      jobType: "Department",
-      applicants: 31,
-      needsReview: 0,
-      datePosted: new Date(2025, 5, 15),
-    },
-  ];
+  const { t } = useTranslation();
+  const { getJobs } = useApi();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const page = 1;
+  const { data: jobs, refetch } = useQuery({
+    queryKey: [`jobs`, { page }],
+    queryFn: () => getJobs({ page, size: 10 }),
+  });
+
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => {
+    refetch();
+    setModalOpen(false);
+  };
 
   return (
     <>
@@ -79,14 +60,14 @@ function DepartmentHome() {
           sx={{ mb: 4 }}
         >
           <Typography variant="h4" component="h1">
-            Overview
+            {t("departmentDashboard.overview")}
           </Typography>
           <Button
             variant="contained"
             startIcon={<Add />}
-            onClick={() => alert("Opening new job form...")}
+            onClick={handleOpenModal}
           >
-            Post a New Job
+            {t("departmentDashboard.postANewJob")}
           </Button>
         </Stack>
         <Grid
@@ -98,40 +79,40 @@ function DepartmentHome() {
           <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <StatsCard
               icon={<Work fontSize="large" sx={{ font: "white" }} />}
-              title="Active Postings"
+              title={t("departmentDashboard.activeJobs")}
               value="2"
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <StatsCard
               icon={<HowToRegIcon fontSize="large" />}
-              title="Hired"
+              title={t("departmentDashboard.hired")}
               value="12"
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <StatsCard
               icon={<PeopleIcon fontSize="large" />}
-              title="Total Applicants"
+              title={t("departmentDashboard.totalApplicants")}
               value="76"
-              interval="Last 30 days"
+              interval={t("departmentDashboard.lastDay", { count: 30 })}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <StatsCard
               icon={<VisibilityIcon fontSize="large" />}
-              title="Total Views"
+              title={t("departmentDashboard.totalViews")}
               value="138"
-              interval="Last 30 days"
+              interval={t("departmentDashboard.lastDay", { count: 30 })}
             />
           </Grid>
         </Grid>
         <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
-          Yours Postings
+          {t("departmentDashboard.yoursPostings")}
         </Typography>
-        <Grid container spacing={3}>
-          {mockJobs.map((job) => (
-            <Grid
+        <Grid container spacing={3} justifyContent="flex-start">
+          {jobs?.data.map((job) => (
+            <Box
               key={job.id}
               sx={{
                 xs: { span: 12 },
@@ -139,13 +120,14 @@ function DepartmentHome() {
                 lg: { span: 4 },
               }}
             >
-              <JobCard job={job} />
-            </Grid>
+              <JobDashboardCard job={job} />
+            </Box>
           ))}
         </Grid>
       </Box>
       <Divider />
-      <Footer></Footer>
+      <Footer />
+      <PostJobModal open={isModalOpen} onClose={handleCloseModal} />
     </>
   );
 }

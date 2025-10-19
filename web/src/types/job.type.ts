@@ -1,9 +1,10 @@
+import type { Equipment } from "./equipment.type";
+
 export type JobType = "tournament" | "individual" | "department";
 export type JobStatus = "active" | "paused" | "closed";
 export type ApplicationStatus = "pending" | "accepted" | "rejected";
-export type ServiceContent = "Athletic Training" | "Massage Therapy";
-export type SuppliesType = "Reimbursement" | "Self-provided" | "Proxy Purchase";
-export type EquipmentType = "Self-provided" | "Rental";
+export type ServiceContent = "athletic_training" | "massage_therapy";
+export type SuppliesArrangement = "reimbursement" | "self_provided" | "daigou";
 
 export const JOB_TYPE_TOURNAMENT: JobType = "tournament";
 export const JOB_TYPE_INDIVIDUAL: JobType = "individual";
@@ -18,16 +19,13 @@ export const APPLICATION_STATUS_ACCEPTED: ApplicationStatus = "accepted";
 export const APPLICATION_STATUS_REJECTED: ApplicationStatus = "rejected";
 
 export const SERVICE_CONTENT_ATHLETIC_TRAINING: ServiceContent =
-  "Athletic Training";
+  "athletic_training";
 export const SERVICE_CONTENT_MASSAGE_THERAPY: ServiceContent =
-  "Massage Therapy";
+  "massage_therapy";
 
-export const SUPPLIES_REIMBURSEMENT: SuppliesType = "Reimbursement";
-export const SUPPLIES_SELF_PROVIDED: SuppliesType = "Self-provided";
-export const SUPPLIES_PROXY_PURCHASE: SuppliesType = "Proxy Purchase";
-
-export const EQUIPMENT_SELF_PROVIDED: EquipmentType = "Self-provided";
-export const EQUIPMENT_RENTAL: EquipmentType = "Rental";
+export const SUPPLIES_REIMBURSEMENT: SuppliesArrangement = "reimbursement";
+export const SUPPLIES_SELF_PROVIDED: SuppliesArrangement = "self_provided";
+export const SUPPLIES_DAIGOU: SuppliesArrangement = "daigou";
 
 export const JOB_STATUSES: JobStatus[] = [
   JOB_STATUS_ACTIVE,
@@ -48,20 +46,16 @@ export const SERVICE_CONTENTS: ServiceContent[] = [
   SERVICE_CONTENT_ATHLETIC_TRAINING,
   SERVICE_CONTENT_MASSAGE_THERAPY,
 ] as const;
-export const SUPPLIES_TYPES: SuppliesType[] = [
+export const SUPPLIES_ARRANGEMENTS: SuppliesArrangement[] = [
   SUPPLIES_REIMBURSEMENT,
   SUPPLIES_SELF_PROVIDED,
-  SUPPLIES_PROXY_PURCHASE,
-] as const;
-export const EQUIPMENT_TYPES: EquipmentType[] = [
-  EQUIPMENT_SELF_PROVIDED,
-  EQUIPMENT_RENTAL,
+  SUPPLIES_DAIGOU,
 ] as const;
 
 interface Shift {
   date: Date;
-  startTime: number;
-  endTime: number;
+  startTime: Date | number;
+  endTime: Date | number;
 }
 
 export interface Job {
@@ -105,8 +99,7 @@ export interface TournamentJob extends Job {
   numberOfTournaments: number;
   suppliesArrangement: string;
   suppliesDaigouBudget: number;
-  equipmentArrangement: string;
-  equipmentRentals: string[];
+  equipmentRentals: Equipment[];
 }
 
 export interface DepartmentJob extends Job {
@@ -128,3 +121,28 @@ export interface GetJobsResponse {
 }
 
 export type GetJobResponse = Job;
+
+export interface CreateJobRequest {
+  type: JobType;
+  title: string;
+  notes: string;
+  wage: number;
+  vacancies: number;
+  shifts: Shift[];
+  contactPerson?: string;
+  contactPersonBirthday?: Date;
+  contactPhone?: string;
+  contactEmail?: string;
+  city?: string;
+  district?: string;
+  address?: string;
+  serviceContents?: string[];
+  tournamentName?: string;
+  numberOfTournaments?: number;
+  tournamentCity?: string;
+  tournamentDistrict?: string;
+  tournamentAddress?: string;
+  suppliesArrangement?: SuppliesArrangement;
+  suppliesDaigouBudget?: number;
+  equipmentRentals?: string[];
+}
