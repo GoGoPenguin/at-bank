@@ -41,7 +41,7 @@ const jobHandlers = [
         return HttpResponse.json({ error: "unauthorized" }, { status: 401 });
       }
 
-      const job = mockJobs.find((j) => j.id === Number(params.id));
+      const job = mockJobs.find((j) => j.id === params.id);
       if (!job) {
         return HttpResponse.json({ error: "not found" }, { status: 404 });
       }

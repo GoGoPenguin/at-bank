@@ -100,7 +100,8 @@ export default function JobDiscoveryCard({ job }: { job: Job }) {
 
   const calculateTotalHours = (job: Job) => {
     return job.shifts.reduce(
-      (sum, shift) => sum + (shift.endTime - shift.startTime) / 3600,
+      (sum, shift) =>
+        sum + ((shift.endTime as number) - (shift.startTime as number)) / 3600,
       0
     );
   };

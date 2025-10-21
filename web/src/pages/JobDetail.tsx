@@ -114,7 +114,8 @@ function JobDetail() {
 
   const calculateTotalHours = (job: Job) => {
     return job.shifts.reduce(
-      (sum, shift) => sum + (shift.endTime - shift.startTime) / 3600,
+      (sum, shift) =>
+        sum + ((shift.endTime as number) - (shift.startTime as number)) / 3600,
       0
     );
   };
@@ -368,8 +369,8 @@ function JobDetail() {
                           {`${date.getFullYear()}/${
                             date.getMonth() + 1
                           }/${date.getDate()} ${formatTime(
-                            shift.startTime
-                          )} - ${formatTime(shift.endTime)}`}
+                            shift.startTime as number
+                          )} - ${formatTime(shift.endTime as number)}`}
                         </Typography>
                       );
                     })}

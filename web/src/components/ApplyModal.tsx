@@ -151,8 +151,8 @@ export default function ApplyModal({
                     <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       {formatShiftTime(
                         shift.date,
-                        shift.startTime,
-                        shift.endTime
+                        shift.startTime as number,
+                        shift.endTime as number
                       )}
                     </Typography>
                   </Box>
