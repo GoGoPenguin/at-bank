@@ -3,7 +3,7 @@ from typing import Union
 from dependency_injector.wiring import Provide
 from fastapi import Request
 
-from src.document import Department, TournamentJob
+from src.document import DepartmentJob, TournamentJob
 from src.errors._errors import UnauthorizedError
 from src.schema import DepartmentJobSchema, IndividualJobSchema, TournamentJobSchema
 from src.service import JobService
@@ -25,6 +25,6 @@ class GetJobHandler:
             TournamentJobSchema(**job.to_dict())
             if isinstance(job, TournamentJob)
             else DepartmentJobSchema(**job.to_dict())
-            if isinstance(job, Department)
+            if isinstance(job, DepartmentJob)
             else IndividualJobSchema(**job.to_dict())
         )
