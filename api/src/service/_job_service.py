@@ -23,106 +23,39 @@ class JobService:
     def get_jobs(
         self, user: User, params: GetJobsRequestSchema
     ) -> Tuple[List[Job], Tuple[int, int]]:
-        skipping = (params.page - 1) * params.size
-        pipeline = []
+        query = Job.objects()
 
         if params.city:
-            pipeline.insert(0, {"$match": {"city": params.city}})
+            query = query.filter(city=params.city)
         if params.job_type:
-            pipeline.insert(0, {"$match": {"type": params.job_type}})
+            query = query.filter(type=params.job_type)
 
         if isinstance(user, Department):
-            pipeline.insert(0, {"$match": {"created_by": user.id}})
-        elif isinstance(user, AthleticTrainer):
-            pipeline.extend(
-                [
-                    {
-                        "$lookup": {
-                            "from": "user",
-                            "let": {"job_id": "$_id"},
-                            "pipeline": [
-                                {
-                                    "$match": {
-                                        "$expr": {
-                                            "$and": [
-                                                {"$eq": ["$_id", user.id]},
-                                                {
-                                                    "$in": [
-                                                        "$$job_id",
-                                                        {
-                                                            "$ifNull": [
-                                                                "$saved_jobs",
-                                                                [],
-                                                            ]
-                                                        },
-                                                    ]
-                                                },
-                                            ]
-                                        }
-                                    }
-                                }
-                            ],
-                            "as": "saved_by_user",
-                        },
-                    },
-                    {
-                        "$lookup": {
-                            "from": "application",
-                            "let": {"job_id": "$_id"},
-                            "pipeline": [
-                                {
-                                    "$match": {
-                                        "$expr": {
-                                            "$and": [
-                                                {"$eq": ["$job", "$$job_id"]},
-                                                {"$eq": ["$applicant", user.id]},
-                                            ]
-                                        }
-                                    }
-                                },
-                                {"$project": {"status": 1}},
-                            ],
-                            "as": "application_status",
-                        }
-                    },
-                    {
-                        "$addFields": {
-                            "is_saved": {"$gt": [{"$size": "$saved_by_user"}, 0]},
-                            "application_status": {
-                                "$cond": {
-                                    "if": {
-                                        "$gt": [{"$size": "$application_status"}, 0]
-                                    },
-                                    "then": {
-                                        "$arrayElemAt": [
-                                            "$application_status.status",
-                                            0,
-                                        ]
-                                    },
-                                    "else": None,
-                                }
-                            },
-                        }
-                    },
-                    {"$project": {"saved_by_user": 0}},
-                ]
-            )
-        rows = list(Job.objects().aggregate(pipeline))
-        total_items = len(rows)
+            query = query.filter(created_by=user)
+
+        all_jobs = list(query.all())
+        total_items = len(all_jobs)
         total_pages = (total_items + params.size - 1) // params.size
-        rows = rows[skipping : skipping + params.size]
-        return [
-            (
-                job := Job._from_son(row),
-                setattr(job, "is_saved", cast(dict, row).get("is_saved")),
-                setattr(
-                    job, "application_status", cast(dict, row).get("application_status")
-                ),
-            )[0]
-            if isinstance(user, AthleticTrainer)
-            else Job._from_son(row)
-            for row in rows
-        ], (total_items, total_pages)
+        start = (params.page - 1) * params.size
+        end = start + params.size
+        paginated_jobs = all_jobs[start:end]
+
+        if isinstance(user, AthleticTrainer):
+            saved_job_ids = {job.id for job in getattr(user, "saved_jobs", [])}
+
+            user_applications = {
+                app.job.id: app.status
+                for app in Application.objects().filter(applicant=user).all()
+            }
+
+            enriched_jobs = []
+            for job in paginated_jobs:
+                setattr(job, "is_saved", job.id in saved_job_ids)
+                setattr(job, "application_status", user_applications.get(job.id))
+                enriched_jobs.append(job)
+            return enriched_jobs, (total_items, total_pages)
+
+        return paginated_jobs, (total_items, total_pages)
 
     def get_job(self, id: str, user: Optional[User] = None) -> Job:
         job = Job.objects(id=id).first()
