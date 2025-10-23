@@ -1,7 +1,7 @@
 from ._apply_to_job_handler import ApplyToJobHandler
 from ._check_account_handler import CheckAccountHandler
 from ._create_job_handler import CreateJobHandler
-from ._error_handler import error_handler
+from ._error_handler import error_handler, firebase_error_handler
 from ._get_equipments_handler import GetEquipmentsHandler
 from ._get_job_handler import GetJobHandler
 from ._get_jobs_handler import GetJobsHandler
