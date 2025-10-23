@@ -23,7 +23,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: cd web && npm ci && npm run build
+      - name: Build Web App
+        env:
+          VITE_BASE_URL: ${{ vars.BASE_URL }}
+        run: |
+          cd web
+          npm ci
+          mv .env.template .env
+          sed -i "s|^VITE_BASE_URL=.*|VITE_BASE_URL=$VITE_BASE_URL|" .env
+          npm run build
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
