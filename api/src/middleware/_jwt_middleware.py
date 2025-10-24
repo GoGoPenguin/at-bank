@@ -9,12 +9,14 @@ from starlette.authentication import SimpleUser
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
 from src.errors import UnauthorizedError
+from src.service import UserService
 from src.utils.glossary import Token
 from src.utils.jwt import JWT
 
 
 class JWTMiddleware(BaseHTTPMiddleware):
     jwt: JWT = Provide["jwt"]
+    user_service: UserService = Provide["user_service"]
 
     @property
     def allow_list_regex(self) -> List[str]:
@@ -51,8 +53,14 @@ class JWTMiddleware(BaseHTTPMiddleware):
 
                 if not refresh_token:
                     raise KeyError("Missing refresh token")
-
                 request.state.refresh_token = self.jwt.decode(refresh_token)
+
+                user = self.user_service.get_user_by_account(
+                    request.state.refresh_token.account
+                )
+                if user is None:
+                    raise UnauthorizedError(detail="User not found.")
+                request.state.user = user
                 request.scope["user"] = SimpleUser(request.state.refresh_token.account)
             except KeyError:
                 raise UnauthorizedError(

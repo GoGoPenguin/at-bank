@@ -1,10 +1,9 @@
-from typing import Annotated
+from typing import Annotated, cast
 
 from dependency_injector.wiring import Provide
 from fastapi import Query, Request
 
-from src.document import DepartmentJob, IndividualJob
-from src.errors import UnauthorizedError
+from src.document import DepartmentJob, IndividualJob, User
 from src.schema import (
     DepartmentJobSchema,
     GetJobsRequestSchema,
@@ -12,20 +11,18 @@ from src.schema import (
     PaginationSchema,
     TournamentJobSchema,
 )
-from src.service import JobService, UserService
+from src.service import JobService
 
 
 class GetJobsHandler:
     job_service: JobService = Provide["job_service"]
-    user_service: UserService = Provide["user_service"]
 
     def handle(
         self, request: Request, params: Annotated[GetJobsRequestSchema, Query()]
     ) -> PaginationSchema:
-        user = self.user_service.get_user_by_account(request.state.access_token.account)
-        if user is None:
-            raise UnauthorizedError(detail="User not found.")
-        jobs, pagination = self.job_service.get_jobs(user, params)
+        jobs, pagination = self.job_service.get_jobs(
+            cast(User, request.state.user), params
+        )
 
         return PaginationSchema(
             data=[

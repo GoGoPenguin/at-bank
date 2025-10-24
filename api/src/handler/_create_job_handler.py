@@ -1,29 +1,26 @@
-from typing import Union
+from typing import Union, cast
 
 from dependency_injector.wiring import Provide
 from fastapi import Request
 
-from src.document import Department, DepartmentJob, IndividualJob
-from src.errors import ForbiddenError, UnauthorizedError
+from src.document import Department, DepartmentJob, IndividualJob, User
+from src.errors import ForbiddenError
 from src.schema import (
     CreateJobRequestSchema,
     DepartmentJobSchema,
     IndividualJobSchema,
     TournamentJobSchema,
 )
-from src.service import JobService, UserService
+from src.service import JobService
 
 
 class CreateJobHandler:
     job_service: JobService = Provide["job_service"]
-    user_service: UserService = Provide["user_service"]
 
     def handle(
         self, request: Request, params: CreateJobRequestSchema
     ) -> Union[IndividualJobSchema, DepartmentJobSchema, TournamentJobSchema]:
-        user = self.user_service.get_user_by_account(request.state.access_token.account)
-        if user is None:
-            raise UnauthorizedError(detail="User not found.")
+        user = cast(User, request.state.user)
         if not isinstance(user, Department):
             raise ForbiddenError(detail="Only departments can create jobs.")
 
