@@ -13,4 +13,5 @@ from ._jwt_claim_schema import JWTClaim
 from ._pagination_schema import PaginationSchema
 from ._sign_in_schema import SignInRequestSchema
 from ._sign_up_schema import SignUpRequestSchema
+from ._update_job_status_schema import UpdateJobStatusSchema
 from ._user_schema import AthleticTrainerSchema, DepartmentSchema, UserSchema

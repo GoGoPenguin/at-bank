@@ -5,11 +5,13 @@ from fastapi.exception_handlers import RequestValidationError
 from fastapi.responses import ORJSONResponse
 from firebase_functions import https_fn
 from jwt import PyJWTError
+from loguru import logger
 from mongoengine import NotUniqueError
 
 from src.errors import (
     ConflictError,
     Error,
+    ForbiddenError,
     InternalServerError,
     UnauthorizedError,
     ValidationError,
@@ -113,7 +115,16 @@ async def error_handler(request: Request, ex: Exception):
                 content=err.model_dump(),
                 status_code=err.status,
             )
+        case ForbiddenError():
+            err = cast(ForbiddenError, ex)
+            err.instance = request.url.path
+            return ORJSONResponse(
+                headers=headers,
+                content=err.model_dump(),
+                status_code=err.status,
+            )
         case _:
+            logger.error(f"Unhandled exception: {ex}", exc_info=True)
             err = InternalServerError(instance=request.url.path, detail=str(ex))
             return ORJSONResponse(
                 headers=headers,

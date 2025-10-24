@@ -58,3 +58,9 @@ router.add_api_route(
         }
     },
 )
+router.add_api_route(
+    name="Update Job Status",
+    path="/status",
+    methods=[HttpMethod.PATCH],
+    endpoint=handler.UpdateJobStatusHandler().handle,
+)

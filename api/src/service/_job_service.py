@@ -16,7 +16,7 @@ from src.document import (
 from src.document._equipment_document import Equipment
 from src.errors import ConflictError, NotFoundError
 from src.schema import CreateJobRequestSchema, GetJobsRequestSchema
-from src.utils.glossary import JobType
+from src.utils.glossary import JobStatus, JobType
 
 
 class JobService:
@@ -131,3 +131,13 @@ class JobService:
 
         user.save()
         return user
+
+    def update_job_status(self, job_id: str, new_status: JobStatus) -> Job:
+        job = self.get_job(job_id)
+        job.status = new_status
+        job.save()
+        return job
+
+    def delete_job(self, job_id: str) -> None:
+        job = self.get_job(job_id)
+        job.delete()

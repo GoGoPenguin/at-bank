@@ -8,10 +8,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from firebase_admin import firestore
 from firebase_functions import https_fn, options
-from starlette.middleware.errors import ServerErrorMiddleware
 
 from src.container import Container
-from src.handler import error_handler, firebase_error_handler
+from src.handler import error_handler
 from src.middleware import AccessLogMiddleware, JWTMiddleware
 from src.router import router
 from src.utils.logger import init_logging
@@ -40,7 +39,6 @@ app.container = container  # type: ignore
 app.add_exception_handler(Exception, error_handler)
 app.add_exception_handler(RequestValidationError, error_handler)
 
-app.add_middleware(ServerErrorMiddleware)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.add_middleware(JWTMiddleware)
 app.add_middleware(
@@ -116,7 +114,7 @@ def handler(req: https_fn.Request) -> https_fn.Response:
             body = message.get("body", b"")
             response_body.append(body)
 
-    @firebase_error_handler(request=req)
+    # @firebase_error_handler(request=req)
     async def run_app():
         await app(scope, receive, send)
 
