@@ -1,11 +1,13 @@
-from typing import cast, List
+from datetime import datetime
+from typing import List, cast
+
 from mongoengine import (
     EmbeddedDocumentListField,
     EnumField,
     ReferenceField,
 )
+
 from src.utils.glossary import JobApplicationStatus
-from datetime import datetime
 
 from ._availability_slot_document import AvailabilitySlot
 from ._base_document import Base
