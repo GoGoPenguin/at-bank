@@ -15,3 +15,5 @@ from ._sign_in_schema import SignInRequestSchema
 from ._sign_up_schema import SignUpRequestSchema
 from ._update_job_status_schema import UpdateJobStatusSchema
 from ._user_schema import AthleticTrainerSchema, DepartmentSchema, UserSchema
+from ._get_applicants_schema import GetApplicantsSchema
+from ._applicant_schema import ApplicantSchema

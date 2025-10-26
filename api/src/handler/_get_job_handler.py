@@ -6,13 +6,15 @@ from fastapi import Request
 from src.document import DepartmentJob, TournamentJob, User
 from src.schema import DepartmentJobSchema, IndividualJobSchema, TournamentJobSchema
 from src.service import JobService
-
+from fastapi import Path
 
 class GetJobHandler:
     job_service: JobService = Provide["job_service"]
 
     def handle(
-        self, id: str, request: Request
+        self,
+        request: Request,
+        id: str = Path(title="The ID of the job to retrieve", pattern=r"^[a-f0-9]{24}$"),
     ) -> Union[TournamentJobSchema, DepartmentJobSchema, IndividualJobSchema]:
         job = self.job_service.get_job(id, cast(User, request.state.user))
         return (

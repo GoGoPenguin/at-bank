@@ -6,6 +6,12 @@ from src.utils.glossary import HttpMethod
 router = APIRouter()
 
 router.add_api_route(
+    name="Get Applicants for Job",
+    path="/applicants",
+    methods=[HttpMethod.GET],
+    endpoint=handler.GetApplicantsHandler().handle,
+)
+router.add_api_route(
     name="Get Job",
     path="/{id}",
     methods=[HttpMethod.GET],

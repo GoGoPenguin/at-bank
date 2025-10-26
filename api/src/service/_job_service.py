@@ -141,3 +141,16 @@ class JobService:
     def delete_job(self, job_id: str) -> None:
         job = self.get_job(job_id)
         job.delete()
+
+    def get_applicants(
+        self, user: Department, job_id: Optional[str]
+    ) -> List[Application]:
+        query = Application.objects()
+        if job_id:
+            job = self.get_job(job_id)
+            if job.created_by != user:
+                raise NotFoundError(detail="Job not found.")
+            query = query.filter(job=job)
+        else:
+            query = query.filter(job__in=Job.objects(created_by=user))
+        return cast(List[Application], query.all())
