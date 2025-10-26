@@ -1,11 +1,12 @@
-from src.service import JobService
-from dependency_injector.wiring import Provide
-from fastapi import Request
-from src.schema import GetApplicantsSchema, ApplicantSchema
-from fastapi import Query
 from typing import Annotated, List
+
+from dependency_injector.wiring import Provide
+from fastapi import Query, Request
+
 from src.document import Department
 from src.errors import ForbiddenError
+from src.schema import ApplicantSchema, GetApplicantsSchema
+from src.service import JobService
 
 
 class GetApplicantsHandler:

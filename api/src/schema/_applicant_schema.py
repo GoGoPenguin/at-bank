@@ -1,9 +1,12 @@
-from pydantic import BaseModel, Field
-from typing import Union, List
-from ._user_schema import AthleticTrainerSchema
-from ._job_schema import DepartmentJobSchema, IndividualJobSchema, TournamentJobSchema
-from src.utils.glossary import JobApplicationStatus
 from datetime import date
+from typing import List, Union
+
+from pydantic import BaseModel, Field
+
+from src.utils.glossary import JobApplicationStatus
+
+from ._job_schema import DepartmentJobSchema, IndividualJobSchema, TournamentJobSchema
+from ._user_schema import AthleticTrainerSchema
 
 
 class ApplicantSchema(BaseModel):
