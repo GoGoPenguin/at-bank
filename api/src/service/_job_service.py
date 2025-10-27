@@ -16,7 +16,7 @@ from src.document import (
 from src.document._equipment_document import Equipment
 from src.errors import ConflictError, NotFoundError
 from src.schema import CreateJobRequestSchema, GetJobsRequestSchema
-from src.utils.glossary import JobStatus, JobType
+from src.utils.glossary import JobApplicationStatus, JobStatus, JobType
 
 
 class JobService:
@@ -156,3 +156,16 @@ class JobService:
         else:
             query = query.filter(job__in=Job.objects(created_by=user))
         return cast(List[Application], query.all())
+
+    def update_application_status(
+        self, application_id: str, new_status: JobApplicationStatus
+    ) -> Application:
+        application = cast(
+            Optional[Application],
+            Application.objects(id=application_id).first(),
+        )
+        if application is None:
+            raise NotFoundError(detail="Application not found.")
+        application.status = new_status
+        application.save()
+        return application

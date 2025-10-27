@@ -2,6 +2,7 @@ from ._apply_to_job_handler import ApplyToJobHandler
 from ._check_account_handler import CheckAccountHandler
 from ._create_job_handler import CreateJobHandler
 from ._error_handler import error_handler, firebase_error_handler
+from ._get_applicants_handler import GetApplicantsHandler
 from ._get_equipments_handler import GetEquipmentsHandler
 from ._get_job_handler import GetJobHandler
 from ._get_jobs_handler import GetJobsHandler
@@ -13,5 +14,5 @@ from ._sign_in_handler import SignInHandler
 from ._sign_out_handler import SignOutHandler
 from ._sign_up_handler import SignUpHandler
 from ._unsave_job_handler import UnsaveJobHandler
+from ._update_application_status_handler import UpdateApplicationStatusHandler
 from ._update_job_status_handler import UpdateJobStatusHandler
-from ._get_applicants_handler import GetApplicantsHandler
