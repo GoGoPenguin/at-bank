@@ -48,7 +48,8 @@
       "signUpSuccessful": "註冊成功",
       "savedSuccessfully": "儲存成功",
       "unsavedSuccessfully": "取消儲存成功",
-      "jobPostedSuccessfully": "職缺發布成功"
+      "jobPostedSuccessfully": "職缺發布成功",
+      "applicationStatusUpdated": "應徵狀態更新成功"
     },
     "info": {
       "appliedSuccessfully": "已送出應徵申請，請耐心等待回覆。"
@@ -60,9 +61,11 @@
     "noResults": "沒有符合條件的結果"
   },
   "profileMenu": {
+    "home": "首頁",
     "myJobs": "我的工作",
     "profile": "個人資料",
-    "signOut": "登出"
+    "signOut": "登出",
+    "applicationRecord": "應徵紀錄"
   },
   "signIn": {
     "title": "登入",
@@ -278,6 +281,16 @@
     "yoursPostings": "您的職缺",
     "noJobsPosted": "您尚未發布任何職缺。",
     "lastDay": "最近 {{count}} 天"
+  },
+  "departmentApplicationRecord": {
+    "applicant": "應徵者",
+    "applicationDate": "應徵日期",
+    "jobTitle": "職缺標題",
+    "status": "狀態",
+    "availableSlots": "可用班次",
+    "noApplications": "目前沒有應徵紀錄",
+    "approve": "錄取",
+    "reject": "不錄取"
   },
   "cities": {
     "taipei-city": "臺北市",
