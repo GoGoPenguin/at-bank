@@ -16,7 +16,13 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { Job, JobStatus, JobType } from "../types/job.type";
+import useApi from "../hooks/use-api.hook";
+import {
+  JOB_STATUS_CLOSED,
+  type Job,
+  type JobStatus,
+  type JobType,
+} from "../types/job.type";
 
 const jobTypeColors: Record<JobType, "primary" | "secondary" | "info"> = {
   tournament: "info",
@@ -31,12 +37,18 @@ const jobStatusColors: Record<JobStatus, "success" | "warning" | "default"> = {
 };
 
 const JobDashboardCard: React.FC<{ job: Job }> = ({ job }) => {
+  const { updateJobStatus } = useApi();
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+  const handleCloseJob = async () => {
+    await updateJobStatus(job.id, JOB_STATUS_CLOSED);
+    handleClose();
+    job.status = JOB_STATUS_CLOSED;
+  };
 
   const postedAtDiff = Date.now() - new Date(job.createdAt).getTime();
   const postedAtSeconds = Math.floor(postedAtDiff / 1000);
@@ -170,7 +182,7 @@ const JobDashboardCard: React.FC<{ job: Job }> = ({ job }) => {
               <ListItemText>Resume</ListItemText>
             </MenuItem>
           )} */}
-          <MenuItem onClick={handleClose} sx={{ color: "error.main" }}>
+          <MenuItem onClick={handleCloseJob} sx={{ color: "error.main" }}>
             <ListItemIcon sx={{ color: "error.main" }}>
               <Delete fontSize="small" />
             </ListItemIcon>
