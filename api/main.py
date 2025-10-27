@@ -3,13 +3,23 @@ import asyncio
 import firebase_admin
 import uvicorn
 from fastapi import FastAPI
+from fastapi.exception_handlers import RequestValidationError
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from firebase_admin import firestore
 from firebase_functions import https_fn, options
+from jwt import PyJWTError
+from mongoengine import NotUniqueError
 
 from src.container import Container
+from src.errors import (
+    ConflictError,
+    Error,
+    InternalServerError,
+    UnauthorizedError,
+    ValidationError,
+)
 from src.handler import error_handler
 from src.middleware import AccessLogMiddleware, JWTMiddleware
 from src.router import router
@@ -118,7 +128,55 @@ def handler(req: https_fn.Request) -> https_fn.Response:
     async def run_app():
         await app(scope, receive, send)
 
-    asyncio.run(run_app())
+    error_response_header = {
+        "Content-Type": "application/problem+json",
+        # HACK: Allowing all origins as we cannot determine the correct origin here
+        #       without risking CORS issues.
+        "Access-Control-Allow-Origin": req.headers.get("origin", "*"),
+        "Access-Control-Allow-Credentials": "true",
+    }
+    try:
+        asyncio.run(run_app())
+    except Error as err:
+        err.instance = req.url
+        return https_fn.Response(
+            content_type="application/problem+json",
+            response=err.to_json(),
+            status=err.status,
+            headers=error_response_header,
+        )
+    except PyJWTError:
+        err = UnauthorizedError()
+        return https_fn.Response(
+            content_type="application/problem+json",
+            response=err.to_json(),
+            status=err.status,
+            headers=error_response_header,
+        )
+    except NotUniqueError:
+        err = ConflictError(instance=req.url)
+        return https_fn.Response(
+            content_type="application/problem+json",
+            response=err.to_json(),
+            status=err.status,
+            headers=error_response_header,
+        )
+    except RequestValidationError as ex:
+        err = ValidationError(instance=req.url, errors=ex)
+        return https_fn.Response(
+            content_type="application/problem+json",
+            response=err.to_json(),
+            status=err.status,
+            headers=error_response_header,
+        )
+    except Exception as ex:
+        err = InternalServerError(instance=req.url, detail=str(ex))
+        return https_fn.Response(
+            content_type="application/problem+json",
+            response=err.to_json(),
+            status=err.status,
+            headers=error_response_header,
+        )
     body = b"".join(response_body)
 
     # ... (Your existing header and response creation logic remains the same) ...

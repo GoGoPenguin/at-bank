@@ -1,3 +1,4 @@
+import json
 from typing import Optional
 
 from fastapi import status
@@ -49,6 +50,9 @@ class Error(Exception):
         if self.instance:
             result["instance"] = self.instance
         return result
+
+    def to_json(self):
+        return json.dumps(self.model_dump())
 
 
 class InvalidCredentialsError(Error):
