@@ -290,7 +290,14 @@
     "availableSlots": "可用班次",
     "noApplications": "目前沒有應徵紀錄",
     "approve": "錄取",
-    "reject": "不錄取"
+    "reject": "不錄取",
+    "applicationDetails": "應徵詳情",
+    "phone": "電話",
+    "email": "電子郵件",
+    "emtLicense": "EMT 執照",
+    "emtLicenseValidUntil": "EMT 執照有效日期",
+    "tatsLicenseNumber": "教育部體育署防護員證",
+    "tatsLicenseValidUntil": "教育部體育署有效日期"
   },
   "cities": {
     "taipei-city": "臺北市",

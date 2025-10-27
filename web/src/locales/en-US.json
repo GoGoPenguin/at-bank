@@ -290,7 +290,14 @@
     "availableSlots": "Available Slots",
     "noApplications": "No Applications Yet",
     "approve": "Approve",
-    "reject": "Reject"
+    "reject": "Reject",
+    "applicationDetails": "Application Details",
+    "phone": "Phone",
+    "email": "Email",
+    "emtLicense": "EMT License",
+    "emtLicenseValidUntil": "EMT License Valid Until",
+    "tatsLicenseNumber": "TATS License Number",
+    "tatsLicenseValidUntil": "TATS License Valid Until"
   },
   "cities": {
     "taipei-city": "Taipei City",
