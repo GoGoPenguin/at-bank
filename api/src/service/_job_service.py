@@ -32,6 +32,8 @@ class JobService:
 
         if isinstance(user, Department):
             query = query.filter(created_by=user)
+        if isinstance(user, AthleticTrainer):
+            query = query.filter(status=JobStatus.ACTIVE)
 
         all_jobs = list(query.all())
         total_items = len(all_jobs)
