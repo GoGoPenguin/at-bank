@@ -6,7 +6,9 @@ import {
   type GetJobResponse,
   type GetJobsRequestParams,
   type GetJobsResponse,
+  type JobApplication,
   type JobStatus,
+  type UpdateApplicationStatusRequest,
 } from "../types/job.type";
 import type { SignUpRequestBody, User } from "../types/user.type";
 import useAxios from "./use-axios.hook";
@@ -89,6 +91,15 @@ const useApi = () => {
   ): Promise<void> => {
     await axios.patch(`/api/jobs/status`, { jobId: id, status });
   };
+  const getApplications = async (): Promise<JobApplication[]> => {
+    const response = await axios.get("/api/jobs/applicants");
+    return response.data;
+  };
+  const updateApplicationStatus = async (
+    req: UpdateApplicationStatusRequest
+  ): Promise<void> => {
+    await axios.patch(`/api/jobs/applications/status`, req);
+  };
 
   return {
     signIn,
@@ -104,6 +115,8 @@ const useApi = () => {
     applyToJob,
     getEquipments,
     updateJobStatus,
+    getApplications,
+    updateApplicationStatus,
   };
 };
 

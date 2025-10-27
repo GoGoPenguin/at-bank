@@ -74,14 +74,16 @@ export default function Profile() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
-          <ListItemIcon>
-            <WorkIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText disableTypography>
-            {t("profileMenu.myJobs")}
-          </ListItemText>
-        </MenuItem>
+        {user && user.role === ROLE_ATHLETIC_TRAINER && (
+          <MenuItem disabled>
+            <ListItemIcon>
+              <WorkIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText disableTypography>
+              {t("profileMenu.myJobs")}
+            </ListItemText>
+          </MenuItem>
+        )}
         <MenuItem disabled>
           <ListItemIcon>
             <AccountBoxIcon fontSize="small" />

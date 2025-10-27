@@ -1,4 +1,5 @@
 import type { Equipment } from "./equipment.type";
+import type { AthleticTrainer } from "./user.type";
 
 export type JobType = "tournament" | "individual" | "department";
 export type JobStatus = "active" | "paused" | "closed";
@@ -107,6 +108,14 @@ export interface DepartmentJob extends Job {
   serviceContent: ServiceContent;
 }
 
+export interface JobApplication {
+  id: string;
+  job: Job;
+  applicant: AthleticTrainer;
+  status: ApplicationStatus;
+  availableSlots: Date[];
+  createdAt: Date;
+}
 export interface GetJobsRequestParams {
   jobType?: JobType;
   city?: string;
@@ -145,4 +154,9 @@ export interface CreateJobRequest {
   suppliesArrangement?: SuppliesArrangement;
   suppliesDaigouBudget?: number;
   equipmentRentals?: string[];
+}
+
+export interface UpdateApplicationStatusRequest {
+  applicationId: string;
+  status: ApplicationStatus;
 }

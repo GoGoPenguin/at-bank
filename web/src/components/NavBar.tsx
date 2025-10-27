@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import useApi from "../hooks/use-api.hook";
 import { useAuthStore } from "../store/use-auth.store";
+import { ROLE_DEPARTMENT } from "../types/user.type";
 import Profile from "./Profile";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -43,7 +44,7 @@ export default function NavBar() {
     setOpen(newOpen);
   };
   const { signOut } = useApi();
-  const { clearUser } = useAuthStore();
+  const { clearUser, user } = useAuthStore();
   const mutation = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
@@ -73,11 +74,28 @@ export default function NavBar() {
             sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}
           >
             <img src={Logo} alt="Logo" width={100} height={30} />
-            {/* <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <Button variant="text" color="info" size="small">
-                Features
-              </Button>
-              <Button variant="text" color="info" size="small">
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              {user && user.role === ROLE_DEPARTMENT && (
+                <>
+                  <Button
+                    variant="text"
+                    color="info"
+                    size="small"
+                    onClick={() => navigate("/")}
+                  >
+                    {t("profileMenu.home")}
+                  </Button>
+                  <Button
+                    variant="text"
+                    color="info"
+                    size="small"
+                    onClick={() => navigate("/application-record")}
+                  >
+                    {t("profileMenu.applicationRecord")}
+                  </Button>
+                </>
+              )}
+              {/* <Button variant="text" color="info" size="small">
                 Testimonials
               </Button>
               <Button variant="text" color="info" size="small">
@@ -101,8 +119,8 @@ export default function NavBar() {
                 sx={{ minWidth: 0 }}
               >
                 Blog
-              </Button>
-            </Box> */}
+              </Button> */}
+            </Box>
           </Box>
           <Box
             sx={{
@@ -155,7 +173,6 @@ export default function NavBar() {
                   </Button>
                 </MenuItem> */}
                 <MenuItem>{t("profileMenu.profile")}</MenuItem>
-                <MenuItem>{t("profileMenu.changePassword")}</MenuItem>
                 <Divider sx={{ my: 3 }} />
                 <MenuItem onClick={handleSignOut}>
                   <Button color="primary" variant="contained" fullWidth>

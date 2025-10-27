@@ -6,6 +6,7 @@ const SignUp = React.lazy(() => import("./pages/SignUp"));
 const SignUpTrainer = React.lazy(() => import("./pages/SignUpTrainer"));
 const SignUpDept = React.lazy(() => import("./pages/SignUpDept"));
 const JobDetail = React.lazy(() => import("./pages/JobDetail"));
+const ApplicationRecord = React.lazy(() => import("./pages/ApplicationRecord"));
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
   {
     path: "/job/:id",
     element: JobDetail,
+  },
+  {
+    path: "/application-record",
+    element: ApplicationRecord,
   },
 ];
 
