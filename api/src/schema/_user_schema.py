@@ -3,15 +3,13 @@ from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field
 
-from src.utils.glossary import Role
+from src.utils.glossary import Gender, Role
 
 
 class UserSchema(BaseModel):
     id: str = Field(description="User ID")
     account: str = Field(description="User account")
     role: Role = Field(description="User role")
-    phone: str = Field(description="User phone number")
-    line_id: str = Field(description="User Line ID")
 
 
 class AthleticTrainerSchema(UserSchema):
@@ -41,6 +39,8 @@ class AthleticTrainerSchema(UserSchema):
     tats_license_valid_until: Optional[datetime] = Field(
         description="TATS license valid until date"
     )
+    phone: str = Field(description="User phone number")
+    line_id: str = Field(description="User Line ID")
 
 
 class DepartmentSchema(UserSchema):
@@ -50,3 +50,13 @@ class DepartmentSchema(UserSchema):
     city: str = Field(description="City of the department")
     district: str = Field(description="District of the department")
     address: str = Field(description="Address of the department")
+    phone: str = Field(description="User phone number")
+    line_id: str = Field(description="User Line ID")
+
+
+class ClientSchema(UserSchema):
+    name: str = Field(description="Name of the client")
+    gender: Gender = Field(description="Gender of the client")
+    birthday: datetime = Field(description="Birthday of the client")
+    height: float = Field(description="Height of the client in cm")
+    weight: float = Field(description="Weight of the client in kg")

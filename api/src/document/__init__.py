@@ -3,4 +3,5 @@ from ._availability_slot_document import AvailabilitySlot
 from ._equipment_document import Equipment, EquipmentSnapshot
 from ._job_document import DepartmentJob, IndividualJob, Job, TournamentJob
 from ._job_shift_document import JobShift
-from ._user_document import AthleticTrainer, Department, User
+from ._metrics_document import Metrics
+from ._user_document import AthleticTrainer, Client, Department, User

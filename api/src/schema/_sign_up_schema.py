@@ -3,7 +3,7 @@ from typing import Annotated, Literal, Optional, Union
 
 from pydantic import BaseModel, EmailStr, Field
 
-from src.utils.glossary import Role
+from src.utils.glossary import Gender, Role
 
 
 class SignUpAthleticTrainerSchema(BaseModel):
@@ -69,7 +69,18 @@ class SignUpDepartmentSchema(BaseModel):
     address: str = Field(description="Address of the department", max_length=255)
 
 
+class SignUpClientSchema(BaseModel):
+    account: str = Field(description="User account")
+    password: bytes = Field(description="User password")
+    role: Literal[Role.CLIENT] = Field(description="User role")
+    name: str = Field(description="Name of the client", max_length=100)
+    gender: Gender = Field(description="Gender of the client")
+    birthday: datetime = Field(description="Birthday of the client")
+    height: float = Field(description="Height of the client in cm")
+    weight: float = Field(description="Weight of the client in kg")
+
+
 SignUpRequestSchema = Annotated[
-    Union[SignUpAthleticTrainerSchema, SignUpDepartmentSchema],
+    Union[SignUpAthleticTrainerSchema, SignUpDepartmentSchema, SignUpClientSchema],
     Field(discriminator="role"),
 ]

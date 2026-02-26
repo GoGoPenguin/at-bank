@@ -1,12 +1,14 @@
 from ._apply_to_job_handler import ApplyToJobHandler
 from ._check_account_handler import CheckAccountHandler
 from ._create_job_handler import CreateJobHandler
+from ._create_metrics_handler import CreateMetricsHandler
 from ._error_handler import error_handler, firebase_error_handler
 from ._get_applicants_handler import GetApplicantsHandler
 from ._get_equipments_handler import GetEquipmentsHandler
 from ._get_job_handler import GetJobHandler
 from ._get_jobs_handler import GetJobsHandler
 from ._get_me_handler import GetMeHandler
+from ._get_metrics_handler import GetMetricsHandler
 from ._ping_handler import PingHandler
 from ._refresh_token_handler import RefreshTokenHandler
 from ._save_job_handler import SaveJobHandler

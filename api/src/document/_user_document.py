@@ -3,12 +3,13 @@ from mongoengine import (
     DateField,
     EmailField,
     EnumField,
+    IntField,
     ListField,
     ReferenceField,
     StringField,
 )
 
-from src.utils.glossary import EMTLicense, Role
+from src.utils.glossary import EMTLicense, Gender, Role
 
 from ._base_document import Base
 
@@ -23,20 +24,18 @@ class User(Base):
     account = StringField(max_length=50, required=True, unique_with="deleted_at")
     password = BinaryField(required=True)
     role = EnumField(Role, required=True)
-    phone = StringField(regex=r"^(09|\+8869)[0-9]{8}$", required=True)
-    line_id = StringField(regex=r"^[a-z0-9\-_]{2,20}$", required=True)
 
     def to_dict(self) -> dict:
         return {
             "id": str(self.id),
             "account": self.account,
             "role": self.role,
-            "phone": self.phone,
-            "line_id": self.line_id,
         }
 
 
 class AthleticTrainer(User):
+    phone = StringField(regex=r"^(09|\+8869)[0-9]{8}$", required=True)
+    line_id = StringField(regex=r"^[a-z0-9\-_]{2,20}$", required=True)
     chinese_name = StringField(regex=r"^[\u4e00-\u9fa5]{2,50}$", required=True)
     english_name = StringField(regex=r"^[A-Za-z\s]{2,100}$", required=True)
     birthday = DateField(required=True)
@@ -58,6 +57,8 @@ class AthleticTrainer(User):
     def to_dict(self) -> dict:
         return {
             **super().to_dict(),
+            "phone": self.phone,
+            "line_id": self.line_id,
             "chinese_name": self.chinese_name,
             "english_name": self.english_name,
             "birthday": self.birthday,
@@ -78,6 +79,8 @@ class AthleticTrainer(User):
 
 
 class Department(User):
+    phone = StringField(regex=r"^(09|\+8869)[0-9]{8}$", required=True)
+    line_id = StringField(regex=r"^[a-z0-9\-_]{2,20}$", required=True)
     name = StringField(max_length=100, required=True)
     contact_person = StringField(max_length=50, required=True)
     tax_id = StringField(regex=r"^\d{8}$", required=True)
@@ -92,10 +95,30 @@ class Department(User):
     def to_dict(self) -> dict:
         return {
             **super().to_dict(),
+            "phone": self.phone,
+            "line_id": self.line_id,
             "name": self.name,
             "contact_person": self.contact_person,
             "tax_id": self.tax_id,
             "city": self.city,
             "district": self.district,
             "address": self.address,
+        }
+
+
+class Client(User):
+    birthday = DateField(required=True)
+    name = StringField(max_length=100, required=True)
+    gender = EnumField(Gender, required=True)
+    height = IntField(required=True)
+    weight = IntField(required=True)
+
+    def to_dict(self) -> dict:
+        return {
+            **super().to_dict(),
+            "birthday": self.birthday,
+            "name": self.name,
+            "gender": self.gender,
+            "height": self.height,
+            "weight": self.weight,
         }

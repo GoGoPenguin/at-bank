@@ -2,7 +2,7 @@ from typing import Tuple, cast
 
 from dependency_injector.wiring import Provide
 
-from src.document import AthleticTrainer, Department, User
+from src.document import AthleticTrainer, Client, Department, User
 from src.errors import InvalidCredentialsError
 from src.schema import JWTClaim, SignUpRequestSchema
 from src.utils.glossary import Role
@@ -36,6 +36,8 @@ class AuthService:
             user = AthleticTrainer(**params.model_dump())
         elif params.role == Role.DEPARTMENT:
             user = Department(**params.model_dump())
+        elif params.role == Role.CLIENT:
+            user = Client(**params.model_dump())
         else:
             raise ValueError("Invalid role provided for sign up.")
 

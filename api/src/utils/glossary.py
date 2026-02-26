@@ -13,6 +13,7 @@ class HttpMethod(str, Enum):
 class Role(str, Enum):
     ATHLETIC_TRAINER = "athletic_trainer"
     DEPARTMENT = "department"
+    CLIENT = "client"
 
 
 class EMTLicense(str, Enum):
@@ -89,3 +90,15 @@ class Cities(str, Enum):
     PENGHU_COUNTY = "penghu-county"
     KINMEN_COUNTY = "kinmen-county"
     LIENCHIANG_COUNTY = "lienchiang-county"
+
+
+class MetricsType(str, Enum):
+    RPE = "RPE"
+    HEART_RATE = "heart_rate"
+    WEIGHT = "weight"
+
+
+class Gender(str, Enum):
+    MALE = "male"
+    FEMALE = "female"
+    OTHER = "other"
