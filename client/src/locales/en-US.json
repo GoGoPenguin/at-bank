@@ -3,13 +3,18 @@
         "required": "This field is required",
         "invalidEmail": "Invalid email address",
         "invalidAccount": "Account can only contain lowercase letters, numbers, underscores, and must start and end with a letter or number",
-        "passwordMinLength": "Password must be at least 6 characters"
+        "passwordMinLength": "Password must be at least 6 characters",
+        "passwordsDoNotMatch": "Password and confirm password do not match",
+        "accountExists": "Account already exists"
     },
     "alert": {
         "error": {
             "invalidAccountOrPassword": "Invalid account or password",
             "accountExists": "Account already exists",
             "networkError": "Network error, please try again later"
+        },
+        "success": {
+            "signUpSuccessful": "Sign up successful"
         }
     },
     "dashboard": {
@@ -75,10 +80,14 @@
         "step1": {
             "title": "Tell us about yourself",
             "subtitle": "Let's start with the basics to personalize your health journey.",
-            "fullName": "Full Name",
-            "fullNamePlaceholder": "John Doe",
+            "name": "Name",
+            "namePlaceholder": "John Doe",
             "email": "Email Address",
             "emailPlaceholder": "john@example.com",
+            "height": "Height (cm)",
+            "heightPlaceholder": "e.g. 175",
+            "weight": "Weight (kg)",
+            "weightPlaceholder": "e.g. 70",
             "privacyTitle": "Your privacy matters",
             "privacyDesc": "We use this information only to provide personalized health insights and secure your data.",
             "nextBtn": "Next",
