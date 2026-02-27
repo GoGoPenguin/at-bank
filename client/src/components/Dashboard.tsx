@@ -2,15 +2,17 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FitnessCenterRoundedIcon from "@mui/icons-material/FitnessCenterRounded";
 import ScaleRoundedIcon from "@mui/icons-material/ScaleRounded";
-import { Avatar, Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Button, Chip, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { zhTW } from "date-fns/locale";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import LetterAvatar from "./LetterAvatar";
 import MetricCard from "./MetricCard";
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
+  const name = "John Doe"; // This would come from user state in a real app
 
   return (
     <Box sx={{ pb: 10 }}>
@@ -47,8 +49,16 @@ const Dashboard: React.FC = () => {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <Avatar
+            {/* <Avatar
               src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+              sx={{
+                width: 40,
+                height: 40,
+                border: "2px solid rgba(255,255,255,0.8)",
+              }}
+            /> */}
+            <LetterAvatar
+              name={name}
               sx={{
                 width: 40,
                 height: 40,
