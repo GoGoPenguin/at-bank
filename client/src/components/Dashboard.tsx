@@ -6,9 +6,12 @@ import { Avatar, Box, Button, Chip, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { zhTW } from "date-fns/locale";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import MetricCard from "./MetricCard";
 
 const Dashboard: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <Box sx={{ pb: 10 }}>
       {/* Header Area */}
@@ -44,9 +47,6 @@ const Dashboard: React.FC = () => {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            {/* <IconButton color="inherit" size="small">
-              <CalendarTodayRoundedIcon fontSize="small" />
-            </IconButton> */}
             <Avatar
               src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
               sx={{
@@ -63,23 +63,23 @@ const Dashboard: React.FC = () => {
       <Box sx={{ px: 2.5, mt: -2 }}>
         <Box sx={{ mb: 3, pt: 4 }}>
           <Typography variant="h5" color="text.primary" sx={{ mb: 0.5 }}>
-            Good Morning, Alex
+            {t("dashboard.greeting.morning")}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Here is your health summary for today.
+            {t("dashboard.greeting.summary")}
           </Typography>
         </Box>
 
         {/* Metrics */}
         <MetricCard
-          title="Resting HR"
+          title={t("dashboard.metrics.restingHR.title")}
           icon={<FavoriteRoundedIcon sx={{ color: "#e57373" }} />}
           value={62}
-          unit="bpm"
+          unit={t("dashboard.metrics.restingHR.unit")}
           badge={
             <Chip
               size="small"
-              label="↘ 2 bpm"
+              label={t("dashboard.metrics.restingHR.badge")}
               sx={{ bgcolor: "#e8f5e9", color: "#2e7d32", fontWeight: 600 }}
             />
           }
@@ -108,14 +108,14 @@ const Dashboard: React.FC = () => {
         />
 
         <MetricCard
-          title="Body Weight"
+          title={t("dashboard.metrics.bodyWeight.title")}
           icon={<ScaleRoundedIcon sx={{ color: "#00796b" }} />}
           value={75.4}
-          unit="kg"
+          unit={t("dashboard.metrics.bodyWeight.unit")}
           badge={
             <Chip
               size="small"
-              label="↗ 0.2 kg"
+              label={t("dashboard.metrics.bodyWeight.badge")}
               sx={{ bgcolor: "#ffebee", color: "#c62828", fontWeight: 600 }}
             />
           }
@@ -138,13 +138,13 @@ const Dashboard: React.FC = () => {
         />
 
         <MetricCard
-          title="Workout RPE"
+          title={t("dashboard.metrics.workoutRPE.title")}
           icon={<FitnessCenterRoundedIcon sx={{ color: "#5c6bc0" }} />}
-          subtext="Rate 1-10 intensity"
+          subtext={t("dashboard.metrics.workoutRPE.subtext")}
           badge={
             <Chip
               size="small"
-              label="Pending"
+              label={t("dashboard.metrics.workoutRPE.badge")}
               sx={{ bgcolor: "#fff3e0", color: "#ef6c00", fontWeight: 600 }}
             />
           }
@@ -156,7 +156,7 @@ const Dashboard: React.FC = () => {
               startIcon={<AddRoundedIcon />}
               sx={{ borderRadius: 2 }}
             >
-              Log Now
+              {t("dashboard.metrics.workoutRPE.action")}
             </Button>
           }
         />

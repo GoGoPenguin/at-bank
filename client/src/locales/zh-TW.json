@@ -1,0 +1,74 @@
+{
+    "dashboard": {
+        "greeting": {
+            "morning": "早安，{{name}}",
+            "summary": "以下是您今天的健康摘要。"
+        },
+        "metrics": {
+            "restingHR": {
+                "title": "靜息心率",
+                "unit": "次/分鐘",
+                "badge": "↘ {{value}} 次/分鐘"
+            },
+            "bodyWeight": {
+                "title": "體重",
+                "unit": "公斤",
+                "badge": "↗ {{value}} 公斤"
+            },
+            "workoutRPE": {
+                "title": "運動強度",
+                "subtext": "1-10 強度等級",
+                "badge": "待處理",
+                "action": "立即記錄"
+            }
+        },
+        "recentActivity": {
+            "title": "最近活動",
+            "waterIntake": {
+                "title": "飲水量",
+                "value": "{{value}} 毫升"
+            },
+            "sleep": {
+                "title": "睡眠",
+                "value": "{{hours}} 小時 {{minutes}} 分鐘"
+            }
+        }
+    },
+    "app": {
+        "routes": {
+            "dashboard": "儀表板",
+            "history": "歷史頁面",
+            "trends": "趨勢頁面",
+            "settings": "設置頁面",
+            "log": "記錄數據"
+        }
+    },
+    "layout": {
+        "navigation": {
+            "home": "首頁",
+            "history": "歷史",
+            "trends": "趨勢",
+            "settings": "設置",
+            "add": "新增"
+        }
+    },
+    "recordDataForm": {
+        "title": "記錄今天的數據",
+        "restingHeartRate": {
+            "label": "靜息心率",
+            "placeholder": "例如 62",
+            "unit": "次/分鐘"
+        },
+        "bodyWeight": {
+            "label": "體重",
+            "placeholder": "例如 75.4",
+            "unit": "公斤"
+        },
+        "workoutRPE": {
+            "label": "運動強度",
+            "description": "1-10 強度等級"
+        },
+        "button": "保存記錄",
+        "success": "數據記錄成功！"
+    }
+}
