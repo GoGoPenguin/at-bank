@@ -86,7 +86,8 @@
         "passwordPlaceholder": "••••••••",
         "signInBtn": "登入",
         "noAccount": "還沒有帳號嗎？",
-        "signUp": "立即註冊"
+        "signUp": "立即註冊",
+        "rememberMe": "記住我"
     },
     "signUp": {
         "title": "建立帳號",

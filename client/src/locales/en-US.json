@@ -49,7 +49,8 @@
         "passwordPlaceholder": "••••••••",
         "signInBtn": "Sign In",
         "noAccount": "Don't have an account yet?",
-        "signUp": "Sign Up Now"
+        "signUp": "Sign Up Now",
+        "rememberMe": "Remember me"
     },
     "signUp": {
         "title": "Create Account",

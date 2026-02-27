@@ -8,7 +8,9 @@ import {
 import {
   Box,
   Button,
+  Checkbox,
   Container,
+  FormControlLabel,
   IconButton,
   InputAdornment,
   Link,
@@ -84,6 +86,7 @@ const SignIn: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -175,7 +178,7 @@ const SignIn: React.FC = () => {
               />
             </Box>
 
-            <Box sx={{ mb: 4 }}>
+            <Box sx={{ mb: 2 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -239,6 +242,33 @@ const SignIn: React.FC = () => {
                 }}
               />
             </Box>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  name="rememberMe"
+                  color="primary"
+                  sx={{
+                    color: "#94A3B8",
+                    "&.Mui-checked": {
+                      color: "#016C71",
+                    },
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 24,
+                      borderRadius: 4,
+                    }
+                  }}
+                />
+              }
+              label={
+                <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 600 }}>
+                  {t("signIn.rememberMe")}
+                </Typography>
+              }
+              sx={{ mb: 2, ml: 0 }}
+            />
 
             <Button
               type="submit"
