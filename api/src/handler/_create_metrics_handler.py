@@ -17,7 +17,7 @@ class CreateMetricsHandler:
         self, request: Request, params: CreateMetricsSchema
     ) -> list[MetricsSchema]:
         user = cast(User, request.state.user)
-        if isinstance(user, Client):
+        if not isinstance(user, Client):
             raise ForbiddenError("Only clients can create metrics.")
 
         logger.info(params.root)
