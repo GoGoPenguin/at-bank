@@ -35,6 +35,9 @@
                 "title": "Sleep",
                 "value": "{{hours}}h {{minutes}}m"
             }
+        },
+        "menu": {
+            "logout": "Log Out"
         }
     },
     "signIn": {

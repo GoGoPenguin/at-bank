@@ -1,18 +1,36 @@
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FitnessCenterRoundedIcon from "@mui/icons-material/FitnessCenterRounded";
+import Logout from "@mui/icons-material/Logout";
 import ScaleRoundedIcon from "@mui/icons-material/ScaleRounded";
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Button, Chip, IconButton, ListItemIcon, Menu, MenuItem, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { zhTW } from "date-fns/locale";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import LetterAvatar from "../components/LetterAvatar";
 import MetricCard from "../components/MetricCard";
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const name = "John Doe"; // This would come from user state in a real app
+
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    handleCloseUserMenu();
+    navigate("/sign-in");
+  };
 
   return (
     <Box sx={{ pb: 10 }}>
@@ -49,22 +67,39 @@ const Dashboard: React.FC = () => {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            {/* <Avatar
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-              sx={{
-                width: 40,
-                height: 40,
-                border: "2px solid rgba(255,255,255,0.8)",
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <LetterAvatar
+                name={name}
+                sx={{
+                  width: 40,
+                  height: 40,
+                  border: "2px solid rgba(255,255,255,0.8)",
+                }}
+              />
+            </IconButton>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
               }}
-            /> */}
-            <LetterAvatar
-              name={name}
-              sx={{
-                width: 40,
-                height: 40,
-                border: "2px solid rgba(255,255,255,0.8)",
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
               }}
-            />
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                <Typography textAlign="center">{t("dashboard.menu.logout", "Log Out")}</Typography>
+              </MenuItem>
+            </Menu>
           </Box>
         </Box>
       </Box>

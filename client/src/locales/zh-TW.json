@@ -35,6 +35,9 @@
                 "title": "睡眠",
                 "value": "{{hours}} 小時 {{minutes}} 分鐘"
             }
+        },
+        "menu": {
+            "logout": "登出"
         }
     },
     "app": {
