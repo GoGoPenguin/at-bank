@@ -43,6 +43,7 @@
     "conventionalCommits.scopes": [
         "api",
         "web",
-        "admin"
+        "admin",
+        "client"
     ],
 }
