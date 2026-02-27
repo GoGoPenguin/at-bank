@@ -1,34 +1,53 @@
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {
-  Alert,
   Box,
   Button,
   Card,
   CardContent,
   IconButton,
   Slider,
-  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import InputAdornment from "@mui/material/InputAdornment";
+import { useMutation } from "@tanstack/react-query";
+import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import AlertContext from "../context/alert.context";
+import useApi from "../hooks/use-api.hook";
+import type { CreateMetricsRequestBody } from "../types/metrics.type";
 
 const RecordDataForm: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { handleAlert } = useContext(AlertContext);
   const [hr, setHr] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
   const [rpe, setRpe] = useState<number>(5);
-  const [open, setOpen] = useState(false);
+  const { createMetrics } = useApi();
+
+  const mutation = useMutation({
+    mutationFn: createMetrics,
+    onSuccess: () => {
+      handleAlert("createMetricsSuccessful", "success");
+      navigate(-1);
+    },
+  });
 
   const handleSave = () => {
-    // In a real app we would save to state/backend here
-    setOpen(true);
-    setTimeout(() => {
-      navigate(-1);
-    }, 1500);
+    const payload: CreateMetricsRequestBody = [];
+    if (hr) {
+      payload.push({ name: "heart_rate", value: Number(hr), unit: "bpm" });
+    }
+    if (weight) {
+      payload.push({ name: "weight", value: Number(weight), unit: "kg" });
+    }
+    payload.push({ name: "RPE", value: rpe, unit: "" });
+
+    if (payload.length > 0) {
+      mutation.mutate(payload);
+    }
   };
 
   return (
@@ -78,12 +97,14 @@ const RecordDataForm: React.FC = () => {
               type="number"
               value={hr}
               onChange={(e) => setHr(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <Typography variant="caption" color="text.secondary">
-                    {t("recordDataForm.restingHeartRate.unit")}
-                  </Typography>
-                ),
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {t("recordDataForm.restingHeartRate.unit")}
+                    </InputAdornment>
+                  ),
+                },
               }}
               sx={{ "& .MuiOutlinedInput-root": { borderRadius: 3 } }}
             />
@@ -102,12 +123,14 @@ const RecordDataForm: React.FC = () => {
               type="number"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <Typography variant="caption" color="text.secondary">
-                    {t("recordDataForm.bodyWeight.unit")}
-                  </Typography>
-                ),
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {t("recordDataForm.bodyWeight.unit")}
+                    </InputAdornment>
+                  ),
+                },
               }}
               sx={{ "& .MuiOutlinedInput-root": { borderRadius: 3 } }}
             />
@@ -158,18 +181,14 @@ const RecordDataForm: React.FC = () => {
           variant="contained"
           size="large"
           onClick={handleSave}
-          disabled={!hr && !weight && rpe === 5}
+          disabled={(!hr && !weight && rpe === 5) || mutation.isPending}
           sx={{ py: 1.5, fontSize: "1.1rem" }}
         >
-          {t("recordDataForm.button")}
+          {mutation.isPending
+            ? t("common.loading", "Loading...")
+            : t("recordDataForm.button")}
         </Button>
       </Box>
-
-      <Snackbar open={open} autoHideDuration={3000}>
-        <Alert severity="success" sx={{ width: "100%", borderRadius: 2 }}>
-          {t("recordDataForm.success")}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

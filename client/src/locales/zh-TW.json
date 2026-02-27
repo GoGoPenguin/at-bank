@@ -14,7 +14,8 @@
             "networkError": "網路錯誤，請稍後再試"
         },
         "success": {
-            "signUpSuccessful": "註冊成功"
+            "signUpSuccessful": "註冊成功",
+            "createMetricsSuccessful": "數據記錄成功！"
         }
     },
     "dashboard": {

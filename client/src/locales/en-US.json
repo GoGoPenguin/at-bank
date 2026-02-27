@@ -14,7 +14,8 @@
             "networkError": "Network error, please try again later"
         },
         "success": {
-            "signUpSuccessful": "Sign up successful"
+            "signUpSuccessful": "Sign up successful",
+            "createMetricsSuccessful": "Data recorded successfully!"
         }
     },
     "dashboard": {
