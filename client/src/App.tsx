@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import RecordDataForm from "./components/RecordDataForm";
+import SignIn from "./components/SignIn";
+import SignUp from "./components/SignUp";
 
 const App: React.FC = () => {
   const { t } = useTranslation();
@@ -11,6 +13,8 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           {/* Placeholders for other routes */}
