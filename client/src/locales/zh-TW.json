@@ -73,5 +73,62 @@
         },
         "button": "保存記錄",
         "success": "數據記錄成功！"
+    },
+    "signIn": {
+        "subtitle": "您專屬的每日健康與運動表現夥伴",
+        "account": "帳號",
+        "accountPlaceholder": "請輸入您的帳號",
+        "password": "密碼",
+        "forgotPassword": "忘記密碼？",
+        "passwordPlaceholder": "••••••••",
+        "signInBtn": "登入",
+        "noAccount": "還沒有帳號嗎？",
+        "signUp": "立即註冊"
+    },
+    "signUp": {
+        "title": "建立帳號",
+        "steps": {
+            "identity": "身分",
+            "metrics": "指標",
+            "account": "帳號"
+        },
+        "step1": {
+            "title": "告訴我們關於你的資訊",
+            "subtitle": "讓我們從基本資料開始，為您打造個人化的健康旅程。",
+            "fullName": "全名",
+            "fullNamePlaceholder": "王小明",
+            "email": "電子郵件地址",
+            "emailPlaceholder": "john@example.com",
+            "privacyTitle": "您的隱私很重要",
+            "privacyDesc": "我們僅使用此資訊提供個人化健康見解並保護您的資料安全。",
+            "nextBtn": "下一步",
+            "alreadyHaveAccount": "已經有帳號了嗎？",
+            "signIn": "登入"
+        },
+        "step2": {
+            "title": "身體指標",
+            "subtitle": "這有助於我們計算您的每日健康目標。",
+            "birthday": "生日",
+            "gender": "性別",
+            "genders": {
+                "male": "男性",
+                "female": "女性",
+                "other": "其他"
+            },
+            "nextBtn": "下一步",
+            "backBtn": "返回身分"
+        },
+        "step3": {
+            "title": "保護您的帳號",
+            "subtitle": "建立一個高強度密碼以保護您的健康資料。",
+            "account": "帳號",
+            "accountPlaceholder": "請輸入您的帳號",
+            "password": "密碼",
+            "passwordPlaceholder": "請輸入密碼",
+            "confirmPassword": "確認密碼",
+            "confirmPasswordPlaceholder": "請再次輸入密碼",
+            "createBtn": "建立帳號",
+            "backBtn": "返回指標"
+        }
     }
 }

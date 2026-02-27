@@ -36,5 +36,62 @@
                 "value": "{{hours}}h {{minutes}}m"
             }
         }
+    },
+    "signIn": {
+        "subtitle": "Your daily health and performance companion",
+        "account": "Account",
+        "accountPlaceholder": "Enter your account",
+        "password": "Password",
+        "forgotPassword": "Forgot Password?",
+        "passwordPlaceholder": "••••••••",
+        "signInBtn": "Sign In",
+        "noAccount": "Don't have an account yet?",
+        "signUp": "Sign Up Now"
+    },
+    "signUp": {
+        "title": "Create Account",
+        "steps": {
+            "identity": "IDENTITY",
+            "metrics": "METRICS",
+            "account": "ACCOUNT"
+        },
+        "step1": {
+            "title": "Tell us about yourself",
+            "subtitle": "Let's start with the basics to personalize your health journey.",
+            "fullName": "Full Name",
+            "fullNamePlaceholder": "John Doe",
+            "email": "Email Address",
+            "emailPlaceholder": "john@example.com",
+            "privacyTitle": "Your privacy matters",
+            "privacyDesc": "We use this information only to provide personalized health insights and secure your data.",
+            "nextBtn": "Next",
+            "alreadyHaveAccount": "Already have an account?",
+            "signIn": "Sign in"
+        },
+        "step2": {
+            "title": "Body Metrics",
+            "subtitle": "This helps us calculate your daily health goals.",
+            "birthday": "Birthday",
+            "gender": "Gender",
+            "genders": {
+                "male": "Male",
+                "female": "Female",
+                "other": "Other"
+            },
+            "nextBtn": "Next",
+            "backBtn": "Back to identity"
+        },
+        "step3": {
+            "title": "Secure Your Account",
+            "subtitle": "Create a strong password to protect your health data.",
+            "account": "Account",
+            "accountPlaceholder": "Enter your account",
+            "password": "Password",
+            "passwordPlaceholder": "Enter your password",
+            "confirmPassword": "Confirm Password",
+            "confirmPasswordPlaceholder": "Re-enter your password",
+            "createBtn": "Create Account",
+            "backBtn": "Back to metrics"
+        }
     }
 }
