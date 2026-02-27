@@ -1,4 +1,17 @@
 {
+    "error": {
+        "required": "This field is required",
+        "invalidEmail": "Invalid email address",
+        "invalidAccount": "Account can only contain lowercase letters, numbers, underscores, and must start and end with a letter or number",
+        "passwordMinLength": "Password must be at least 6 characters"
+    },
+    "alert": {
+        "error": {
+            "invalidAccountOrPassword": "Invalid account or password",
+            "accountExists": "Account already exists",
+            "networkError": "Network error, please try again later"
+        }
+    },
     "dashboard": {
         "greeting": {
             "morning": "Good Morning, {{name}}",
