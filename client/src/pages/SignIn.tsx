@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   AlternateEmail,
   ArrowForward,
@@ -18,10 +19,14 @@ import {
   Typography,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { z } from "zod";
 import Logo from "../assets/logo.png";
+import useApi from "../hooks/use-api.hook";
 
 // Custom theme specifically for the singIn page to match the exact design
 const singInTheme = createTheme({
@@ -82,11 +87,41 @@ const singInTheme = createTheme({
   },
 });
 
+const formSchema = z.object({
+  account: z.string().min(1, "error.required"),
+  password: z.string().min(1, "error.required"),
+  rememberMe: z.boolean(),
+});
+type TFormSchema = z.infer<typeof formSchema>;
+
 const SignIn: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { signIn } = useApi();
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TFormSchema>({
+    resolver: zodResolver(formSchema),
+    mode: "onBlur",
+    defaultValues: {
+      rememberMe: false
+    }
+  });
+
+  const mutation = useMutation({
+    mutationFn: signIn,
+    onSuccess: () => {
+      navigate("/", { replace: true });
+    },
+  });
+
+  const onSubmit: SubmitHandler<TFormSchema> = (data) => {
+    mutation.mutate(data);
+  };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -153,7 +188,7 @@ const SignIn: React.FC = () => {
           </Box>
 
           {/* Form Area */}
-          <Box component="form" noValidate sx={{ width: "100%" }}>
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: "100%" }}>
             <Box sx={{ mb: 3 }}>
               <Typography
                 variant="subtitle2"
@@ -162,10 +197,12 @@ const SignIn: React.FC = () => {
                 {t("signIn.account")}
               </Typography>
               <TextField
+                {...register("account")}
+                error={!!errors.account}
+                helperText={t(errors.account?.message || "")}
                 fullWidth
                 id="account"
                 placeholder={t("signIn.accountPlaceholder")}
-                name="account"
                 autoComplete="account"
                 variant="outlined"
                 InputProps={{
@@ -209,8 +246,10 @@ const SignIn: React.FC = () => {
               </Box>
 
               <TextField
+                {...register("password")}
+                error={!!errors.password}
+                helperText={t(errors.password?.message || "")}
                 fullWidth
-                name="password"
                 type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder={t("signIn.passwordPlaceholder")}
@@ -246,9 +285,7 @@ const SignIn: React.FC = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  name="rememberMe"
+                  {...register("rememberMe")}
                   color="primary"
                   sx={{
                     color: "#94A3B8",
@@ -277,12 +314,9 @@ const SignIn: React.FC = () => {
               disableElevation
               endIcon={<ArrowForward />}
               sx={{ py: 2, mb: 4, fontWeight: 700 }}
-              onClick={(e) => {
-                e.preventDefault();
-                navigate("/");
-              }}
+              disabled={mutation.isPending}
             >
-              {t("signIn.signInBtn")}
+              {mutation.isPending ? t("common.loading", "Loading...") : t("signIn.signInBtn")}
             </Button>
 
             {/* Sign up */}
