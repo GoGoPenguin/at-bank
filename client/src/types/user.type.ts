@@ -4,7 +4,7 @@ export type Gender = "male" | "female" | "other";
 export const ROLE_CLIENT: Role = "client";
 export const ROLES = [ROLE_CLIENT] as const;
 
-interface User {
+export interface User {
   account: string;
   password: string;
   name: string;

@@ -108,8 +108,8 @@ const SignIn: React.FC = () => {
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      rememberMe: false
-    }
+      rememberMe: false,
+    },
   });
 
   const mutation = useMutation({
@@ -188,7 +188,12 @@ const SignIn: React.FC = () => {
           </Box>
 
           {/* Form Area */}
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: "100%" }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            sx={{ width: "100%" }}
+          >
             <Box sx={{ mb: 3 }}>
               <Typography
                 variant="subtitle2"
@@ -295,12 +300,15 @@ const SignIn: React.FC = () => {
                     "& .MuiSvgIcon-root": {
                       fontSize: 24,
                       borderRadius: 4,
-                    }
+                    },
                   }}
                 />
               }
               label={
-                <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 600 }}>
+                <Typography
+                  variant="body2"
+                  sx={{ color: "text.primary", fontWeight: 600 }}
+                >
                   {t("signIn.rememberMe")}
                 </Typography>
               }
@@ -316,7 +324,9 @@ const SignIn: React.FC = () => {
               sx={{ py: 2, mb: 4, fontWeight: 700 }}
               disabled={mutation.isPending}
             >
-              {mutation.isPending ? t("common.loading", "Loading...") : t("signIn.signInBtn")}
+              {mutation.isPending
+                ? t("common.loading", "Loading...")
+                : t("signIn.signInBtn")}
             </Button>
 
             {/* Sign up */}

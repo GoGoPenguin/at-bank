@@ -1,23 +1,46 @@
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FitnessCenterRoundedIcon from "@mui/icons-material/FitnessCenterRounded";
 import Logout from "@mui/icons-material/Logout";
 import ScaleRoundedIcon from "@mui/icons-material/ScaleRounded";
-import { Box, Button, Chip, IconButton, ListItemIcon, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
+import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { zhTW } from "date-fns/locale";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import LetterAvatar from "../components/LetterAvatar";
 import MetricCard from "../components/MetricCard";
+import useApi from "../hooks/use-api.hook";
+import { useAuthStore } from "../store/use-auth.store";
 
 const Dashboard: React.FC = () => {
+  const { setUser } = useAuthStore();
+  const { getMe } = useApi();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const name = "John Doe"; // This would come from user state in a real app
+  const { data: user, isSuccess } = useQuery({
+    queryKey: ["getMe"],
+    queryFn: getMe,
+  });
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  useEffect(() => {
+    if (isSuccess) {
+      setUser(user);
+    }
+  }, [isSuccess, user, setUser]);
+
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null,
+  );
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -69,7 +92,7 @@ const Dashboard: React.FC = () => {
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <LetterAvatar
-                name={name}
+                name={user?.name || ""}
                 sx={{
                   width: 40,
                   height: 40,
@@ -78,17 +101,17 @@ const Dashboard: React.FC = () => {
               />
             </IconButton>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -97,7 +120,9 @@ const Dashboard: React.FC = () => {
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>
-                <Typography textAlign="center">{t("dashboard.menu.logout", "Log Out")}</Typography>
+                <Typography textAlign="center">
+                  {t("dashboard.menu.logout", "Log Out")}
+                </Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -109,15 +134,16 @@ const Dashboard: React.FC = () => {
         <Box sx={{ mb: 3, pt: 4 }}>
           <Typography variant="h5" color="text.primary" sx={{ mb: 0.5 }}>
             {t(
-              `dashboard.greeting.${new Date().getHours() < 12
-                ? "morning"
-                : new Date().getHours() < 18
-                  ? "afternoon"
-                  : new Date().getHours() < 21
-                    ? "evening"
-                    : "night"
+              `dashboard.greeting.${
+                new Date().getHours() < 12
+                  ? "morning"
+                  : new Date().getHours() < 18
+                    ? "afternoon"
+                    : new Date().getHours() < 21
+                      ? "evening"
+                      : "night"
               }`,
-              { name: name },
+              { name: user?.name || "" },
             )}
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -131,13 +157,13 @@ const Dashboard: React.FC = () => {
           icon={<FavoriteRoundedIcon sx={{ color: "#e57373" }} />}
           value={62}
           unit={t("dashboard.metrics.restingHR.unit")}
-          badge={
-            <Chip
-              size="small"
-              label={t("dashboard.metrics.restingHR.badge")}
-              sx={{ bgcolor: "#e8f5e9", color: "#2e7d32", fontWeight: 600 }}
-            />
-          }
+          // badge={
+          //   <Chip
+          //     size="small"
+          //     label={t("dashboard.metrics.restingHR.badge")}
+          //     sx={{ bgcolor: "#e8f5e9", color: "#2e7d32", fontWeight: 600 }}
+          //   />
+          // }
           chart={
             <Box
               sx={{
@@ -167,13 +193,13 @@ const Dashboard: React.FC = () => {
           icon={<ScaleRoundedIcon sx={{ color: "#00796b" }} />}
           value={75.4}
           unit={t("dashboard.metrics.bodyWeight.unit")}
-          badge={
-            <Chip
-              size="small"
-              label={t("dashboard.metrics.bodyWeight.badge")}
-              sx={{ bgcolor: "#ffebee", color: "#c62828", fontWeight: 600 }}
-            />
-          }
+          // badge={
+          //   <Chip
+          //     size="small"
+          //     label={t("dashboard.metrics.bodyWeight.badge")}
+          //     sx={{ bgcolor: "#ffebee", color: "#c62828", fontWeight: 600 }}
+          //   />
+          // }
           chart={
             <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
               <svg
@@ -196,23 +222,38 @@ const Dashboard: React.FC = () => {
           title={t("dashboard.metrics.workoutRPE.title")}
           icon={<FitnessCenterRoundedIcon sx={{ color: "#5c6bc0" }} />}
           subtext={t("dashboard.metrics.workoutRPE.subtext")}
-          badge={
-            <Chip
-              size="small"
-              label={t("dashboard.metrics.workoutRPE.badge")}
-              sx={{ bgcolor: "#fff3e0", color: "#ef6c00", fontWeight: 600 }}
-            />
-          }
-          action={
-            <Button
-              variant="contained"
-              color="primary"
-              disableElevation
-              startIcon={<AddRoundedIcon />}
-              sx={{ borderRadius: 2 }}
+          value={3}
+          // badge={
+          //   <Chip
+          //     size="small"
+          //     label={t("dashboard.metrics.workoutRPE.badge")}
+          //     sx={{ bgcolor: "#fff3e0", color: "#ef6c00", fontWeight: 600 }}
+          //   />
+          // }
+          chart={
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "flex-end",
+                height: "100%",
+                mt: 3,
+              }}
             >
-              {t("dashboard.metrics.workoutRPE.action")}
-            </Button>
+              <Gauge
+                width={100}
+                height={100}
+                value={3}
+                startAngle={-90}
+                endAngle={90}
+                valueMin={0}
+                valueMax={10}
+                sx={{
+                  [`& .${gaugeClasses.valueArc}`]: {
+                    fill: "#5c6bc0",
+                  },
+                }}
+              />
+            </Box>
           }
         />
       </Box>

@@ -1,5 +1,5 @@
 import type { SignInRequestBody, SignInResponseBody } from "../types/auth.type";
-import type { SignUpRequestBody } from "../types/user.type";
+import type { SignUpRequestBody, User } from "../types/user.type";
 import useAxios from "./use-axios.hook";
 
 const useApi = () => {
@@ -20,11 +20,16 @@ const useApi = () => {
   const signOut = async (): Promise<void> => {
     await axios.delete("/api/auth/sign-out");
   };
+  const getMe = async (): Promise<User> => {
+    const response = await axios.get("/api/user");
+    return response.data;
+  };
 
   return {
     signIn,
     signUp,
     signOut,
+    getMe,
   };
 };
 
