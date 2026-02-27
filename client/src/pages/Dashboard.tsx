@@ -24,12 +24,16 @@ import { useAuthStore } from "../store/use-auth.store";
 
 const Dashboard: React.FC = () => {
   const { setUser } = useAuthStore();
-  const { getMe } = useApi();
+  const { getMe, getMetrics } = useApi();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { data: user, isSuccess } = useQuery({
     queryKey: ["getMe"],
     queryFn: getMe,
+  });
+  const { data: metrics } = useQuery({
+    queryKey: ["getMetrics"],
+    queryFn: getMetrics,
   });
 
   useEffect(() => {
@@ -155,7 +159,10 @@ const Dashboard: React.FC = () => {
         <MetricCard
           title={t("dashboard.metrics.restingHR.title")}
           icon={<FavoriteRoundedIcon sx={{ color: "#e57373" }} />}
-          value={62}
+          value={
+            metrics?.find((metric) => metric.name === "heart_rate")?.value ||
+            undefined
+          }
           unit={t("dashboard.metrics.restingHR.unit")}
           // badge={
           //   <Chip
@@ -191,7 +198,10 @@ const Dashboard: React.FC = () => {
         <MetricCard
           title={t("dashboard.metrics.bodyWeight.title")}
           icon={<ScaleRoundedIcon sx={{ color: "#00796b" }} />}
-          value={75.4}
+          value={
+            metrics?.find((metric) => metric.name === "weight")?.value ||
+            undefined
+          }
           unit={t("dashboard.metrics.bodyWeight.unit")}
           // badge={
           //   <Chip
@@ -222,7 +232,9 @@ const Dashboard: React.FC = () => {
           title={t("dashboard.metrics.workoutRPE.title")}
           icon={<FitnessCenterRoundedIcon sx={{ color: "#5c6bc0" }} />}
           subtext={t("dashboard.metrics.workoutRPE.subtext")}
-          value={3}
+          value={
+            metrics?.find((metric) => metric.name === "RPE")?.value || undefined
+          }
           // badge={
           //   <Chip
           //     size="small"
@@ -234,15 +246,17 @@ const Dashboard: React.FC = () => {
             <Box
               sx={{
                 display: "flex",
-                alignItems: "flex-end",
+                justifyContent: "center",
+                alignItems: "center",
                 height: "100%",
-                mt: 3,
               }}
             >
               <Gauge
                 width={100}
                 height={100}
-                value={3}
+                value={
+                  metrics?.find((metric) => metric.name === "RPE")?.value || 0
+                }
                 startAngle={-90}
                 endAngle={90}
                 valueMin={0}
@@ -251,6 +265,7 @@ const Dashboard: React.FC = () => {
                   [`& .${gaugeClasses.valueArc}`]: {
                     fill: "#5c6bc0",
                   },
+                  mb: 2,
                 }}
               />
             </Box>
