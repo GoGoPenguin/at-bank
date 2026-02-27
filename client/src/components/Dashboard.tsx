@@ -73,7 +73,18 @@ const Dashboard: React.FC = () => {
       <Box sx={{ px: 2.5, mt: -2 }}>
         <Box sx={{ mb: 3, pt: 4 }}>
           <Typography variant="h5" color="text.primary" sx={{ mb: 0.5 }}>
-            {t("dashboard.greeting.morning")}
+            {t(
+              `dashboard.greeting.${
+                new Date().getHours() < 12
+                  ? "morning"
+                  : new Date().getHours() < 18
+                    ? "afternoon"
+                    : new Date().getHours() < 21
+                      ? "evening"
+                      : "night"
+              }`,
+              { name: name },
+            )}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {t("dashboard.greeting.summary")}

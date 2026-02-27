@@ -2,6 +2,9 @@
     "dashboard": {
         "greeting": {
             "morning": "Good Morning, {{name}}",
+            "afternoon": "Good Afternoon, {{name}}",
+            "evening": "Good Evening, {{name}}",
+            "night": "Good Night, {{name}}",
             "summary": "Here is your health summary for today."
         },
         "metrics": {
@@ -33,42 +36,5 @@
                 "value": "{{hours}}h {{minutes}}m"
             }
         }
-    },
-    "app": {
-        "routes": {
-            "dashboard": "Dashboard",
-            "history": "History Page",
-            "trends": "Trends Page",
-            "settings": "Settings Page",
-            "log": "Log Data"
-        }
-    },
-    "layout": {
-        "navigation": {
-            "home": "Home",
-            "history": "History",
-            "trends": "Trends",
-            "settings": "Settings",
-            "add": "Add"
-        }
-    },
-    "recordDataForm": {
-        "title": "Log Today's Data",
-        "restingHeartRate": {
-            "label": "Resting Heart Rate",
-            "placeholder": "e.g. 62",
-            "unit": "bpm"
-        },
-        "bodyWeight": {
-            "label": "Body Weight",
-            "placeholder": "e.g. 75.4",
-            "unit": "kg"
-        },
-        "workoutRPE": {
-            "label": "Workout RPE",
-            "description": "Rate 1-10 intensity"
-        },
-        "button": "Save Log",
-        "success": "Data logged successfully!"
     }
 }

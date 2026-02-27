@@ -2,6 +2,9 @@
     "dashboard": {
         "greeting": {
             "morning": "早安，{{name}}",
+            "afternoon": "午安，{{name}}",
+            "evening": "晚安，{{name}}",
+            "night": "夜安，{{name}}",
             "summary": "以下是您今天的健康摘要。"
         },
         "metrics": {
