@@ -28,7 +28,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import CustomDatePicker from "./CustomDatePicker";
+import CustomDatePicker from "../components/CustomDatePicker";
 
 // Shared theme identical to Login
 const signUpTheme = createTheme({

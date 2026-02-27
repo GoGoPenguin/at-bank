@@ -7,8 +7,8 @@ import { format } from "date-fns";
 import { zhTW } from "date-fns/locale";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import LetterAvatar from "./LetterAvatar";
-import MetricCard from "./MetricCard";
+import LetterAvatar from "../components/LetterAvatar";
+import MetricCard from "../components/MetricCard";
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
@@ -74,14 +74,13 @@ const Dashboard: React.FC = () => {
         <Box sx={{ mb: 3, pt: 4 }}>
           <Typography variant="h5" color="text.primary" sx={{ mb: 0.5 }}>
             {t(
-              `dashboard.greeting.${
-                new Date().getHours() < 12
-                  ? "morning"
-                  : new Date().getHours() < 18
-                    ? "afternoon"
-                    : new Date().getHours() < 21
-                      ? "evening"
-                      : "night"
+              `dashboard.greeting.${new Date().getHours() < 12
+                ? "morning"
+                : new Date().getHours() < 18
+                  ? "afternoon"
+                  : new Date().getHours() < 21
+                    ? "evening"
+                    : "night"
               }`,
               { name: name },
             )}
