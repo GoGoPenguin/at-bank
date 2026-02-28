@@ -2,7 +2,7 @@ from dependency_injector.wiring import Provide
 from fastapi import status
 from fastapi.responses import ORJSONResponse
 
-from src.schema import SignInRequestSchema
+from src.schema import SignInRequestSchema, SignInResponseSchema
 from src.service import AuthService
 from src.utils.glossary import SameSite, Token
 
@@ -25,7 +25,10 @@ class SignInHandler:
         )
 
         response = ORJSONResponse(
-            content={},
+            content=SignInResponseSchema(
+                access_token=access_token,
+                refresh_token=refresh_token,
+            ).model_dump(),
             status_code=status.HTTP_200_OK,
         )
         response.set_cookie(

@@ -15,7 +15,7 @@ from ._job_schema import (
 from ._jwt_claim_schema import JWTClaim
 from ._metrics_schema import MetricsSchema
 from ._pagination_schema import PaginationSchema
-from ._sign_in_schema import SignInRequestSchema
+from ._sign_in_schema import SignInRequestSchema, SignInResponseSchema
 from ._sign_up_schema import SignUpRequestSchema
 from ._update_application_status_schema import UpdateApplicationStatusSchema
 from ._update_job_status_schema import UpdateJobStatusSchema

@@ -46,22 +46,37 @@ class JWTMiddleware(BaseHTTPMiddleware):
                 access_token = request.cookies.get(Token.ACCESS_TOKEN.value)
                 refresh_token = request.cookies.get(Token.REFRESH_TOKEN.value)
 
-                if not self._is_refresh_token(path):
+                auth_header = request.headers.get("authorization")
+                bearer_token = None
+                if auth_header and auth_header.startswith("Bearer "):
+                    bearer_token = auth_header[7:]
+
+                is_refresh = self._is_refresh_token(path)
+
+                if is_refresh:
+                    if not refresh_token and bearer_token:
+                        refresh_token = bearer_token
+                    if not refresh_token:
+                        raise KeyError("Missing refresh token")
+
+                    decoded_token = self.jwt.decode(refresh_token)
+                    request.state.refresh_token = decoded_token
+                else:
+                    if not access_token and bearer_token:
+                        access_token = bearer_token
                     if not access_token:
                         raise KeyError("Missing access token")
-                    request.state.access_token = self.jwt.decode(access_token)
 
-                if not refresh_token:
-                    raise KeyError("Missing refresh token")
-                request.state.refresh_token = self.jwt.decode(refresh_token)
+                    decoded_token = self.jwt.decode(access_token)
+                    request.state.access_token = decoded_token
 
-                user = self.user_service.get_user_by_account(
-                    request.state.refresh_token.account
-                )
+                account = decoded_token.account
+                user = self.user_service.get_user_by_account(account)
+
                 if user is None:
                     raise UnauthorizedError(detail="User not found.")
                 request.state.user = user
-                request.scope["user"] = SimpleUser(request.state.refresh_token.account)
+                request.scope["user"] = SimpleUser(account)
             except KeyError:
                 raise UnauthorizedError(
                     detail="Authentication credentials were not provided."
