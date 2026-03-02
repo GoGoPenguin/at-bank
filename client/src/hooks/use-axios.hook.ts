@@ -25,6 +25,18 @@ const useAxios = () => {
     if (config.params) {
       config.params = decamelizeKeys(config.params);
     }
+
+    if (config.url === "/api/auth/refresh-token") {
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken) {
+        config.headers.Authorization = `Bearer ${refreshToken}`;
+      }
+    } else {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+    }
     return config;
   });
 
@@ -50,17 +62,18 @@ const useAxios = () => {
           case 401:
             if (error.config.url === "/api/auth/sign-in") {
               handleAlert("invalidAccountOrPassword", "error");
-            } else if (error.config.url !== "/api/refresh-token") {
-              instance
+            } else if (error.config.url !== "/api/auth/refresh-token") {
+              return instance
                 .put("/api/auth/refresh-token")
                 .then(() => {
-                  instance(error.config);
+                  return instance(error.config);
                 })
                 .catch(() => {
                   navigate("/sign-in", { replace: true });
+                  return Promise.reject(error);
                 });
             }
-            break;
+            return false;
           case 403:
             return false;
           case 404:
