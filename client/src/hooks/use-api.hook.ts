@@ -25,17 +25,17 @@ const useApi = () => {
     await axios.delete("/api/auth/sign-out");
   };
   const getMe = async (): Promise<User> => {
-    const response = await axios.get("/api/user");
+    const response = await axios.get("/api/user/");
     return response.data;
   };
   const createMetrics = async (
     req: CreateMetricsRequestBody,
   ): Promise<void> => {
-    await axios.post("/api/client/metrics", req);
+    await axios.post("/api/client/metrics/", req);
   };
   const getMetrics = async (): Promise<GetMetricsResponseBody> => {
     const response = await axios.get<GetMetricsResponseBody>(
-      "/api/client/metrics",
+      "/api/client/metrics/",
     );
     return response.data;
   };
