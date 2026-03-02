@@ -4,7 +4,6 @@ import firebase_admin
 import uvicorn
 from fastapi import FastAPI
 from fastapi.exception_handlers import RequestValidationError
-from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from firebase_admin import firestore
@@ -44,7 +43,7 @@ container.wire(
 )
 container.init_resources()
 
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 app.container = container  # type: ignore
 app.add_exception_handler(Exception, error_handler)
 app.add_exception_handler(RequestValidationError, error_handler)
