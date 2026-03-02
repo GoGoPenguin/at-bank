@@ -55,6 +55,8 @@ const Dashboard: React.FC = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     handleCloseUserMenu();
     navigate("/sign-in");
   };

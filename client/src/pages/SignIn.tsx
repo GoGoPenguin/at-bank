@@ -114,7 +114,9 @@ const SignIn: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: signIn,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      localStorage.setItem("accessToken", data?.accessToken || "");
+      localStorage.setItem("refreshToken", data?.refreshToken || "");
       navigate("/", { replace: true });
     },
   });
