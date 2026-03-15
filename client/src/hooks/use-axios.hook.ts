@@ -60,9 +60,12 @@ const useAxios = () => {
             handleAlert(error.response.data.error, "error");
             break;
           case 401:
-            if (error.config.url === "/api/auth/sign-in") {
+            if (error.config.url === "/api/auth/refresh-token") {
+              navigate("/sign-in", { replace: true });
+              return Promise.reject(error);
+            } else if (error.config.url === "/api/auth/sign-in") {
               handleAlert("invalidAccountOrPassword", "error");
-            } else if (error.config.url !== "/api/auth/refresh-token") {
+            } else {
               return instance
                 .put("/api/auth/refresh-token")
                 .then(() => {
