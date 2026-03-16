@@ -1,73 +1,75 @@
-# React + TypeScript + Vite
+# AT-Bank Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A mobile-friendly, modern React frontend for the AT-Bank ecosystem. This client provides a sleek interface for Athletic Trainers to monitor health data and explore career opportunities in a dedicated job marketplace.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **UI Component Library**: [Material UI (MUI)](https://mui.com/)
+- **Routing**: [React Router 6](https://reactrouter.com/)
+- **Data Fetching**: [TanStack Query (React Query) v5](https://tanstack.com/query/latest)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+- **Internationalization**: [i18next](https://www.i18next.com/) & [react-i18next](https://react.i18next.com/)
+- **Form Management**: [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
 
-## React Compiler
+## 📂 Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+client/
+├── src/
+│   ├── components/    # Reusable UI components (Layout, Forms, Monitors)
+│   ├── pages/         # Main application pages (Dashboard, Sign In, Sign Up)
+│   ├── hooks/         # Custom React hooks (Alerts, API integrations)
+│   ├── context/       # React Context providers
+│   ├── store/         # Zustand state stores
+│   ├── locales/       # Translation files (JSON)
+│   ├── theme.ts       # MUI theme customization
+│   └── i18n.ts        # Internationalization configuration
+└── public/            # Static assets
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Node.js** (Latest LTS recommended)
+- **npm** or **yarn**
+
+### Installation
+
+1. Navigate to the `client` directory:
+
+   ```bash
+   cd client
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+### Running Locally
+
+To start the development server with hot module replacement (HMR):
+
+```bash
+npm run dev
 ```
+
+The application will be available at `http://localhost:5173`.
+
+## 🌍 Multi-language Support
+
+The client supports multiple languages via `i18next`. Translation strings are located in `src/locales/`.
+
+## 📦 Building for Production
+
+To create an optimized production build:
+
+```bash
+npm run build
+```
+
+The output will be in the `dist/` directory.
