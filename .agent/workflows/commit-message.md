@@ -13,7 +13,7 @@ To identify the changes, always use:
 
 > [!IMPORTANT]
 > **No Absolute Paths:** When referencing files in the commit body, always use the path relative to the project root (e.g., `src/servers/gate/...` instead of `/Users/user/Documents/...`).
-> Do not stage or unstage files for me.
+> **No Additional operations:** Do not stage or unstage files for me.
 
 ---
 
@@ -86,7 +86,9 @@ When generating this message, follow these constraints:
 
 1. **Analyze:** Only look at the output of `git diff --staged`.
 2. **Standard:** Use `<type>(<scope>): <emoji> <description>`.
-3. **Paths:** Strip all absolute system paths; use project-relative paths only.
-4. **Tone:** Use the imperative mood ("Add", "Fix", "Update").
+3. **No Markdown Links:** NEVER use square brackets `[]` or parentheses `()` to link to files. Use plain text for paths only (e.g., "in src/path/file.ts" NOT "[file](path)").
+4. **No Metadata:** Do not include `cci:`, `file:///`, or line numbers (e.g., `:798:0`).
+5. **Clean Paths:** Use project-relative paths only. Strip all absolute paths starting with `/Users/...`.
+6. **Tone:** Use the imperative mood ("Add", "Fix", "Update").
 
 ---
