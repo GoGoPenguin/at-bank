@@ -10,6 +10,7 @@ import useAlert from "./hooks/use-alert.hook";
 import Dashboard from "./pages/Dashboard";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import HeartRateMonitor from "./components/HeartRateMonitor";
 
 const App: React.FC = () => {
   const { t } = useTranslation();
@@ -38,6 +39,7 @@ const App: React.FC = () => {
               path="settings"
               element={<div>{t("app.routes.settings")}</div>}
             />
+            <Route path="heart-rate" element={<HeartRateMonitor />} />
           </Route>
           <Route path="/log" element={<RecordDataForm />} />
         </Routes>

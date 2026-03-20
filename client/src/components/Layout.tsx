@@ -3,6 +3,7 @@ import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -84,6 +85,11 @@ const Layout: React.FC = () => {
             label={t("layout.navigation.trends")}
             value="/trends"
             icon={<TrendingUpRoundedIcon />}
+          />
+          <BottomNavigationAction
+            label={t("layout.navigation.heartRate", { defaultValue: "Heart" })}
+            value="/heart-rate"
+            icon={<FavoriteIcon />}
           />
           <BottomNavigationAction
             label={t("layout.navigation.settings")}

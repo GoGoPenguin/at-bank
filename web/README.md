@@ -1,69 +1,65 @@
-# React + TypeScript + Vite
+# AT-Bank Web Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The web-based frontend for AT-Bank, serving as a comprehensive portal for Athletic Trainers to manage health monitoring and engage with the job-finding platform.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **UI Components**: [Material UI (MUI)](https://mui.com/)
+- **Mocking**: [Mock Service Worker (MSW)](https://mswjs.io/) for API simulation during development.
+- **Routing**: [React Router 7](https://reactrouter.com/)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+- **Data Fetching**: [TanStack Query](https://tanstack.com/query/latest)
 
-## Expanding the ESLint configuration
+## 📂 Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+web/
+├── src/
+│   ├── components/    # UI components
+│   ├── mocks/         # MSW handlers and browser worker setup
+│   ├── pages/         # Application pages
+│   ├── hooks/         # Custom React hooks
+│   └── main.tsx       # Application entry point
+├── public/            # Static assets and MSW worker script
+└── tsconfig.json      # TypeScript configuration
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Installation
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Navigate to the `web` directory:
+
+   ```bash
+   cd web
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+### Running Locally
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`.
+
+## 🧪 Mocking with MSW
+
+This project uses **Mock Service Worker** to intercept API requests and return manual responses. This allows frontend development to proceed independently of the backend.
+
+The mock handlers are defined in `src/mocks/handlers.ts` and the worker is initialized in `src/main.tsx` when running in development mode.
+
+## 📦 Build
+
+```bash
+npm run build
 ```
